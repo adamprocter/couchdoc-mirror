@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import PouchDB from 'pouchdb'
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable'
 Vue.use(Vuex)
 var pouchdb = new PouchDB('couchdocs')
 var remote = 'https://nn.adamprocter.co.uk/couchdocs'
@@ -16,7 +17,7 @@ const store = new Vuex.Store({
         .get(mydoc)
         .then(function(doc) {
           state.notes = doc.notes
-          console.log(state.notes)
+          //  console.log(state.notes)
         })
         .catch(function(err) {
           console.log(err)
@@ -35,24 +36,20 @@ const store = new Vuex.Store({
       pouchdb
         .get(mydoc)
         .then(function(doc) {
+          // save current store
+          var currentstore = store.state.notes
+          // add new entry to the end
+          currentstore.push({
+            id: uniqueid,
+            text: 'New Entry',
+            owner: 'YOU',
+            deleted: false
+          })
+          // put the store into pouchdb
           return pouchdb.put({
             _id: mydoc,
             _rev: doc._rev,
-            notes: [
-              {
-                id: uniqueid,
-                text: 'vvvvv',
-                owner: 'adam',
-                deleted: false
-              },
-
-              {
-                id: uniqueid,
-                text: 'adam',
-                owner: 'adam',
-                deleted: false
-              }
-            ]
+            notes: currentstore
           })
         })
         .then(function(response) {
