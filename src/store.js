@@ -9,10 +9,11 @@ var mydoc = 'mydoc'
 
 const store = new Vuex.Store({
   state: {
-    notes: []
+    notes: [],
+    activeNote: {}
   },
   mutations: {
-    GET_DB(state) {
+    GET_DB(state, text) {
       pouchdb
         .get(mydoc)
         .then(function(doc) {
@@ -53,7 +54,51 @@ const store = new Vuex.Store({
         .then(function(response) {
           // handle response
           if (response.ok == true) {
-            //if all good could do something
+            //take the last text from DB and set as activeNote text ready for editor
+            var end = Object.keys(store.state.notes).length - 1
+            //console.log(store.state.notes[end].text)
+            const newNote = {
+              text: store.state.notes[end].text
+            }
+            store.state.activeNote = newNote
+          }
+        })
+        .catch(function(err) {
+          if (err.status == 404) {
+            // pouchdb.put({  })
+          }
+        })
+    },
+    EDIT_NOTE(state, text) {
+      store.state.activeNote.text = text
+      //console.log(store.state.activeNote.text)
+      var end = Object.keys(store.state.notes).length - 1
+      store.state.notes[end].text = text
+      // console.log(store.state.notes[end].text)
+
+      var uniqueid =
+        Math.random()
+          .toString(36)
+          .substring(2, 15) +
+        Math.random()
+          .toString(36)
+          .substring(2, 15)
+      pouchdb
+        .get(mydoc)
+        .then(function(doc) {
+          // save current store
+          var currentstore = store.state.notes
+          // put the store into pouchdb
+          return pouchdb.put({
+            _id: mydoc,
+            _rev: doc._rev,
+            notes: currentstore
+          })
+        })
+        .then(function(response) {
+          // handle response
+          if (response.ok == true) {
+            // do something if you like
           }
         })
         .catch(function(err) {
@@ -97,6 +142,9 @@ const store = new Vuex.Store({
     },
     addDoc: ({ commit }) => {
       commit('ADD_DOC')
+    },
+    editNote: ({ commit }, e) => {
+      commit('EDIT_NOTE', e.target.value)
     }
   }
 })
