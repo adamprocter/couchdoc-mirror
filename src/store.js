@@ -121,19 +121,19 @@ const store = new Vuex.Store({
           })
           .on('paused', function() {
             // replication paused (e.g. replication up to date, user went offline)
-            // console.log('replication paused')
+            console.log('replication paused')
             // store.dispatch("get_data");
           })
           .on('active', function() {
             // replicate resumed (e.g. new changes replicating, user went back online)
-            //console.log('back active')
+            console.log('back active')
           })
           .on('denied', function() {
             // a document failed to replicate (e.g. due to permissions)
           })
           .on('complete', function() {
             // handle complete
-            //console.log('complete')
+            console.log('complete')
           })
           .on('error', function(err) {
             console.log(err)
