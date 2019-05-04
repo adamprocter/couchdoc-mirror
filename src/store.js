@@ -72,7 +72,9 @@ const store = new Vuex.Store({
     EDIT_NOTE(state, text) {
       store.state.activeNote.text = text
       //console.log(store.state.activeNote.text)
-      // this is not the correct way to do this, get the one you are editing as last will change when someone else edits..
+      //this is not the correct way to do this,
+      //get the one you are editing
+      //as last will change when someone else edits.
       var end = Object.keys(store.state.notes).length - 1
       store.state.notes[end].text = text
       // console.log(store.state.notes[end].text)
