@@ -1,8 +1,8 @@
 <template>
   <div class="home">
-    <ToolBar v-on:editMode="editMode()"/>
-    <Viewer/>
-    <Editor v-if="editing" v-on:closeEdit="closeEdit()"/>
+    <ToolBar v-on:editMode="editMode()" />
+    <Viewer />
+    <Editor v-if="editing" v-on:closeEdit="closeEdit()" />
   </div>
 </template>
 
@@ -29,7 +29,7 @@ export default {
       this.editing = !this.editing
     },
     closeEdit() {
-      console.log('close!')
+      //console.log('close!')
       this.editing = false
     }
   }

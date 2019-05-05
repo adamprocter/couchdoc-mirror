@@ -6,6 +6,7 @@ Vue.use(Vuex)
 var pouchdb = new PouchDB('couchdocs')
 var remote = 'https://nn.adamprocter.co.uk/couchdocs'
 var mydoc = 'mydoc'
+var localid = 0
 
 const store = new Vuex.Store({
   state: {
@@ -13,7 +14,7 @@ const store = new Vuex.Store({
     activeNote: {}
   },
   mutations: {
-    GET_DB(state, text) {
+    GET_DB(state) {
       pouchdb
         .get(mydoc)
         .then(function(doc) {
@@ -58,7 +59,8 @@ const store = new Vuex.Store({
             var end = Object.keys(store.state.notes).length - 1
             //console.log(store.state.notes[end].text)
             const newNote = {
-              text: store.state.notes[end].text
+              text: store.state.notes[end].text,
+              id: store.state.notes[end].id
             }
             store.state.activeNote = newNote
           }
@@ -69,12 +71,15 @@ const store = new Vuex.Store({
           }
         })
     },
+    NOTE_ID(state, id) {
+      localid = id
+      //console.log(id)
+    },
     EDIT_NOTE(state, text) {
       store.state.activeNote.text = text
-      //console.log(store.state.activeNote.text)
-      //this is not the correct way to do this,
-      //get the one you are editing
-      //as last will change when someone else edits.
+      console.log(store.state.activeNote.text)
+      // USE the unique ID instead
+      console.log(localid)
       var end = Object.keys(store.state.notes).length - 1
       store.state.notes[end].text = text
       // console.log(store.state.notes[end].text)
@@ -140,6 +145,9 @@ const store = new Vuex.Store({
     },
     editNote: ({ commit }, e) => {
       commit('EDIT_NOTE', e.target.value)
+    },
+    noteId: ({ commit }, e) => {
+      commit('NOTE_ID', e.target.value)
     }
   }
 })
