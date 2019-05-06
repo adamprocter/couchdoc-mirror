@@ -87,12 +87,6 @@ const store = new Vuex.Store({
           store.state.notes[i].text = text
         }
       }
-      // console.log(store.state.notes)
-      // USE the unique ID instead of last item
-      //console.log(localid)
-      //var end = Object.keys(store.state.notes).length - 1
-      //store.state.notes[end].text = text
-      // console.log(store.state.notes[end].text)
       pouchdb
         .get(mydoc)
         .then(function(doc) {
@@ -144,7 +138,7 @@ const store = new Vuex.Store({
           })
           .on('complete', function() {
             // handle complete
-            console.log('complete')
+            //console.log('complete')
           })
           .on('error', function(err) {
             console.log(err)
