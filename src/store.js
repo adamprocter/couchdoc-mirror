@@ -121,6 +121,7 @@ const store = new Vuex.Store({
   actions: {
     syncDB: () => {
       pouchdb.replicate.from(remote).on('complete', function() {
+        store.commit('GET_DB')
         // turn on two-way, continuous, retriable sync
         pouchdb
           .sync(remote, { live: true, retry: true })
@@ -164,4 +165,3 @@ const store = new Vuex.Store({
 
 export default store
 store.dispatch('syncDB')
-store.commit('GET_DB')
