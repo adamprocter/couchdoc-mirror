@@ -6,7 +6,7 @@ Vue.use(Vuex)
 var pouchdb = new PouchDB('couchdocs')
 var remote = 'https://nn.adamprocter.co.uk/couchdocs'
 var mydoc = 'mydoc'
-var localid = 0
+var localid = null
 
 const store = new Vuex.Store({
   state: {
@@ -33,6 +33,7 @@ const store = new Vuex.Store({
         Math.random()
           .toString(36)
           .substring(2, 15)
+      localid = uniqueid
       pouchdb
         .get(mydoc)
         .then(function(doc) {
@@ -73,15 +74,24 @@ const store = new Vuex.Store({
     },
     NOTE_ID(state, id) {
       localid = id
-      //console.log(id)
+      //console.log(localid)
     },
     EDIT_NOTE(state, text) {
-      store.state.activeNote.text = text
-      console.log(store.state.activeNote.text)
-      // USE the unique ID instead
-      console.log(localid)
-      var end = Object.keys(store.state.notes).length - 1
-      store.state.notes[end].text = text
+      //store.state.activeNote.text = text
+      var i
+      for (i = 0; i < Object.keys(store.state.notes).length; i++) {
+        //console.log(store.state.notes[i].id)
+        if (localid == store.state.notes[i].id) {
+          console.log('match')
+          console.log(store.state.notes[i].id)
+          store.state.notes[i].text = text
+        }
+      }
+      // console.log(store.state.notes)
+      // USE the unique ID instead of last item
+      //console.log(localid)
+      //var end = Object.keys(store.state.notes).length - 1
+      //store.state.notes[end].text = text
       // console.log(store.state.notes[end].text)
       pouchdb
         .get(mydoc)
@@ -143,11 +153,11 @@ const store = new Vuex.Store({
     addDoc: ({ commit }) => {
       commit('ADD_DOC')
     },
+    noteId: ({ commit }, e) => {
+      commit('NOTE_ID', e)
+    },
     editNote: ({ commit }, e) => {
       commit('EDIT_NOTE', e.target.value)
-    },
-    noteId: ({ commit }, e) => {
-      commit('NOTE_ID', e.target.value)
     }
   }
 })

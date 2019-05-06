@@ -1,27 +1,28 @@
 <template>
   <div class="editor">
-    <h2>Edit</h2>
-    <button @click="closeEdit()">Close</button>
-    <textarea
-      v-bind:value="activeNote.text"
-      @input="editNote"
-      class="form-control"
-    ></textarea>
-    {{ (activeid = activeNote.id) }}
-    <input v-bind:value="activeNote.id" readonly />
+    <form id="editForm">
+      <h2>Edit</h2>
+      <button @click="closeEdit()">Close</button>
+      <textarea
+        v-model="activeNote.text"
+        @input="editNote"
+        class="form-control"
+      ></textarea>
+      <input v-bind:value="activeNote.id" name="id" readonly />
+    </form>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
-var activeId = state.activeNote.id
 
 export default {
   methods: {
     // not sure this is best practice to dispatch from here
     editNote(e) {
       this.$store.dispatch('editNote', e)
-      this.$store.dispatch('noteId', activeId)
+      this.$store.dispatch('noteId', this.activeNote.id)
+      //console.log(this.activeNote.id)
     },
     // noteId(e) {
     //   this.$store.dispatch('noteId', e)
