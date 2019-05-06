@@ -1,6 +1,13 @@
 <template>
   <div class="toolbar">
-    <button v-on:click="addDoc">Create</button>
+    <button
+      @click="
+        addDoc()
+        editMode()
+      "
+    >
+      Create
+    </button>
   </div>
 </template>
 
@@ -9,6 +16,10 @@ export default {
   methods: {
     addDoc() {
       this.$store.dispatch('addDoc')
+    },
+    editMode() {
+      // call the method here
+      this.$emit('editMode')
     }
   }
 }
