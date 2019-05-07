@@ -5,25 +5,50 @@ import PouchDB from 'pouchdb'
 Vue.use(Vuex)
 var pouchdb = new PouchDB('couchdocs')
 var remote = 'https://nn.adamprocter.co.uk/couchdocs'
-var mydoc = 'mydoc'
+// null until set ???
+var myclient = 'mydoc'
 var localid = null
 
 const store = new Vuex.Store({
   state: {
-    notes: [],
+    pouchdocs: {},
     activeNote: {}
   },
   mutations: {
     GET_DB(state) {
       pouchdb
-        .get(mydoc)
+        .allDocs({
+          include_docs: true
+        })
         .then(function(doc) {
-          state.notes = doc.notes
-          //  console.log(state.notes)
+          //console.log(doc)
+          //state.docs = doc.rows[0].doc
+          state.pouchdocs = doc.rows
+          console.log(doc.rows)
         })
         .catch(function(err) {
-          console.log(err)
+          if (err.status == 404) {
+            // here we can start with "hey looks like this is a new device..we have not seen before"
+            // give this a device a name and what person would you like to associate with this device
+            // pouchdb.put({  })
+            console.log('hey new device! ')
+            // set myclient var here
+          }
         })
+      // pouchdb
+      //   .get(mydoc)
+      //   .then(function(doc) {
+      //     state.notes = doc.notes
+      //     //  console.log(state.notes)
+      //   })
+      //   .catch(function(err) {
+      //     if (err.status == 404) {
+      //       // here we can start with "hey looks like this is a new device..we have not seen before"
+      //       // give this a device a name and what person would you like to associate with this device
+      //       // pouchdb.put({  })
+      //       console.log('hey new device! ')
+      //     }
+      //   })
     },
     ADD_DOC() {
       var uniqueid =
@@ -35,10 +60,13 @@ const store = new Vuex.Store({
           .substring(2, 15)
       localid = uniqueid
       pouchdb
-        .get(mydoc)
+        .get(myclient) // this will be the client id
         .then(function(doc) {
           // save current store
-          var currentstore = store.state.notes
+          //console.log(doc)
+          // console.log(store.state.pouchdocs[0].doc.notes)
+          // 0 for now to match client id
+          var currentstore = store.state.pouchdocs[0].doc.notes
           // add new entry to the end
           currentstore.push({
             id: uniqueid,
@@ -48,7 +76,7 @@ const store = new Vuex.Store({
           })
           // put the store into pouchdb
           return pouchdb.put({
-            _id: mydoc,
+            _id: myclient,
             _rev: doc._rev,
             notes: currentstore
           })
@@ -57,18 +85,21 @@ const store = new Vuex.Store({
           // handle response
           if (response.ok == true) {
             //take the last text from DB and set as activeNote text ready for editor
-            var end = Object.keys(store.state.notes).length - 1
+            var end = Object.keys(store.state.pouchdocs[0].doc.notes).length - 1
             //console.log(store.state.notes[end].text)
             const newNote = {
-              text: store.state.notes[end].text,
-              id: store.state.notes[end].id
+              text: store.state.pouchdocs[0].doc.notes[end].text,
+              id: store.state.pouchdocs[0].doc.notes[end].id
             }
             store.state.activeNote = newNote
           }
         })
         .catch(function(err) {
           if (err.status == 404) {
+            // here we can start with "hey looks like this is a new device..we have not seen before"
+            // give this a device a name and what person would you like to associate with this device
             // pouchdb.put({  })
+            // console.log('hey new device! ')
           }
         })
     },
@@ -79,22 +110,26 @@ const store = new Vuex.Store({
     EDIT_NOTE(state, text) {
       //store.state.activeNote.text = text
       var i
-      for (i = 0; i < Object.keys(store.state.notes).length; i++) {
+      for (
+        i = 0;
+        i < Object.keys(store.state.pouchdocs[0].doc.notes).length;
+        i++
+      ) {
         //console.log(store.state.notes[i].id)
-        if (localid == store.state.notes[i].id) {
-          console.log('match')
-          console.log(store.state.notes[i].id)
-          store.state.notes[i].text = text
+        if (localid == store.state.pouchdocs[0].doc.notes[i].id) {
+          //console.log('match')
+          //console.log(store.state.notes[i].id)
+          store.state.pouchdocs[0].doc.notes[i].text = text
         }
       }
       pouchdb
-        .get(mydoc)
+        .get(myclient)
         .then(function(doc) {
           // save current store
-          var currentstore = store.state.notes
+          var currentstore = store.state.pouchdocs[0].doc.notes
           // put the store into pouchdb
           return pouchdb.put({
-            _id: mydoc,
+            _id: myclient,
             _rev: doc._rev,
             notes: currentstore
           })
@@ -115,7 +150,9 @@ const store = new Vuex.Store({
   actions: {
     syncDB: () => {
       pouchdb.replicate.from(remote).on('complete', function() {
+        // this helps with devices already connected
         store.commit('GET_DB')
+
         // turn on two-way, continuous, retriable sync
         pouchdb
           .sync(remote, { live: true, retry: true })
@@ -159,3 +196,4 @@ const store = new Vuex.Store({
 
 export default store
 store.dispatch('syncDB')
+store.commit('GET_DB')
