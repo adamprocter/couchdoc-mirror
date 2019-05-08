@@ -6,7 +6,7 @@ Vue.use(Vuex)
 var pouchdb = new PouchDB('couchdocs')
 var remote = 'https://nn.adamprocter.co.uk/couchdocs'
 // this is set by a "login"
-var myclient = 'mydoc_macos'
+var myclient = 'mydoc'
 var localid = null
 
 const store = new Vuex.Store({

@@ -1,12 +1,8 @@
 <template>
   <div>
+    <h2>Your Data</h2>
     <ul>
       <li v-for="(note, index) in notes" v-bind:key="index">{{ note.text }}</li>
-    </ul>
-    <ul>
-      <template v-for="(value, index) in otherclients">
-        <li v-for="(note, note_index) in value.doc.notes">{{ note.text }}</li>
-      </template>
     </ul>
   </div>
 </template>
@@ -15,10 +11,9 @@
 import { mapState } from 'vuex'
 
 export default {
-  name: 'Viewer',
+  name: 'YourData',
   computed: mapState({
-    notes: state => state.notes,
-    otherclients: state => state.otherclients
+    notes: state => state.notes
   })
 }
 </script>

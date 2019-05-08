@@ -1,14 +1,18 @@
 <template>
   <div class="home">
-    <ToolBar v-on:editMode="editMode()" />
-    <Viewer />
+    <ClientSet />
+    <ToolBar v-if="clientset" v-on:editMode="editMode()" />
     <Editor v-if="editing" v-on:closeEdit="closeEdit()" />
+    <YourData v-if="clientset" />
+    <AllData v-if="clientset" />
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import Viewer from '@/components/Viewer.vue'
+import ClientSet from '@/components/ClientSet.vue'
+import YourData from '@/components/YourData.vue'
+import AllData from '@/components/AllData.vue'
 import ToolBar from '@/components/ToolBar.vue'
 import Editor from '@/components/Editor.vue'
 
@@ -16,12 +20,15 @@ export default {
   name: 'home',
   data: function() {
     return {
-      editing: false
+      editing: false,
+      clientset: true
     }
   },
   components: {
+    ClientSet,
     ToolBar,
-    Viewer,
+    YourData,
+    AllData,
     Editor
   },
   methods: {
