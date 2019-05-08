@@ -24,9 +24,6 @@ export default {
       this.$store.dispatch('noteId', this.activeNote.id)
       //console.log(this.activeNote.id)
     },
-    // noteId(e) {
-    //   this.$store.dispatch('noteId', e)
-    // },
     closeEdit() {
       //console.log('emitclose')
       this.$emit('closeEdit')

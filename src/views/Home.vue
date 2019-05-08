@@ -1,10 +1,11 @@
 <template>
   <div class="home">
-    <ClientSet />
-    <ToolBar v-if="clientset" v-on:editMode="editMode()" />
+    <h1>nodenoggin</h1>
     <Editor v-if="editing" v-on:closeEdit="closeEdit()" />
+    <ToolBar v-else-if="clientset" v-on:editMode="editMode()" />
     <YourData v-if="clientset" />
     <AllData v-if="clientset" />
+    <ClientSet v-else v-on:clientAdded="clientAdded()" />
   </div>
 </template>
 
@@ -21,7 +22,7 @@ export default {
   data: function() {
     return {
       editing: false,
-      clientset: true
+      clientset: false
     }
   },
   components: {
@@ -32,6 +33,10 @@ export default {
     Editor
   },
   methods: {
+    clientAdded() {
+      //console.log('added!')
+      this.clientset = !this.clientset
+    },
     editMode() {
       this.editing = !this.editing
     },

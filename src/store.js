@@ -6,16 +6,22 @@ Vue.use(Vuex)
 var pouchdb = new PouchDB('couchdocs')
 var remote = 'https://nn.adamprocter.co.uk/couchdocs'
 // this is set by a "login"
-var myclient = 'mydoc'
+//var myclient = 'mydoc'
 var localid = null
 
 const store = new Vuex.Store({
   state: {
+    myclient: '',
     notes: [],
     otherclients: {},
     activeNote: {}
   },
   mutations: {
+    SET_CLIENT(state, doc) {
+      state.myclient = doc
+      console.log(state.myclient)
+      store.commit('GET_MY_DOC')
+    },
     GET_ALL_DOCS(state) {
       pouchdb
         .allDocs({
@@ -36,7 +42,7 @@ const store = new Vuex.Store({
 
     GET_MY_DOC(state) {
       pouchdb
-        .get(myclient)
+        .get(state.myclient)
         .then(function(doc) {
           state.notes = doc.notes
           //  console.log(state.notes)
@@ -53,11 +59,11 @@ const store = new Vuex.Store({
                 .toString(36)
                 .substring(2, 15)
             return pouchdb.put({
-              _id: myclient,
+              _id: state.myclient,
               notes: [
                 {
                   id: uniqueid,
-                  text: 'Welcome device ' + myclient,
+                  text: 'Welcome device ' + state.myclient,
                   // name from form as well
                   owner: 'Your Name',
                   deleted: false
@@ -67,7 +73,7 @@ const store = new Vuex.Store({
           }
         })
     },
-    ADD_DOC() {
+    ADD_DOC(state) {
       var uniqueid =
         Math.random()
           .toString(36)
@@ -77,7 +83,7 @@ const store = new Vuex.Store({
           .substring(2, 15)
       localid = uniqueid
       pouchdb
-        .get(myclient)
+        .get(state.myclient)
         .then(function(doc) {
           // save current store
           var currentstore = store.state.notes
@@ -90,7 +96,7 @@ const store = new Vuex.Store({
           })
           // put the store into pouchdb
           return pouchdb.put({
-            _id: myclient,
+            _id: state.myclient,
             _rev: doc._rev,
             notes: currentstore
           })
@@ -130,13 +136,13 @@ const store = new Vuex.Store({
         }
       }
       pouchdb
-        .get(myclient)
+        .get(state.myclient)
         .then(function(doc) {
           // save current store
           var currentstore = store.state.notes
           // put the store into pouchdb
           return pouchdb.put({
-            _id: myclient,
+            _id: state.myclient,
             _rev: doc._rev,
             notes: currentstore
           })
@@ -157,7 +163,6 @@ const store = new Vuex.Store({
   actions: {
     syncDB: () => {
       pouchdb.replicate.from(remote).on('complete', function() {
-        store.commit('GET_MY_DOC')
         store.commit('GET_ALL_DOCS')
         // turn on two-way, continuous, retriable sync
         pouchdb
@@ -166,7 +171,7 @@ const store = new Vuex.Store({
             // handle change
             //console.log('change')
             store.commit('GET_MY_DOC')
-            // store.commit('GET_ALL_DOCS')
+            store.commit('GET_ALL_DOCS')
           })
           .on('paused', function() {
             // replication paused (e.g. replication up to date, user went offline)
@@ -189,6 +194,7 @@ const store = new Vuex.Store({
           })
       })
     },
+
     addDoc: ({ commit }) => {
       commit('ADD_DOC')
     },
@@ -197,6 +203,9 @@ const store = new Vuex.Store({
     },
     editNote: ({ commit }, e) => {
       commit('EDIT_NOTE', e.target.value)
+    },
+    setClient: ({ commit }, e) => {
+      commit('SET_CLIENT', e)
     }
   }
 })

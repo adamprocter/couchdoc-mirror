@@ -1,6 +1,5 @@
 <template>
   <div>
-    <h1>nodenoggin</h1>
     <p>Hello, we dont recognise this device.</p>
     <p>
       Please name this device
@@ -9,17 +8,31 @@
     </p>
     <form>
       Device name:
-      <input type="text" name="clientid" value="myMacOS" />
+      <input type="text" v-model="clientid" placeholder="myMacOS" />
       A name:
-      <input type="text" name="name" value="Dave Smith" />
-
-      <input type="submit" value="Lets Go!" />
+      <input type="text" v-model="name" name="name" placeholder="Dave Smith" />
+      {{ clientid }}
+      <button @click="setClient()">Lets Go!!</button>
     </form>
   </div>
 </template>
 
 <script>
-export default {}
+// check for JWT if so use this token value to trigger setClient()
+export default {
+  data: function() {
+    return {
+      clientid: '',
+      name: ''
+    }
+  },
+  methods: {
+    setClient(e) {
+      this.$store.dispatch('setClient', this.clientid),
+        this.$emit('clientAdded')
+    }
+  }
+}
 </script>
 
 <style lang="css" scoped></style>
