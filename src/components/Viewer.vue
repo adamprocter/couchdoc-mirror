@@ -4,10 +4,9 @@
       <li v-for="(note, index) in notes" v-bind:key="index">{{ note.text }}</li>
     </ul>
     <ul>
-      <li v-for="(value, index) in otherclients" v-bind:key="index">
-        <!-- this is an array of objects and I want text out from all  -->
-        DATA = {{ value.doc.notes }}
-      </li>
+      <template v-for="(value, index) in otherclients">
+        <li v-for="(note, note_index) in value.doc.notes">{{ note.text }}</li>
+      </template>
     </ul>
   </div>
 </template>
