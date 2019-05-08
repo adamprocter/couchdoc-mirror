@@ -11,14 +11,12 @@
       <input type="text" v-model="clientid" placeholder="myMacOS" />
       A name:
       <input type="text" v-model="name" name="name" placeholder="Dave Smith" />
-      {{ clientid }}
       <button @click="setClient()">Lets Go!!</button>
     </form>
   </div>
 </template>
 
 <script>
-// check for JWT if so use this token value to trigger setClient()
 export default {
   data: function() {
     return {
@@ -26,10 +24,23 @@ export default {
       name: ''
     }
   },
+
+  mounted() {
+    if (localStorage.myNNClient) {
+      this.clientid = localStorage.myNNClient
+      this.setClient()
+    }
+  },
+
   methods: {
-    setClient(e) {
+    setClient() {
       this.$store.dispatch('setClient', this.clientid),
+        localStorage.setItem('myNNClient', this.clientid),
         this.$emit('clientAdded')
+    },
+    setClientReturn() {
+      //console.log('ss')
+      // this.$store.dispatch('setClient', e)
     }
   }
 }

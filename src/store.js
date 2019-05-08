@@ -167,7 +167,8 @@ const store = new Vuex.Store({
         // turn on two-way, continuous, retriable sync
         pouchdb
           .sync(remote, { live: true, retry: true })
-          .on('change', function(info) {
+          .on('change', function() {
+            // pop info into function to find out more
             // handle change
             //console.log('change')
             store.commit('GET_MY_DOC')
