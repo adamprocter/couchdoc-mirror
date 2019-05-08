@@ -9,8 +9,8 @@
       thinking tool, read more details and links in the about section.
     </p>
     <p>
-      You don't need a log in you do however need to name this device (once) and
-      press
+      You don't need a log in but you do however need to name this device (only
+      once) and then press
       <em>Lets Go!</em>
     </p>
 
@@ -42,12 +42,18 @@
       You will also see a list of other contributions added by other people.
     </p>
     <p>
-      This contributions will update in realtime when multiple people connnect
-      and even sync offline contributions once your device is back online.
+      This contributions will update in realtime from multiple people connnected
+      and contributions can be added offline and sync once your device is back
+      online.
     </p>
     <h3>Warning!!</h3>
-    <p>This is a very much work in progress, no data is considered safe.</p>
-    <p>There is little to no styling applied to the data.</p>
+    <p>
+      This is a very much a work in progress, no contribution is considered
+      safe.
+    </p>
+    <p>There will be glitches.</p>
+    <p>There is little to no styling applied to the contributions.</p>
+    <p>Please play and feedback</p>
     <h4>LAST UPDATE : 8th May 2019.</h4>
   </div>
 </template>
