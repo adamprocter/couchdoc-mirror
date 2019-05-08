@@ -16,7 +16,23 @@ const store = new Vuex.Store({
     activeNote: {}
   },
   mutations: {
-    GET_ALL_DOCS() {},
+    GET_ALL_DOCS(state) {
+      pouchdb
+        .allDocs({
+          include_docs: true
+        })
+        .then(function(doc) {
+          //console.log(doc)
+          //state.docs = doc.rows[0].doc
+          state.otherclients = doc.rows
+          console.log(doc.rows)
+        })
+        .catch(function(err) {
+          if (err.status == 404) {
+            // error if no data
+          }
+        })
+    },
 
     GET_MY_DOC(state) {
       pouchdb
@@ -26,7 +42,29 @@ const store = new Vuex.Store({
           //  console.log(state.notes)
         })
         .catch(function(err) {
-          console.log(err)
+          if (err.status == 404) {
+            // pouchdb.put({  })
+            console.log('newclient')
+            var uniqueid =
+              Math.random()
+                .toString(36)
+                .substring(2, 15) +
+              Math.random()
+                .toString(36)
+                .substring(2, 15)
+            return pouchdb.put({
+              _id: myclient,
+              notes: [
+                {
+                  id: uniqueid,
+                  text: 'Welcome device ' + myclient,
+                  // name from form as well
+                  owner: 'Your Name',
+                  deleted: false
+                }
+              ]
+            })
+          }
         })
     },
     ADD_DOC() {
@@ -120,6 +158,7 @@ const store = new Vuex.Store({
     syncDB: () => {
       pouchdb.replicate.from(remote).on('complete', function() {
         store.commit('GET_MY_DOC')
+        store.commit('GET_ALL_DOCS')
         // turn on two-way, continuous, retriable sync
         pouchdb
           .sync(remote, { live: true, retry: true })
@@ -127,6 +166,7 @@ const store = new Vuex.Store({
             // handle change
             //console.log('change')
             store.commit('GET_MY_DOC')
+            // store.commit('GET_ALL_DOCS')
           })
           .on('paused', function() {
             // replication paused (e.g. replication up to date, user went offline)
