@@ -90,7 +90,7 @@ const store = new Vuex.Store({
           // add new entry to the end
           currentstore.push({
             id: uniqueid,
-            text: 'New Entry',
+            text: 'EDIT ME',
             owner: 'YOU',
             deleted: false
           })

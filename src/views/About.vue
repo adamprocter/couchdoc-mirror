@@ -3,12 +3,25 @@
     <h1>About</h1>
     <p>
       Currently digital tools do a really poor job of extending the design
-      studio processes
+      studio design thinking processes.
     </p>
     <p>
-      This tool is design to support a collobrative, spatial, messy space to
-      work together connecting ideas and concepts
+      This tool is designed to support a collobrative, spatial and messy space
+      to work together connecting ideas and concepts.
     </p>
+    <p>
+      Made by Adam Procter
+      <em>(and lots of helpers to be listed asap)</em>
+    </p>
+
+    <h3>version 0.0.1</h3>
+    <ul>
+      <li>create lists together with other people in realtime</li>
+    </ul>
+    <h4>issues</h4>
+    <ul>
+      <li>No layout or style.</li>
+    </ul>
     <h2>Design-led ethical Edutech</h2>
     <h3>MORE:</h3>
     <ul>

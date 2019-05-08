@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Your Data</h2>
+    <h2>This is your contributions</h2>
     <ul>
       <li v-for="(note, index) in notes" v-bind:key="index">{{ note.text }}</li>
     </ul>

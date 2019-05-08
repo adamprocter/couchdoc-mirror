@@ -1,14 +1,11 @@
 <template>
   <div class="editor">
     <form id="editForm">
-      <h2>Edit</h2>
+      <h2>Edit item</h2>
+
+      <textarea v-model="activeNote.text" @input="editNote" class="form-control"></textarea>
+      <input v-bind:value="activeNote.id" name="id" readonly hidden>
       <button @click="closeEdit()">Close</button>
-      <textarea
-        v-model="activeNote.text"
-        @input="editNote"
-        class="form-control"
-      ></textarea>
-      <input v-bind:value="activeNote.id" name="id" readonly />
     </form>
   </div>
 </template>

@@ -1,5 +1,7 @@
 <template>
   <div class="toolbar">
+    <h2>Create</h2>
+    <p>Press create to add and then edit a contribution.</p>
     <button
       @click="
         addDoc()

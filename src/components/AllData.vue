@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>All Data</h2>
+    <h2>This is all contributions (in realtime)</h2>
     <ul v-for="(value, index) in otherclients" v-bind:key="index">
       <li v-for="(note, index) in value.doc.notes" v-bind:key="index">
         {{ note.text }}
