@@ -5,18 +5,22 @@ import PouchDB from 'pouchdb'
 Vue.use(Vuex)
 var pouchdb = new PouchDB('couchdocs')
 var remote = 'https://nn.adamprocter.co.uk/couchdocs'
-var mydoc = 'mydoc'
+// this is set by a "login"
+var myclient = 'mydoc_macos'
 var localid = null
 
 const store = new Vuex.Store({
   state: {
     notes: [],
+    otherclients: {},
     activeNote: {}
   },
   mutations: {
-    GET_DB(state) {
+    GET_ALL_DOCS() {},
+
+    GET_MY_DOC(state) {
       pouchdb
-        .get(mydoc)
+        .get(myclient)
         .then(function(doc) {
           state.notes = doc.notes
           //  console.log(state.notes)
@@ -35,7 +39,7 @@ const store = new Vuex.Store({
           .substring(2, 15)
       localid = uniqueid
       pouchdb
-        .get(mydoc)
+        .get(myclient)
         .then(function(doc) {
           // save current store
           var currentstore = store.state.notes
@@ -48,7 +52,7 @@ const store = new Vuex.Store({
           })
           // put the store into pouchdb
           return pouchdb.put({
-            _id: mydoc,
+            _id: myclient,
             _rev: doc._rev,
             notes: currentstore
           })
@@ -88,13 +92,13 @@ const store = new Vuex.Store({
         }
       }
       pouchdb
-        .get(mydoc)
+        .get(myclient)
         .then(function(doc) {
           // save current store
           var currentstore = store.state.notes
           // put the store into pouchdb
           return pouchdb.put({
-            _id: mydoc,
+            _id: myclient,
             _rev: doc._rev,
             notes: currentstore
           })
@@ -115,14 +119,14 @@ const store = new Vuex.Store({
   actions: {
     syncDB: () => {
       pouchdb.replicate.from(remote).on('complete', function() {
-        store.commit('GET_DB')
+        store.commit('GET_MY_DOC')
         // turn on two-way, continuous, retriable sync
         pouchdb
           .sync(remote, { live: true, retry: true })
           .on('change', function(info) {
             // handle change
             //console.log('change')
-            store.commit('GET_DB')
+            store.commit('GET_MY_DOC')
           })
           .on('paused', function() {
             // replication paused (e.g. replication up to date, user went offline)
