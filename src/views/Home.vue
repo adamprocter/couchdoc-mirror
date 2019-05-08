@@ -1,11 +1,11 @@
 <template>
   <div class="home">
     <h1>nodenoggin</h1>
-    <Editor v-if="editing" v-on:closeEdit="closeEdit()" />
-    <ToolBar v-else-if="clientset" v-on:editMode="editMode()" />
-    <YourData v-if="clientset" />
-    <AllData v-if="clientset" />
-    <ClientSet v-else v-on:clientAdded="clientAdded()" />
+    <Editor v-if="editing" v-on:closeEdit="closeEdit()"/>
+    <ToolBar v-else-if="clientset" v-on:editMode="editMode()"/>
+    <YourData v-if="clientset"/>
+    <AllData v-if="clientset"/>
+    <ClientSet v-else v-on:clientAdded="clientAdded()"/>
   </div>
 </template>
 
