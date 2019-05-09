@@ -22,11 +22,15 @@
     </p>
     <form>
       Device name:
-      <input type="text" v-model="clientid" placeholder="myDeviceName">
-      <br>Your name:
-      <input type="text" v-model="name" name="name" placeholder="Fiona Applegate">
-      <br>-->
-      <button @click="setClient()">Lets Go!!</button> <--
+      <input type="text" v-model="clientid" placeholder="myDeviceName" />
+      <br />Your name:
+      <input
+        type="text"
+        v-model="name"
+        name="name"
+        placeholder="Fiona Applegate"
+      />
+      <br />--> <button @click="setClient()">Lets Go!!</button> <--
     </form>
 
     <h3>Say what?</h3>
@@ -35,20 +39,27 @@
       <em>Lets Go!</em>, you will be able to add a contribution by pressing
       <em>Create</em>.
     </p>
-    <p>You will also see a list of other contributions added by other people.</p>
+    <p>
+      You will also see a list of other contributions added by other people.
+    </p>
     <p>
       This contributions will update in realtime from multiple people connnected
       and contributions can be added offline and sync once your device is back
       online.
     </p>
     <h3>Warning!!</h3>
-    <p>
-      This is a very much a work in progress, no contribution is considered
-      safe.
-    </p>
-    <p>There will be glitches.</p>
-    <p>There is little to no styling applied to the contributions.</p>
-    <p>Please play and feedback</p>
+    <ul>
+      <li>
+        This is a very much a work in progress, no contribution is considered
+        safe.
+      </li>
+      <li>There will be glitches.</li>
+      <li>There is little to no styling applied to the contributions.</li>
+      <li>
+        Please play and
+        <a href="http://discourse.adamprocter.co.uk">feedback</a>.
+      </li>
+    </ul>
   </div>
 </template>
 

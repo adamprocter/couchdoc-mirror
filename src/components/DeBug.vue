@@ -2,7 +2,7 @@
   <div class="debug">
     <h2>Debug Options</h2>
     <h4>LAST UPDATE : 9th May 2019.</h4>
-    <p>You need to know these buttons destory stuff</p>
+    <p>You need to know these buttons destroy stuff.</p>
     <button v-on:click="removeLocal">Just delete Local Storage</button>
     <button v-on:click="deleteClient">Delete my Contributions</button>
   </div>
