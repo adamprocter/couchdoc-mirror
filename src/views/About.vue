@@ -14,10 +14,11 @@
       <em>(and lots of helpers to be listed asap)</em>
     </p>
 
-    <h3>version 0.0.1</h3>
+    <h3>version 0.0.2</h3>
     <ul>
       <li>create lists together with other people in realtime</li>
-      <li>data destroyed regularly</li>
+      <li>added basic debug options</li>
+      <li>remote data is destroyed regularly</li>
     </ul>
     <h4>issues</h4>
     <ul>

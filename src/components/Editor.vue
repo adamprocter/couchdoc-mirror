@@ -3,8 +3,12 @@
     <form id="editForm">
       <h2>Edit item</h2>
 
-      <textarea v-model="activeNote.text" @input="editNote" class="form-control"></textarea>
-      <input v-bind:value="activeNote.id" name="id" readonly hidden>
+      <textarea
+        v-model="activeNote.text"
+        @input="editNote"
+        class="form-control"
+      ></textarea>
+      <input v-bind:value="activeNote.id" name="id" readonly hidden />
       <button @click="closeEdit()">Close</button>
     </form>
   </div>

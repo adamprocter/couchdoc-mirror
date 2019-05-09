@@ -11,6 +11,7 @@ var localid = null
 
 const store = new Vuex.Store({
   state: {
+    instance: '',
     myclient: '',
     notes: [],
     otherclients: {},
@@ -19,7 +20,7 @@ const store = new Vuex.Store({
   mutations: {
     SET_CLIENT(state, doc) {
       state.myclient = doc
-      console.log(state.myclient)
+      //console.log(state.myclient)
       store.commit('GET_MY_DOC')
     },
     GET_ALL_DOCS(state) {
@@ -31,7 +32,9 @@ const store = new Vuex.Store({
           //console.log(doc)
           //state.docs = doc.rows[0].doc
           state.otherclients = doc.rows
-          console.log(doc.rows)
+          // console.log(doc.rows)
+          console.log(pouchdb.name)
+          state.instance = pouchdb.name
         })
         .catch(function(err) {
           if (err.status == 404) {
@@ -170,6 +173,8 @@ const store = new Vuex.Store({
         })
         .then(function(result) {
           // handle result
+          localStorage.removeItem('myNNClient')
+          location.reload()
         })
         .catch(function(err) {
           console.log(err)

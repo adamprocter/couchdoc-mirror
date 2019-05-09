@@ -1,9 +1,10 @@
 <template>
   <div>
     <h2>
-      Welcome! You are connected to
-      <em>couchdocs instance</em>
+      Welcome! You are connected to the instance
+      <em>{{ instance }}</em>
     </h2>
+    <!-- <button>Create new instance</button> -->
     <p>
       nodenoggin is a work in progress collaborative research and design
       thinking tool, read more details and links in the about section.
@@ -21,15 +22,11 @@
     </p>
     <form>
       Device name:
-      <input type="text" v-model="clientid" placeholder="myDeviceName" />
-      <br />Your name:
-      <input
-        type="text"
-        v-model="name"
-        name="name"
-        placeholder="Fiona Applegate"
-      />
-      <br />--> <button @click="setClient()">Lets Go!!</button> <--
+      <input type="text" v-model="clientid" placeholder="myDeviceName">
+      <br>Your name:
+      <input type="text" v-model="name" name="name" placeholder="Fiona Applegate">
+      <br>-->
+      <button @click="setClient()">Lets Go!!</button> <--
     </form>
 
     <h3>Say what?</h3>
@@ -38,9 +35,7 @@
       <em>Lets Go!</em>, you will be able to add a contribution by pressing
       <em>Create</em>.
     </p>
-    <p>
-      You will also see a list of other contributions added by other people.
-    </p>
+    <p>You will also see a list of other contributions added by other people.</p>
     <p>
       This contributions will update in realtime from multiple people connnected
       and contributions can be added offline and sync once your device is back
@@ -54,11 +49,12 @@
     <p>There will be glitches.</p>
     <p>There is little to no styling applied to the contributions.</p>
     <p>Please play and feedback</p>
-    <h4>LAST UPDATE : 8th May 2019.</h4>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 export default {
   data: function() {
     return {
@@ -80,7 +76,10 @@ export default {
         localStorage.setItem('myNNClient', this.clientid),
         this.$emit('clientAdded')
     }
-  }
+  },
+  computed: mapState({
+    instance: state => state.instance
+  })
 }
 </script>
 

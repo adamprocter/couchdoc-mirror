@@ -8,4 +8,6 @@
   </div>
 </template>
 
-<style></style>
+<style src="./assets/css/normalize.min.css"></style>
+
+<style src="./assets/css/main.css"></style>
