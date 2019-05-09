@@ -1,5 +1,6 @@
 <template>
   <div class="debug">
+    <hr />
     <h2>Debug Options</h2>
     <h4>LAST UPDATE : 9th May 2019.</h4>
     <p>You need to know these buttons destroy stuff.</p>

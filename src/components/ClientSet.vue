@@ -6,8 +6,9 @@
     </h2>
     <!-- <button>Create new instance</button> -->
     <p>
-      nodenoggin is a work in progress collaborative research and design
-      thinking tool, read more details and links in the about section.
+      nodenoggin is a
+      <span>work in progress</span> collaborative research and design thinking
+      tool, read more details and links in the about section.
     </p>
     <p>
       You don't need a log in but you do however need to name this device (only
@@ -47,12 +48,16 @@
       and contributions can be added offline and sync once your device is back
       online.
     </p>
-    <h3>Warning!!</h3>
+    <hr />
+    <h2>
+      <span>Warning!!</span>
+    </h2>
     <ul>
       <li>
-        This is a very much a work in progress, no contribution is considered
-        safe.
+        This is a very much a
+        <span>work in progress</span>
       </li>
+      <li>No contribution is considered safe.</li>
       <li>There will be glitches.</li>
       <li>There is little to no styling applied to the contributions.</li>
       <li>

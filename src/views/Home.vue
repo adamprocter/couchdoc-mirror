@@ -1,6 +1,10 @@
 <template>
   <div class="home">
-    <h1>nodenoggin</h1>
+    <h1>
+      <img src="../assets/img/icon.png" width="50px" />
+      nodenoggin
+    </h1>
+
     <Editor v-if="editing" v-on:closeEdit="closeEdit()" />
     <ToolBar v-else-if="clientset" v-on:editMode="editMode()" />
     <YourData v-if="clientset" />
