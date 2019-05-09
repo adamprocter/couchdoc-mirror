@@ -158,6 +158,22 @@ const store = new Vuex.Store({
             // pouchdb.put({  })
           }
         })
+    },
+    DELETE_CLIENT(state) {
+      console.log('delete')
+      pouchdb
+        .get(state.myclient)
+        .then(function(doc) {
+          console.log(doc)
+          return pouchdb.remove(doc._id, doc._rev)
+          //return pouchdb.remove(doc)
+        })
+        .then(function(result) {
+          // handle result
+        })
+        .catch(function(err) {
+          console.log(err)
+        })
     }
   },
   actions: {
@@ -207,6 +223,9 @@ const store = new Vuex.Store({
     },
     setClient: ({ commit }, e) => {
       commit('SET_CLIENT', e)
+    },
+    deleteClient: ({ commit }, e) => {
+      commit('DELETE_CLIENT', e)
     }
   }
 })
