@@ -44,20 +44,16 @@
       You will also see a list of other contributions added by other people.
     </p>
     <p>
-      This contributions will update in realtime from multiple people connnected
-      and contributions can be added offline and sync once your device is back
-      online.
+      These contributions will update in realtime from the people connnected and
+      contributions can be added offline and will sync once your back online.
     </p>
     <hr />
     <h2>
       <span>Warning!!</span>
     </h2>
     <ul>
-      <li>
-        This is a very much a
-        <span>work in progress</span>
-      </li>
-      <li>No contribution is considered safe.</li>
+      <li>This is a very much a work in progress</li>
+      <li>No contribution should be considered safe.</li>
       <li>There will be glitches.</li>
       <li>There is little to no styling applied to the contributions.</li>
       <li>
