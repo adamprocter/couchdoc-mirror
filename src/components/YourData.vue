@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>These are your contributions</h2>
-    <ul>
+    <ul class="data">
       <li v-for="(note, index) in notes" v-bind:key="index">{{ note.text }}</li>
     </ul>
   </div>

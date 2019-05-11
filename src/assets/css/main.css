@@ -158,9 +158,15 @@ body {
   line-height: 22px;
   padding: 1em;
   background-color: gainsboro;
-  max-width: 600px;
 }
 
+#app {
+  max-width: 600px;
+  /* display: grid;
+  grid-template-columns: 300px, 300px;
+  justify-content: center;
+  grid-gap: 1rem; */
+}
 h1,
 h2,
 h3,
@@ -237,6 +243,18 @@ ul {
 
 li:before {
   content: '\02733';
+}
+
+.data li:first-child {
+  background-color: rgb(255, 251, 0);
+}
+
+ul {
+  padding: 0;
+}
+
+.data li:before {
+  content: '';
 }
 
 /* ==========================================================================
