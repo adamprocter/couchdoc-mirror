@@ -14,11 +14,11 @@
       <em>(and lots of helpers to be listed asap)</em>
     </p>
 
-    <h3>version 0.0.2</h3>
+    <h3>version 0.0.3</h3>
     <ul>
-      <li>create lists together with other people in realtime</li>
-      <li>added basic debug options</li>
-      <li>remote data is destroyed regularly</li>
+      <li>create lists and upload attachments with other people in realtime</li>
+      <li>refactored pouchDB updating</li>
+      <li>attachments are currently not visible</li>
     </ul>
     <h4>issues</h4>
     <ul>
