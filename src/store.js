@@ -82,7 +82,7 @@ const store = new Vuex.Store({
               notes: [
                 {
                   id: uniqueid,
-                  text: 'Device' + state.myclient,
+                  text: 'Device ' + state.myclient,
                   // get name from form as well (look at e thing!)
                   owner: 'Your Name',
                   deleted: false
