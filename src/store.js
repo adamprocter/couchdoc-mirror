@@ -5,8 +5,6 @@ import PouchDB from 'pouchdb'
 Vue.use(Vuex)
 var pouchdb = new PouchDB('couchdocs')
 var remote = 'https://nn.adamprocter.co.uk/couchdocs'
-// this is set by a "login"
-//var myclient = 'mydoc'
 var localid = null
 
 const store = new Vuex.Store({
@@ -15,7 +13,9 @@ const store = new Vuex.Store({
     myclient: '',
     notes: [],
     otherclients: {},
-    activeNote: {}
+    activeNote: {},
+    myattachments: {},
+    otherattachments: {}
   },
   mutations: {
     SET_CLIENT(state, doc) {
@@ -26,15 +26,12 @@ const store = new Vuex.Store({
     GET_ALL_DOCS(state) {
       pouchdb
         .allDocs({
-          include_docs: true
+          include_docs: true,
+          attachments: true
         })
         .then(function(doc) {
-          //console.log(doc)
-          //state.docs = doc.rows[0].doc
-          state.otherclients = doc.rows
-          // console.log(doc.rows)
-          console.log(pouchdb.name)
           state.instance = pouchdb.name
+          state.otherclients = doc.rows
         })
         .catch(function(err) {
           if (err.status == 404) {
@@ -44,16 +41,34 @@ const store = new Vuex.Store({
     },
 
     GET_MY_DOC(state) {
+      // keep in for quick debug of attachments
+      // pouchdb.get(state.myclient, { attachments: true }).then(function(doc) {
+      //   console.log(doc._attachments)
+      //   // state.myattachments = doc._attachments
+      //   // console.log(state.myattachments)
+      // })
+
+      //       pouchdb.getAttachment('meowth', 'meowth.png');
+      // }).then(function (blob) {
+      //   // put into store
+      //   var url = URL.createObjectURL(blob);
+      //   var img = document.createElement('img');
+      //   img.src = url;
+      //   document.body.appendChild(img);
+      // }).catch(function (err) {
+      //   console.log(err);
+      // });
+
       pouchdb
-        .get(state.myclient)
+        .get(state.myclient, { attachments: true })
         .then(function(doc) {
           state.notes = doc.notes
-          //  console.log(state.notes)
+          //state.myattachments = doc._attachments
+          //          console.log(doc._attachments)
+          //console.log(state.myattachments)
         })
         .catch(function(err) {
           if (err.status == 404) {
-            // pouchdb.put({  })
-            console.log('newclient')
             var uniqueid =
               Math.random()
                 .toString(36)
@@ -63,11 +78,12 @@ const store = new Vuex.Store({
                 .substring(2, 15)
             return pouchdb.put({
               _id: state.myclient,
+              _attachments: {},
               notes: [
                 {
                   id: uniqueid,
                   text: 'Device' + state.myclient,
-                  // name from form as well
+                  // get name from form as well (look at e thing!)
                   owner: 'Your Name',
                   deleted: false
                 }
@@ -86,36 +102,36 @@ const store = new Vuex.Store({
           .substring(2, 15)
       localid = uniqueid
       pouchdb
-        .get(state.myclient)
+        .get(state.myclient, { attachments: true })
         .then(function(doc) {
-          // save current store
-          var currentstore = store.state.notes
-          // add new entry to the end
-          currentstore.push({
+          // pop new note onto the end of the doc
+          doc.notes.push({
             id: uniqueid,
             text: 'EDIT ME',
             owner: 'YOU',
             deleted: false
           })
+
           // put the store into pouchdb
-          return pouchdb.put({
-            _id: state.myclient,
-            _rev: doc._rev,
-            notes: currentstore
-          })
-        })
-        .then(function(response) {
-          // handle response
-          if (response.ok == true) {
-            //take the last text from DB and set as activeNote text ready for editor
-            var end = Object.keys(store.state.notes).length - 1
-            //console.log(store.state.notes[end].text)
-            const newNote = {
-              text: store.state.notes[end].text,
-              id: store.state.notes[end].id
+          return pouchdb.bulkDocs([
+            {
+              _id: state.myclient,
+              _rev: doc._rev,
+              _attachments: doc._attachments,
+              notes: doc.notes
             }
-            store.state.activeNote = newNote
-          }
+          ])
+        })
+        .then(function() {
+          return pouchdb.get(state.myclient).then(function(doc) {
+            state.notes = doc.notes
+            var end = Object.keys(state.notes).length - 1
+            const newNote = {
+              text: state.notes[end].text,
+              id: state.notes[end].id
+            }
+            state.activeNote = newNote
+          })
         })
         .catch(function(err) {
           if (err.status == 404) {
@@ -125,35 +141,60 @@ const store = new Vuex.Store({
     },
     NOTE_ID(state, id) {
       localid = id
-      //console.log(localid)
     },
     EDIT_NOTE(state, text) {
-      //store.state.activeNote.text = text
       var i
-      for (i = 0; i < Object.keys(store.state.notes).length; i++) {
-        //console.log(store.state.notes[i].id)
-        if (localid == store.state.notes[i].id) {
-          console.log('match')
-          console.log(store.state.notes[i].id)
-          store.state.notes[i].text = text
+      for (i = 0; i < Object.keys(state.notes).length; i++) {
+        if (localid == state.notes[i].id) {
+          // console.log('match')
+          // console.log(state.notes[i].id)
+          state.notes[i].text = text
         }
       }
+
+      pouchdb
+        .get(state.myclient, { attachments: true })
+        .then(function(doc) {
+          //console.log(doc)
+          // put the store into pouchdb
+          return pouchdb.bulkDocs([
+            {
+              _id: state.myclient,
+              _rev: doc._rev,
+              _attachments: doc._attachments,
+              notes: state.notes
+            }
+          ])
+        })
+        .then(function() {
+          return pouchdb.get(state.myclient).then(function(doc) {
+            state.notes = doc.notes
+            // console.log(state.notes)
+          })
+        })
+        .catch(function(err) {
+          if (err.status == 404) {
+            // pouchdb.put({  })
+          }
+        })
+    },
+
+    ADD_FILE(state, files) {
       pouchdb
         .get(state.myclient)
         .then(function(doc) {
-          // save current store
-          var currentstore = store.state.notes
-          // put the store into pouchdb
-          return pouchdb.put({
-            _id: state.myclient,
-            _rev: doc._rev,
-            notes: currentstore
-          })
+          return pouchdb.putAttachment(
+            state.myclient,
+            files.name,
+            doc._rev,
+            files,
+            files.type
+          )
         })
         .then(function(response) {
           // handle response
           if (response.ok == true) {
-            // do something if you like
+            // not empty line
           }
         })
         .catch(function(err) {
@@ -187,7 +228,7 @@ const store = new Vuex.Store({
         store.commit('GET_ALL_DOCS')
         // turn on two-way, continuous, retriable sync
         pouchdb
-          .sync(remote, { live: true, retry: true })
+          .sync(remote, { live: true, retry: true, attachments: true })
           .on('change', function() {
             // pop info into function to find out more
             // handle change
@@ -197,12 +238,12 @@ const store = new Vuex.Store({
           })
           .on('paused', function() {
             // replication paused (e.g. replication up to date, user went offline)
-            console.log('replication paused')
+            // console.log('replication paused')
             // store.dispatch("get_data");
           })
           .on('active', function() {
             // replicate resumed (e.g. new changes replicating, user went back online)
-            console.log('back active')
+            //console.log('back active')
           })
           .on('denied', function() {
             // a document failed to replicate (e.g. due to permissions)
@@ -231,6 +272,9 @@ const store = new Vuex.Store({
     },
     deleteClient: ({ commit }, e) => {
       commit('DELETE_CLIENT', e)
+    },
+    addFile: ({ commit }, e) => {
+      commit('ADD_FILE', e)
     }
   }
 })
