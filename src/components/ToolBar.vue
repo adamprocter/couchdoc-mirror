@@ -10,18 +10,36 @@
     >
       Create
     </button>
+
+    <form>
+      <input type="file" @change="addFile" ref="myFiles" />
+    </form>
   </div>
 </template>
 
 <script>
+//var input = document.querySelector('#inputFile')
+//input.addEventListener('change', function() {
+//var file = input.files[0] // file is a blob
+//console.log('yo')
+//})
 export default {
+  data() {
+    return {
+      files: []
+    }
+  },
   methods: {
     addDoc() {
       this.$store.dispatch('addDoc')
     },
     editMode() {
-      // call the method here
       this.$emit('editMode')
+    },
+    addFile() {
+      this.files = this.$refs.myFiles.files
+      // console.log(this.files)
+      this.$store.dispatch('addFile', this.files[0])
     }
   }
 }
