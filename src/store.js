@@ -16,8 +16,8 @@ const store = new Vuex.Store({
     activeNote: {},
     // ARRAY?? store names and matched URLsrc
     //example: [{ name: '', urlsrc: '' }]
-    myattachments: { urlsrc: '' },
-    myattachementnames: [],
+    myattachments: [],
+    myattachmentnames: [],
     otherattachments: {}
   },
   mutations: {
@@ -54,21 +54,26 @@ const store = new Vuex.Store({
           ) {
             filename = key
           }
-          state.myattachementnames.push({
+          state.myattachmentnames.push({
             name: filename
           })
         }
 
         var i
         for (i = 0; i < Object.keys(doc._attachments).length; i++) {
-          state.myattachementnames[i].name
+          state.myattachmentnames[i].name
+          //console.log(state.myattachmentnames[i].name)
+          // console.log(state.myattachments)
           pouchdb
-            .getAttachment(state.myclient, state.myattachementnames[i].name)
+            .getAttachment(state.myclient, state.myattachmentnames[i].name)
             .then(function(blob) {
-              // put img URL into store se to render
+              // put img URL into store to render
               var url = URL.createObjectURL(blob)
-              state.myattachments.urlsrc = url
-              console.log(state.myattachments.urlsrc)
+              //state.myattachments = url
+              state.myattachments.push({
+                url: url
+              })
+              console.log(state.myattachments)
             })
             .catch(function(err) {
               console.log(err)
