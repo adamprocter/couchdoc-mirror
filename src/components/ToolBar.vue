@@ -1,28 +1,20 @@
 <template>
   <div class="toolbar">
-    <h2>Create</h2>
-    <p>Press create to add and then edit a contribution.</p>
-    <button
-      @click="
+    <h2>Create / Attach</h2>
+    <p>Press Create to add and edit a contribution.</p>
+    <p>Press Browse/Choose to attach an image</p>
+    <button @click="
         addDoc()
         editMode()
-      "
-    >
-      Create
-    </button>
+      ">Create</button>
 
     <form>
-      <input type="file" @change="addFile" ref="myFiles" />
+      <input type="file" @change="addFile" ref="myFiles">
     </form>
   </div>
 </template>
 
 <script>
-//var input = document.querySelector('#inputFile')
-//input.addEventListener('change', function() {
-//var file = input.files[0] // file is a blob
-//console.log('yo')
-//})
 export default {
   data() {
     return {

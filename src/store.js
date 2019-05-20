@@ -4,7 +4,7 @@ import PouchDB from 'pouchdb'
 
 Vue.use(Vuex)
 var pouchdb = new PouchDB('couchdocs')
-var remote = 'https://nn.adamprocter.co.uk/couchdocs'
+var remote = 'https://nn.adamprocter.co.uk/couchdocs/'
 var localid = null
 
 const store = new Vuex.Store({
@@ -14,7 +14,10 @@ const store = new Vuex.Store({
     notes: [],
     otherclients: {},
     activeNote: {},
-    myattachments: {},
+    // ARRAY?? store names and matched URLsrc
+    //example: [{ name: '', urlsrc: '' }]
+    myattachments: [],
+    myattachmentnames: [],
     otherattachments: {}
   },
   mutations: {
@@ -40,6 +43,45 @@ const store = new Vuex.Store({
         })
     },
 
+    GET_MY_ATTACHMENTS(state) {
+      pouchdb.get(state.myclient, { attachments: true }).then(function(doc) {
+        // do not understand this for loop
+        var filename
+        for (var key in doc._attachments) {
+          if (
+            doc._attachments.hasOwnProperty(key) &&
+            typeof key !== 'function'
+          ) {
+            filename = key
+          }
+          state.myattachmentnames.push({
+            name: filename
+          })
+        }
+
+        var i
+        for (i = 0; i < Object.keys(doc._attachments).length; i++) {
+          state.myattachmentnames[i].name
+          //console.log(state.myattachmentnames[i].name)
+          // console.log(state.myattachments)
+          pouchdb
+            .getAttachment(state.myclient, state.myattachmentnames[i].name)
+            .then(function(blob) {
+              // put img URL into store to render
+              var url = URL.createObjectURL(blob)
+              //state.myattachments = url
+              state.myattachments.push({
+                url: url
+              })
+              // console.log(state.myattachments)
+            })
+            .catch(function(err) {
+              console.log(err)
+            })
+        }
+      })
+    },
+
     GET_MY_DOC(state) {
       // keep in for quick debug of attachments
       // pouchdb.get(state.myclient, { attachments: true }).then(function(doc) {
@@ -47,17 +89,6 @@ const store = new Vuex.Store({
       //   // state.myattachments = doc._attachments
       //   // console.log(state.myattachments)
       // })
-
-      //       pouchdb.getAttachment('meowth', 'meowth.png');
-      // }).then(function (blob) {
-      //   // put into store
-      //   var url = URL.createObjectURL(blob);
-      //   var img = document.createElement('img');
-      //   img.src = url;
-      //   document.body.appendChild(img);
-      // }).catch(function (err) {
-      //   console.log(err);
-      // });
 
       pouchdb
         .get(state.myclient, { attachments: true })
@@ -204,11 +235,11 @@ const store = new Vuex.Store({
         })
     },
     DELETE_CLIENT(state) {
-      console.log('delete')
+      //console.log('delete')
       pouchdb
         .get(state.myclient)
         .then(function(doc) {
-          console.log(doc)
+          //console.log(doc)
           return pouchdb.remove(doc._id, doc._rev)
           //return pouchdb.remove(doc)
         })
@@ -226,6 +257,7 @@ const store = new Vuex.Store({
     syncDB: () => {
       pouchdb.replicate.from(remote).on('complete', function() {
         store.commit('GET_ALL_DOCS')
+        store.commit('GET_MY_ATTACHMENTS')
         // turn on two-way, continuous, retriable sync
         pouchdb
           .sync(remote, { live: true, retry: true, attachments: true })
@@ -235,11 +267,11 @@ const store = new Vuex.Store({
             //console.log('change')
             store.commit('GET_MY_DOC')
             store.commit('GET_ALL_DOCS')
+            // store.commit('GET_MY_ATTACHMENTS')
           })
           .on('paused', function() {
             // replication paused (e.g. replication up to date, user went offline)
             // console.log('replication paused')
-            // store.dispatch("get_data");
           })
           .on('active', function() {
             // replicate resumed (e.g. new changes replicating, user went back online)

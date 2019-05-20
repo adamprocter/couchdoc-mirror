@@ -160,13 +160,6 @@ body {
   background-color: gainsboro;
 }
 
-#app {
-  max-width: 600px;
-  /* display: grid;
-  grid-template-columns: 300px, 300px;
-  justify-content: center;
-  grid-gap: 1rem; */
-}
 h1,
 h2,
 h3,
@@ -376,6 +369,23 @@ ul {
 
 @media only screen and (min-width: 640px) {
   /* Style adjustments for viewports that meet the condition */
+
+  .home {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 10px;
+    grid-auto-rows: minmax(100px, auto);
+  }
+
+  .toolbar,
+  .editor {
+    grid-column: 2 / 4;
+    grid-row: 1;
+  }
+
+  .debug {
+    grid-column: 1 / 4;
+  }
 }
 
 @media print,
