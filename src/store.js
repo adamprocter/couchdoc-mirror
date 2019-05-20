@@ -4,7 +4,7 @@ import PouchDB from 'pouchdb'
 
 Vue.use(Vuex)
 var pouchdb = new PouchDB('couchdocs')
-var remote = 'https://nn.adamprocter.co.uk/couchdocs'
+var remote = 'https://nn.adamprocter.co.uk/couchdocs/'
 var localid = null
 
 const store = new Vuex.Store({
@@ -73,7 +73,7 @@ const store = new Vuex.Store({
               state.myattachments.push({
                 url: url
               })
-              console.log(state.myattachments)
+              // console.log(state.myattachments)
             })
             .catch(function(err) {
               console.log(err)
@@ -239,7 +239,7 @@ const store = new Vuex.Store({
       pouchdb
         .get(state.myclient)
         .then(function(doc) {
-          console.log(doc)
+          //console.log(doc)
           return pouchdb.remove(doc._id, doc._rev)
           //return pouchdb.remove(doc)
         })
