@@ -14,16 +14,14 @@
       <em>(and lots of helpers to be listed asap)</em>
     </p>
 
-    <h3>version 0.0.4</h3>
+    <h3>version 0.0.4.1</h3>
     <ul>
-      <li>
-        Create text and add (image) attachments with other people in realtime.
-      </li>
+      <li>Create text with other people in realtime.</li>
       <li>This is displayed in a list view across all devices.</li>
     </ul>
     <h4>issues</h4>
     <ul>
-      <li>Only shows your attachments.</li>
+      <li>Regression removed attachments.</li>
       <li>No real layout or style.</li>
       <li>Spatial view is not enabled.</li>
     </ul>

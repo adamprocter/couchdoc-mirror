@@ -3,14 +3,18 @@
     <h2>Create / Attach</h2>
     <p>Press Create to add and edit a contribution.</p>
     <p>Press Browse/Choose to attach an image</p>
-    <button @click="
+    <button
+      @click="
         addDoc()
         editMode()
-      ">Create</button>
+      "
+    >
+      Create
+    </button>
 
-    <form>
+    <!-- <form>
       <input type="file" @change="addFile" ref="myFiles">
-    </form>
+    </form>-->
   </div>
 </template>
 

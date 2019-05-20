@@ -14,8 +14,6 @@ const store = new Vuex.Store({
     notes: [],
     otherclients: {},
     activeNote: {},
-    // ARRAY?? store names and matched URLsrc
-    //example: [{ name: '', urlsrc: '' }]
     myattachments: [],
     myattachmentnames: [],
     otherattachments: {}
@@ -45,7 +43,7 @@ const store = new Vuex.Store({
 
     GET_MY_ATTACHMENTS(state) {
       pouchdb.get(state.myclient, { attachments: true }).then(function(doc) {
-        // do not understand this for loop
+        // I do not understand this for loop
         var filename
         for (var key in doc._attachments) {
           if (
@@ -62,8 +60,8 @@ const store = new Vuex.Store({
         var i
         for (i = 0; i < Object.keys(doc._attachments).length; i++) {
           state.myattachmentnames[i].name
-          //console.log(state.myattachmentnames[i].name)
-          // console.log(state.myattachments)
+          // console.log(state.myattachmentnames[i].name)
+          //console.log(state.myattachments)
           pouchdb
             .getAttachment(state.myclient, state.myattachmentnames[i].name)
             .then(function(blob) {
@@ -91,11 +89,11 @@ const store = new Vuex.Store({
       // })
 
       pouchdb
-        .get(state.myclient, { attachments: true })
+        .get(state.myclient)
         .then(function(doc) {
           state.notes = doc.notes
           //state.myattachments = doc._attachments
-          //          console.log(doc._attachments)
+          // console.log(doc._attachments)
           //console.log(state.myattachments)
         })
         .catch(function(err) {
@@ -133,9 +131,10 @@ const store = new Vuex.Store({
           .substring(2, 15)
       localid = uniqueid
       pouchdb
-        .get(state.myclient, { attachments: true })
+        .get(state.myclient)
         .then(function(doc) {
           // pop new note onto the end of the doc
+          // console.log(doc._attachments)
           doc.notes.push({
             id: uniqueid,
             text: 'EDIT ME',
@@ -148,7 +147,7 @@ const store = new Vuex.Store({
             {
               _id: state.myclient,
               _rev: doc._rev,
-              _attachments: doc._attachments,
+              // _attachments: doc._attachments,
               notes: doc.notes
             }
           ])
@@ -184,7 +183,7 @@ const store = new Vuex.Store({
       }
 
       pouchdb
-        .get(state.myclient, { attachments: true })
+        .get(state.myclient)
         .then(function(doc) {
           //console.log(doc)
           // put the store into pouchdb
@@ -192,7 +191,7 @@ const store = new Vuex.Store({
             {
               _id: state.myclient,
               _rev: doc._rev,
-              _attachments: doc._attachments,
+              //  _attachments: doc._attachments,
               notes: state.notes
             }
           ])
@@ -256,6 +255,7 @@ const store = new Vuex.Store({
   actions: {
     syncDB: () => {
       pouchdb.replicate.from(remote).on('complete', function() {
+        store.commit('GET_MY_DOC')
         store.commit('GET_ALL_DOCS')
         store.commit('GET_MY_ATTACHMENTS')
         // turn on two-way, continuous, retriable sync
@@ -267,7 +267,7 @@ const store = new Vuex.Store({
             //console.log('change')
             store.commit('GET_MY_DOC')
             store.commit('GET_ALL_DOCS')
-            // store.commit('GET_MY_ATTACHMENTS')
+            store.commit('GET_MY_ATTACHMENTS')
           })
           .on('paused', function() {
             // replication paused (e.g. replication up to date, user went offline)
