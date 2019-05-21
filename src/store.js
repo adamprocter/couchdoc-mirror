@@ -42,6 +42,8 @@ const store = new Vuex.Store({
     },
 
     GET_MY_ATTACHMENTS(state) {
+      // console.log(state.myattachments)
+      state.myattachments = []
       pouchdb.get(state.myclient, { attachments: true }).then(function(doc) {
         // I do not understand this for loop
         var filename
@@ -59,19 +61,16 @@ const store = new Vuex.Store({
 
         var i
         for (i = 0; i < Object.keys(doc._attachments).length; i++) {
-          state.myattachmentnames[i].name
-          // console.log(state.myattachmentnames[i].name)
-          //console.log(state.myattachments)
           pouchdb
             .getAttachment(state.myclient, state.myattachmentnames[i].name)
             .then(function(blob) {
               // put img URL into store to render
               var url = URL.createObjectURL(blob)
-              //state.myattachments = url
+              //
               state.myattachments.push({
                 url: url
               })
-              // console.log(state.myattachments)
+              //
             })
             .catch(function(err) {
               console.log(err)
@@ -147,7 +146,7 @@ const store = new Vuex.Store({
             {
               _id: state.myclient,
               _rev: doc._rev,
-              // _attachments: doc._attachments,
+              _attachments: doc._attachments,
               notes: doc.notes
             }
           ])
@@ -191,7 +190,7 @@ const store = new Vuex.Store({
             {
               _id: state.myclient,
               _rev: doc._rev,
-              //  _attachments: doc._attachments,
+              _attachments: doc._attachments,
               notes: state.notes
             }
           ])
