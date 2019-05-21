@@ -12,9 +12,9 @@
       Create
     </button>
 
-    <!-- <form>
-      <input type="file" @change="addFile" ref="myFiles">
-    </form>-->
+    <form>
+      <input type="file" @change="addFile" ref="myFiles" />
+    </form>
   </div>
 </template>
 
