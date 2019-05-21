@@ -210,24 +210,36 @@ const store = new Vuex.Store({
     },
 
     ADD_FILE(state, files) {
+      //var myname = files.name
       pouchdb
         .get(state.myclient)
         .then(function(doc) {
-          return pouchdb.putAttachment(
-            state.myclient,
-            files.name,
-            doc._rev,
-            files,
-            files.type
-          )
+          console.log(files)
+          console.log(state.notes)
+
+          return pouchdb.bulkDocs([
+            {
+              _id: state.myclient,
+              _rev: doc._rev,
+              notes: state.notes,
+              _attachments: {
+                newname: {
+                  data: files,
+                  content_type: files.type
+                }
+              }
+            }
+          ])
         })
         .then(function(response) {
           // handle response
+          console.log(response)
           if (response.ok == true) {
             // not empty line
           }
         })
         .catch(function(err) {
+          console.log(err)
           if (err.status == 404) {
             // pouchdb.put({  })
           }
@@ -257,7 +269,7 @@ const store = new Vuex.Store({
       pouchdb.replicate.from(remote).on('complete', function() {
         store.commit('GET_MY_DOC')
         store.commit('GET_ALL_DOCS')
-        store.commit('GET_MY_ATTACHMENTS')
+        //  store.commit('GET_MY_ATTACHMENTS')
         // turn on two-way, continuous, retriable sync
         pouchdb
           .sync(remote, { live: true, retry: true, attachments: true })
@@ -267,7 +279,7 @@ const store = new Vuex.Store({
             //console.log('change')
             store.commit('GET_MY_DOC')
             store.commit('GET_ALL_DOCS')
-            store.commit('GET_MY_ATTACHMENTS')
+            //  store.commit('GET_MY_ATTACHMENTS')
           })
           .on('paused', function() {
             // replication paused (e.g. replication up to date, user went offline)
