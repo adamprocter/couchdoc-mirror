@@ -14,8 +14,6 @@ const store = new Vuex.Store({
     notes: [],
     otherclients: {},
     activeNote: {},
-    // ARRAY?? store names and matched URLsrc
-    //example: [{ name: '', urlsrc: '' }]
     myattachments: [],
     myattachmentnames: [],
     otherattachments: {}
