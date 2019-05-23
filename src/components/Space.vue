@@ -23,9 +23,17 @@ export default {
   },
   methods: {
     generateSpace: function() {
-      this.$svg('space')
-        .rect(100, 100)
-        .attr({ fill: '#f06' })
+      console.log(this.notes[2].text)
+      var draw = this.$svg('space')
+      var i
+      var y = 0
+      var rects = []
+      for (i = 0; i < Object.keys(this.notes).length; i++) {
+        rects[i] = draw.rect(100, 100).attr({ fill: '#f06' })
+        rects[i].move(10, 10 + i)
+        draw.text(this.notes[i].text)
+      }
+      console.log(rects)
     }
   }
 }
