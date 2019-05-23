@@ -9,6 +9,7 @@
     <ToolBar v-else-if="clientset" v-on:editMode="editMode()" />
     <YourData v-if="clientset" />
     <AllData v-if="clientset" />
+    <Space v-if="clientset" />
     <YourAttachments v-if="clientset" />
     <ClientSet v-else v-on:clientAdded="clientAdded()" />
     <DeBug />
@@ -23,6 +24,7 @@ import YourAttachments from '@/components/YourAttachments.vue'
 import AllData from '@/components/AllData.vue'
 import ToolBar from '@/components/ToolBar.vue'
 import Editor from '@/components/Editor.vue'
+import Space from '@/components/Space.vue'
 import DeBug from '@/components/DeBug.vue'
 
 export default {
@@ -40,6 +42,7 @@ export default {
     YourAttachments,
     AllData,
     Editor,
+    Space,
     DeBug
   },
   methods: {
