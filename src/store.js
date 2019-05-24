@@ -4,7 +4,7 @@ import PouchDB from 'pouchdb'
 
 Vue.use(Vuex)
 var pouchdb = new PouchDB('couchdocs')
-var remote = 'https://nn.adamprocter.co.uk/couchdocs/'
+var remote = 'https://nn.adamprocter.co.uk/finalfriday/'
 var localid = null
 
 const store = new Vuex.Store({
