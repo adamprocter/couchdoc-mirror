@@ -19,7 +19,7 @@
       <li>
         Contribute text and attachments (images) with other people in realtime.
       </li>
-      <li>Contributions is displayed in a list view across all devices.</li>
+      <li>Contributions are displayed in a list view across all devices.</li>
     </ul>
     <h4>issues</h4>
     <ul>
