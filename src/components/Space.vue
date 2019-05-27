@@ -1,5 +1,5 @@
 <template>
-  <div :id="svgId" class="svg-container"></div>
+  <div :id="svgId" class="svg-container">SVG</div>
 </template>
 <script>
 import { mapState } from 'vuex'
@@ -9,8 +9,11 @@ export default {
 
   data: function() {
     return {
+      i: null,
       svgId: 'space',
-      svgContainer: null
+      svgContainer: null,
+      rects: [],
+      texts: []
     }
   },
 
@@ -23,17 +26,27 @@ export default {
   },
   methods: {
     generateSpace: function() {
-      console.log(this.notes[2].text)
+      //console.log(this.notes[2].text)
       var draw = this.$svg('space')
-      var i
-      var y = 0
-      var rects = []
-      for (i = 0; i < Object.keys(this.notes).length; i++) {
-        rects[i] = draw.rect(100, 100).attr({ fill: '#f06' })
-        rects[i].move(10, 10 + i)
-        draw.text(this.notes[i].text)
+
+      var colors = ['red', 'blue', 'yellow', 'green', 'orange']
+      for (this.i = 0; this.i < Object.keys(this.notes).length; this.i++) {
+        this.rects[this.i] = draw.rect(100, 100).attr({ fill: colors[this.i] })
+        this.texts[this.i] = draw.text(this.notes[this.i].text)
       }
-      console.log(rects)
+
+      // testing positioning
+      this.rects[0].x(0).cy(300 / 2)
+      this.rects[1].x(100).cy(300 / 2)
+      this.rects[2].x(150).cy(300 / 2)
+      this.rects[3].x(200).cy(300 / 2)
+      this.rects[4].x(250).cy(300 / 2)
+
+      this.texts[0].x(0).cy(300 / 2)
+      this.texts[1].x(100).cy(300 / 2)
+      this.texts[2].x(150).cy(300 / 2)
+      this.texts[3].x(200).cy(300 / 2)
+      this.texts[4].x(250).cy(300 / 2)
     }
   }
 }
