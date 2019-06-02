@@ -388,7 +388,7 @@ ul {
   }
 }
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   body {
     background: #333;
     color: rgb(206, 206, 206);
@@ -397,7 +397,7 @@ ul {
   .data li:first-child {
     background-color: rgb(140, 96, 190);
   }
-}
+} */
 
 @media print,
   (-o-min-device-pixel-ratio: 5/4),

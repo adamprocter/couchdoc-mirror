@@ -3,8 +3,8 @@ import Vuex from 'vuex'
 import PouchDB from 'pouchdb'
 
 Vue.use(Vuex)
-var pouchdb = new PouchDB('finalfriday')
-var remote = 'https://nn.adamprocter.co.uk/finalfriday/'
+var pouchdb = new PouchDB('couchdocs')
+var remote = 'https://nn.adamprocter.co.uk/couchdocs/'
 var localid = null
 
 const store = new Vuex.Store({

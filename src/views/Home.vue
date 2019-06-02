@@ -1,17 +1,18 @@
 <template>
   <div class="home">
     <h1>
-      <img src="../assets/img/icon.png" width="50px" />
+      <img src="../assets/img/icon.png" width="50px">
       nodenoggin
     </h1>
 
-    <Editor v-if="editing" v-on:closeEdit="closeEdit()" />
-    <ToolBar v-else-if="clientset" v-on:editMode="editMode()" />
-    <YourData v-if="clientset" />
-    <AllData v-if="clientset" />
-    <YourAttachments v-if="clientset" />
-    <ClientSet v-else v-on:clientAdded="clientAdded()" />
-    <DeBug />
+    <Editor v-if="editing" v-on:closeEdit="closeEdit()"/>
+    <ToolBar v-else-if="clientset" v-on:editMode="editMode()"/>
+    <YourData v-if="clientset"/>
+    <SpaceView v-if="clientset"/>
+    <AllData v-if="clientset"/>
+    <YourAttachments v-if="clientset"/>
+    <ClientSet v-else v-on:clientAdded="clientAdded()"/>
+    <DeBug/>
   </div>
 </template>
 
@@ -19,6 +20,7 @@
 // @ is an alias to /src
 import ClientSet from '@/components/ClientSet.vue'
 import YourData from '@/components/YourData.vue'
+import SpaceView from '@/components/SpaceView.vue'
 import YourAttachments from '@/components/YourAttachments.vue'
 import AllData from '@/components/AllData.vue'
 import ToolBar from '@/components/ToolBar.vue'
@@ -37,6 +39,7 @@ export default {
     ClientSet,
     ToolBar,
     YourData,
+    SpaceView,
     YourAttachments,
     AllData,
     Editor,
