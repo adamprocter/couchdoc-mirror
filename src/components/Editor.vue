@@ -9,7 +9,7 @@
         class="form-control"
       ></textarea>
       <input v-bind:value="activeNote.id" name="id" readonly hidden />
-      <button @click="closeEdit()">Close</button>
+      <button @click="closeEdit()">Finished</button>
     </form>
   </div>
 </template>
