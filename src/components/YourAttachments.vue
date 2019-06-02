@@ -1,15 +1,10 @@
 <template>
   <div class="yourattachments">
     <h2>These are your attachments</h2>
-
-    <div v-for="(myattachment, index) in myattachments" v-bind:key="index">
-      <img
-        v-bind:src="myattachments[index].url"
-        alt
-        width="50%"
-        height
-        border="0"
-      />
+    <!-- tips -->
+    <!-- : is short for v-bind -->
+    <div v-for="(myattachment, index) in myattachments" :key="index">
+      <img :src="myattachments[index].url" alt width="50%" height border="0" />
     </div>
   </div>
 </template>

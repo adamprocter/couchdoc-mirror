@@ -266,7 +266,7 @@ const store = new Vuex.Store({
             //console.log('change')
             store.commit('GET_MY_DOC')
             store.commit('GET_ALL_DOCS')
-            store.commit('GET_MY_ATTACHMENTS')
+            // store.commit('GET_MY_ATTACHMENTS')
           })
           .on('paused', function() {
             // replication paused (e.g. replication up to date, user went offline)
