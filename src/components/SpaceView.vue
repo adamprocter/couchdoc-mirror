@@ -32,10 +32,12 @@ export default {
     notes: state => state.notes
   }),
 
-  // TODO: Fix this method
+  // TODO: This method makeDraggable is not called
+  // FIXME: Move this type of method to a plug in perhaps
   methods: {
     makeDraggable() {
       console.log(evt)
+      console.log('hello')
       var svg = evt.target
 
       svg.addEventListener('mousedown', startDrag)
@@ -98,6 +100,9 @@ export default {
         selectedElement = false
       }
     }
+    // beforeMount() {
+    //   this.makeDraggable()
+    // }
   }
 }
 </script>
