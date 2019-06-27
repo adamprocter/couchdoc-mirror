@@ -29,3 +29,6 @@ Plus the following required dependencies all added via vue ui
 - vue-router
 - [PouchDB](https://pouchdb.com/) connecting to an instance of [CouchDB](http://couchdb.apache.org/)  
 
+## Visuals
+
+![](img/visual1.png)

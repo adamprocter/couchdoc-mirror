@@ -8,7 +8,6 @@
       width="400"
       height="1800"
       id="space"
-      @load="makeDraggable"
     >
       <g
         v-for="(note, index) in notes"
