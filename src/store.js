@@ -45,7 +45,7 @@ const store = new Vuex.Store({
       // console.log(state.myattachments)
       state.myattachments = []
       pouchdb.get(state.myclient, { attachments: true }).then(function(doc) {
-        // I do not understand this for loop
+        //FIXME: What is this for loop doing, need to understand this
         var filename
         for (var key in doc._attachments) {
           if (
@@ -267,7 +267,7 @@ const store = new Vuex.Store({
             //console.log('change')
             store.commit('GET_MY_DOC')
             store.commit('GET_ALL_DOCS')
-            // store.commit('GET_MY_ATTACHMENTS')
+            //  store.commit('GET_MY_ATTACHMENTS')
           })
           .on('paused', function() {
             // replication paused (e.g. replication up to date, user went offline)

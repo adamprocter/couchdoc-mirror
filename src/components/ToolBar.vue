@@ -1,8 +1,14 @@
 <template>
   <div class="toolbar">
     <h2>Create / Attach</h2>
-    <p>Press Create to add and edit a contribution.</p>
-    <p>Press Browse/Choose to attach an image</p>
+    <p>
+      Press
+      <em>Create</em> to add a contribution.
+    </p>
+    <p>
+      Press
+      <em>Add Media</em> to attach media.
+    </p>
     <button
       @click="
         addDoc()
@@ -13,8 +19,10 @@
     </button>
 
     <form>
-      <input type="file" @change="addFile" ref="myFiles" />
+      <label for="myFiles">Add Media</label>
+      <input type="file" @change="addFile" ref="myFiles" id="myFiles" />
     </form>
+    <hr />
   </div>
 </template>
 

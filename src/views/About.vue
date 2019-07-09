@@ -14,18 +14,19 @@
       <em>(and lots of helpers to be listed asap)</em>
     </p>
 
-    <h3>version 0.0.6</h3>
+    <h3>version 0.0.7</h3>
     <ul>
+      <li>Contribute text and media with other people in realtime.</li>
       <li>
-        Contribute text and attachments (images) with other people in realtime.
+        Contributions displayed as both list and spatial view across all
+        devices.
       </li>
-      <li>Contributions are displayed in a list view across all devices.</li>
     </ul>
     <h4>issues</h4>
     <ul>
-      <li>Latest attachment, shows wrong image until reload.</li>
-      <li>No real layout or style.</li>
-      <li>Spatial view shows only your contributions (location not stored).</li>
+      <li>Uploading media, shows wrong media until page reload.</li>
+      <li>Spatial view(s) does not store positions.</li>
+      <li>Minimal layout or style.</li>
     </ul>
     <h2>Design-led ethical Edutech</h2>
     <h3>MORE:</h3>

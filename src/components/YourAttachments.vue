@@ -1,6 +1,6 @@
 <template>
   <div class="yourattachments">
-    <h2>These are your attachments</h2>
+    <h2>Your media</h2>
     <!-- tips -->
     <!-- : is short for v-bind -->
     <div v-for="(myattachment, index) in myattachments" :key="index">

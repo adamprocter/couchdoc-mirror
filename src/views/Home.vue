@@ -4,6 +4,7 @@
       <img src="../assets/img/icon.png" width="50px" />
       nodenoggin
     </h1>
+
     <!-- tips -->
     <!--  @ is short for v-on: -->
     <!-- : is short for v-bind -->
@@ -12,6 +13,7 @@
     <YourData v-if="clientset" />
     <SpaceView v-if="clientset" />
     <AllData v-if="clientset" />
+    <AllSpace v-if="clientset" />
     <YourAttachments v-if="clientset" />
     <ClientSet v-else @clientAdded="clientAdded()" />
     <DeBug />
@@ -26,6 +28,7 @@ import YourData from '@/components/YourData.vue'
 import SpaceView from '@/components/SpaceView.vue'
 import YourAttachments from '@/components/YourAttachments.vue'
 import AllData from '@/components/AllData.vue'
+import AllSpace from '@/components/AllSpace.vue'
 import ToolBar from '@/components/ToolBar.vue'
 import Editor from '@/components/Editor.vue'
 import DeBug from '@/components/DeBug.vue'
@@ -45,6 +48,7 @@ export default {
     SpaceView,
     YourAttachments,
     AllData,
+    AllSpace,
     Editor,
     DeBug
   },

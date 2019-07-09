@@ -55,7 +55,6 @@
       <li>This is a very much a work in progress</li>
       <li>No contribution should be considered safe.</li>
       <li>There will be glitches.</li>
-      <li>There is little to no styling applied to the contributions.</li>
       <li>
         Please play and
         <a href="http://discourse.adamprocter.co.uk">feedback</a>.

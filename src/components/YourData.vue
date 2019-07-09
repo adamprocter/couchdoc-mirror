@@ -1,6 +1,6 @@
 <template>
   <div class="yourdata">
-    <h2>These are your contributions</h2>
+    <h2>Your contributions</h2>
     <ul class="data">
       <!-- tips -->
       <!-- : is short for v-bind -->
