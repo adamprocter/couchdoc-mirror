@@ -3,19 +3,14 @@
     <h2>Space Man !</h2>
     <!-- tips-->
     <!-- : is short for v-bind -->
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="400"
-      height="1800"
-      id="space"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="400" height="1800" id="space" ref="sheets">
       <g
         v-for="(note, index) in notes"
         :key="index"
         :transform="`translate(0, ${index * 170})`"
         class="draggable"
       >
-        <rect height="120" width="80" fill="#f0b375"></rect>
+        <rect height="120" width="80" fill="#f0b375" class="rect" />
         <text y="15">{{ note.text }}</text>
       </g>
     </svg>
@@ -31,13 +26,17 @@ export default {
     notes: state => state.notes
   }),
 
-  // TODO: This method makeDraggable is not called
+  mounted() {
+    //console.log('mounted')
+    this.makeDraggable()
+  },
+
+  // TODO: check addEventListener is working correctly
   // FIXME: Move this type of method to a plug in perhaps
   methods: {
     makeDraggable() {
-      console.log(evt)
-      console.log('hello')
-      var svg = evt.target
+      //console.log(this.$refs.sheets.children)
+      var svg = this.$refs.sheets
 
       svg.addEventListener('mousedown', startDrag)
       svg.addEventListener('mousemove', drag)
@@ -63,8 +62,8 @@ export default {
       var selectedElement, offset, transform
 
       function startDrag(evt) {
-        if (evt.target.classList.contains('draggable')) {
-          selectedElement = evt.target
+        if (evt.target.parentNode.classList.contains('draggable')) {
+          selectedElement = evt.target.parentNode
           offset = getMousePosition(evt)
 
           // Make sure the first transform on the element is a translate transform
@@ -99,9 +98,6 @@ export default {
         selectedElement = false
       }
     }
-    // beforeMount() {
-    //   this.makeDraggable()
-    // }
   }
 }
 </script>
