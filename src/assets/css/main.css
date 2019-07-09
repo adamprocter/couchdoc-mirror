@@ -160,6 +160,10 @@ body {
   background-color: gainsboro;
 }
 
+.draggable {
+  cursor: move;
+}
+
 h1,
 h2,
 h3,

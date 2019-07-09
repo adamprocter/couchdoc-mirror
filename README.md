@@ -1,4 +1,5 @@
 # Codename : Node Noggin
+
 ## What is it ?
 
 This is very much a work in progress. Please take a moment to review this Intro Youtube [Video](https://www.youtube.com/watch?v=DBwcUcFXsSo)).
@@ -9,6 +10,7 @@ This is very much a work in progress. Please take a moment to review this Intro 
 - [FOLLOW](https://discursive.adamprocter.co.uk)
 
 ## Project setup
+
 Make sure to have the latest vue cli.
 
 ```
@@ -22,10 +24,15 @@ vue ui
 ```
 
 ## Tech stack
+
 - [Vue.js](https://vuejs.org/)
 
 Plus the following required dependencies all added via vue ui
+
 - vuex
 - vue-router
-- [PouchDB](https://pouchdb.com/) connecting to an instance of [CouchDB](http://couchdb.apache.org/)  
+- [PouchDB](https://pouchdb.com/) connecting to an instance of [CouchDB](http://couchdb.apache.org/)
 
+## Visuals
+
+![](src/assets/img/visual1.png)
