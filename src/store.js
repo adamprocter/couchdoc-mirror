@@ -138,6 +138,7 @@ const store = new Vuex.Store({
             id: uniqueid,
             text: 'EDIT ME',
             owner: 'YOU',
+            content_type: 'sheet',
             deleted: false
           })
 

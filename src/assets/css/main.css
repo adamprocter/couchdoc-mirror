@@ -157,7 +157,7 @@ body {
     sans-serif;
   line-height: 22px;
   padding: 1em;
-  background-color: gainsboro;
+  background-color: rgb(247, 247, 247);
 }
 
 .draggable {

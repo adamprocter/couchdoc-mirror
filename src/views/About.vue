@@ -14,7 +14,7 @@
       <em>(and lots of helpers to be listed asap)</em>
     </p>
 
-    <h3>version 0.0.5</h3>
+    <h3>version 0.0.6</h3>
     <ul>
       <li>
         Contribute text and attachments (images) with other people in realtime.
@@ -25,7 +25,7 @@
     <ul>
       <li>Latest attachment, shows wrong image until reload.</li>
       <li>No real layout or style.</li>
-      <li>Spatial view is not enabled.</li>
+      <li>Spatial view shows only your contributions (location not stored).</li>
     </ul>
     <h2>Design-led ethical Edutech</h2>
     <h3>MORE:</h3>

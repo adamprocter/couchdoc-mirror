@@ -1,17 +1,44 @@
 <template>
   <div class="spaceview">
-    <h2>Space Man !</h2>
+    <h2>Your Space View</h2>
     <!-- tips-->
     <!-- : is short for v-bind -->
-    <svg xmlns="http://www.w3.org/2000/svg" width="400" height="1800" id="space" ref="sheets">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="400"
+      height="1800"
+      id="space"
+      ref="sheets"
+    >
       <g
         v-for="(note, index) in notes"
         :key="index"
-        :transform="`translate(0, ${index * 170})`"
+        :transform="`translate(0, ${index * 75})`"
         class="draggable"
       >
-        <rect height="120" width="80" fill="#f0b375" class="rect" />
-        <text y="15">{{ note.text }}</text>
+        <polygon
+          v-if="note.content_type == 'link'"
+          points="14,0 0,28 28,28"
+          fill="#989898"
+          :class="note.content_type"
+        />
+        <rect
+          v-if="note.content_type == 'sheet'"
+          width="25"
+          height="25"
+          fill="#989898"
+          :class="note.content_type"
+        />
+        <circle
+          v-if="note.content_type == 'media'"
+          cx="16"
+          cy="16"
+          r="16"
+          fill="#989898"
+          :class="note.content_type"
+        />
+        <!-- <text y="15">{{ note.text }}</text>
+        <text y="30">{{ note.content_type }}</text>-->
       </g>
     </svg>
   </div>
@@ -31,7 +58,6 @@ export default {
     this.makeDraggable()
   },
 
-  // TODO: check addEventListener is working correctly
   // FIXME: Move this type of method to a plug in perhaps
   methods: {
     makeDraggable() {
@@ -98,6 +124,11 @@ export default {
         selectedElement = false
       }
     }
+  },
+
+  makeConnectable() {
+    //TODO: add in this code
+    //FIXME: probably also make as a plug in
   }
 }
 </script>

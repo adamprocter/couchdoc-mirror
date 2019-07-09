@@ -10,7 +10,3 @@ new Vue({
   store,
   render: h => h(App)
 }).$mount('#app')
-
-// TODO: testing action comments
-
-// FIXME: This is a fix
