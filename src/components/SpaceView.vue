@@ -18,7 +18,7 @@
       >
         <polygon
           v-if="note.content_type == 'link'"
-          points="14,0 0,28 28,28"
+          points="14,0 0,32 32,32"
           fill="#989898"
           :class="note.content_type"
         />
@@ -29,18 +29,30 @@
           fill="#989898"
           :class="note.content_type"
         />
+
+        <!-- <text y="15">{{ note.text }}</text>
+        <text y="30">{{ note.content_type }}</text>-->
+      </g>
+
+      <g
+        v-for="(myattachment, index) in myattachments"
+        :key="index"
+        :transform="`translate(0, ${index * 75})`"
+        class="draggable"
+      >
         <circle
-          v-if="note.content_type == 'media'"
           cx="16"
           cy="16"
           r="16"
           fill="#989898"
-          :class="note.content_type"
+          :class="myattachment.content_type"
         />
-        <!-- <text y="15">{{ note.text }}</text>
-        <text y="30">{{ note.content_type }}</text>-->
       </g>
     </svg>
+
+    <!-- <div v-for="(myattachment, index) in myattachments" :key="index">
+    <img :src="myattachments[index].url" alt width="50%" height border="0" />-->
+    <!-- </div> -->
   </div>
 </template>
 
@@ -50,7 +62,8 @@ import { mapState } from 'vuex'
 export default {
   name: 'YourData',
   computed: mapState({
-    notes: state => state.notes
+    notes: state => state.notes,
+    myattachments: state => state.myattachments
   }),
 
   mounted() {
