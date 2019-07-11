@@ -1,7 +1,7 @@
 # Reporting Issues
 Please review the [Code of Conduct](CODE_OF_CONDUCT.md) before submitting an issue.
 We are using the github mirror site to better capture all issues together. 
-View and Create [issues](https://github.com/adamprocter/couchdoc-mirror/issues)
+- View and Create [issues](https://github.com/adamprocter/couchdoc-mirror/issues)
 
 There is also some use of inline comments in the following formats to store thoughts and things to do.
 
