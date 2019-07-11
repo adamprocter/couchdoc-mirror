@@ -3,7 +3,13 @@
     <h2>Your spatial view</h2>
     <!-- tips-->
     <!-- : is short for v-bind -->
-    <svg xmlns="http://www.w3.org/2000/svg" width="400" height="800" id="space" ref="sheets">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="400"
+      height="800"
+      id="space"
+      ref="sheets"
+    >
       <g
         v-for="(note, index) in notes"
         :key="index"
@@ -33,10 +39,11 @@
       <!-- FIXME: duplicate key issue ?? -->
       <g
         v-for="(myattachment, index) in myattachments"
-        :key="indexB"
+        :key="index"
         :transform="`translate(0, ${index * 75})`"
         class="draggable"
       >
+        <!-- FIXME: class and id are not in the attachments state -->
         <circle
           cx="16"
           cy="16"
@@ -87,6 +94,7 @@ export default {
       svg.addEventListener('touchleave', endDrag)
       svg.addEventListener('touchcancel', endDrag)
 
+      // FIXME: Can I make these ES6 arrow functions
       function getMousePosition(evt) {
         var CTM = svg.getScreenCTM()
         if (evt.touches) {
@@ -175,8 +183,14 @@ export default {
           console.log('double')
           //identify which object was clicked
           console.log(selectedElement.firstElementChild.id)
+          this.editMode()
         }
       }
+    },
+
+    editMode() {
+      console.log('edit time')
+      //this.$emit('editMode')
     }
   }
 }

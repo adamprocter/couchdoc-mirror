@@ -41,7 +41,7 @@ export default {
       this.$emit('editMode')
     },
     addFile() {
-      // FIXME: add unique ID to attachments as well in store.js
+      // FIXME: possibly unique ID to attachments as well in store.js
       this.files = this.$refs.myFiles.files
       // console.log(this.files)
       this.$store.dispatch('addFile', this.files[0])
