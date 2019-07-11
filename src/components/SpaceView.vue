@@ -3,13 +3,7 @@
     <h2>Your spatial view</h2>
     <!-- tips-->
     <!-- : is short for v-bind -->
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="400"
-      height="800"
-      id="space"
-      ref="sheets"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="400" height="800" id="space" ref="sheets">
       <g
         v-for="(note, index) in notes"
         :key="index"
@@ -30,27 +24,23 @@
           :class="note.content_type"
         />
 
-        <!-- <text y="15">{{ note.text }}</text>
+        <!--FIXME: Keep for Ref for now
+          <text y="15">{{ note.text }}</text>
         <text y="30">{{ note.content_type }}</text>-->
       </g>
-
+      <!-- FIXME: duplicate key issue ?? -->
       <g
         v-for="(myattachment, index) in myattachments"
-        :key="index"
+        :key="indexB"
         :transform="`translate(0, ${index * 75})`"
         class="draggable"
       >
-        <circle
-          cx="16"
-          cy="16"
-          r="16"
-          fill="#989898"
-          :class="myattachment.content_type"
-        />
+        <circle cx="16" cy="16" r="16" fill="#989898" :class="myattachment.content_type" />
       </g>
     </svg>
 
-    <!-- <div v-for="(myattachment, index) in myattachments" :key="index">
+    <!-- FIXME: Keep for Ref for now 
+    <div v-for="(myattachment, index) in myattachments" :key="index">
     <img :src="myattachments[index].url" alt width="50%" height border="0" />-->
     <!-- </div> -->
   </div>
@@ -69,12 +59,13 @@ export default {
   mounted() {
     //console.log('mounted')
     this.makeDraggable()
+    this.makeConnectable()
   },
 
   // FIXME: Move this type of method to a plug in perhaps
   methods: {
     makeDraggable() {
-      //console.log(this.$refs.sheets.children)
+      // console.log(this.$refs.sheets)
       var svg = this.$refs.sheets
 
       svg.addEventListener('mousedown', startDrag)
@@ -136,15 +127,45 @@ export default {
       function endDrag(evt) {
         selectedElement = false
       }
+    },
+
+    makeConnectable() {
+      //TODO: add in this code
+      //FIXME: probably also make as a plug in
+      //console.log(this.$refs.sheets)
+      var svg = this.$refs.sheets
+      svg.addEventListener('click', singleClick)
+      svg.addEventListener('dblclick', doubleClick)
+
+      function getMousePosition(evt) {
+        var CTM = svg.getScreenCTM()
+        if (evt.touches) {
+          evt = evt.touches[0]
+        }
+        return {
+          x: (evt.clientX - CTM.e) / CTM.a,
+          y: (evt.clientY - CTM.f) / CTM.d
+        }
+      }
+
+      var selectedElement, offset, transform
+
+      function singleClick(evt) {
+        if (evt.target.parentNode.classList.contains('draggable')) {
+          selectedElement = evt.target.parentNode
+          offset = getMousePosition(evt)
+          console.log('single')
+        }
+      }
+
+      function doubleClick(evt) {
+        if (evt.target.parentNode.classList.contains('draggable')) {
+          selectedElement = evt.target.parentNode
+          offset = getMousePosition(evt)
+          console.log('double')
+        }
+      }
     }
-  },
-
-  makeConnectable() {
-    //TODO: add in this code
-    //FIXME: probably also make as a plug in
-
-    var svg = this.$refs.sheets
-    svg.addEventListener('mousedown', startDrag)
   }
 }
 </script>
