@@ -142,6 +142,9 @@ export default {
   makeConnectable() {
     //TODO: add in this code
     //FIXME: probably also make as a plug in
+
+    var svg = this.$refs.sheets
+    svg.addEventListener('mousedown', startDrag)
   }
 }
 </script>
