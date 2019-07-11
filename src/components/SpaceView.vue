@@ -21,6 +21,7 @@
           points="14,0 0,32 32,32"
           fill="#989898"
           :class="note.content_type"
+          :id="note.id"
         />
         <rect
           v-if="note.content_type == 'sheet'"
@@ -28,29 +29,34 @@
           height="25"
           fill="#989898"
           :class="note.content_type"
+          :id="note.id"
         />
 
-        <!-- <text y="15">{{ note.text }}</text>
+        <!--REF: Keep for now
+          <text y="15">{{ note.text }}</text>
         <text y="30">{{ note.content_type }}</text>-->
       </g>
-
+      <!-- FIXME: duplicate key issue ?? -->
       <g
         v-for="(myattachment, index) in myattachments"
         :key="index"
         :transform="`translate(0, ${index * 75})`"
         class="draggable"
       >
+        <!-- FIXME: class and id are not in the attachments state -->
         <circle
           cx="16"
           cy="16"
           r="16"
           fill="#989898"
           :class="myattachment.content_type"
+          :id="myattachment.id"
         />
       </g>
     </svg>
 
-    <!-- <div v-for="(myattachment, index) in myattachments" :key="index">
+    <!-- REF: Keep for now
+    <div v-for="(myattachment, index) in myattachments" :key="index">
     <img :src="myattachments[index].url" alt width="50%" height border="0" />-->
     <!-- </div> -->
   </div>
@@ -69,12 +75,13 @@ export default {
   mounted() {
     //console.log('mounted')
     this.makeDraggable()
+    this.makeConnectable()
   },
 
-  // FIXME: Move this type of method to a plug in perhaps
+  // FIXME: Move these methods to a plug in ?
   methods: {
     makeDraggable() {
-      //console.log(this.$refs.sheets.children)
+      // console.log(this.$refs.sheets)
       var svg = this.$refs.sheets
 
       svg.addEventListener('mousedown', startDrag)
@@ -87,6 +94,7 @@ export default {
       svg.addEventListener('touchleave', endDrag)
       svg.addEventListener('touchcancel', endDrag)
 
+      // FIXME: Can I make these ES6 arrow functions
       function getMousePosition(evt) {
         var CTM = svg.getScreenCTM()
         if (evt.touches) {
@@ -136,15 +144,54 @@ export default {
       function endDrag(evt) {
         selectedElement = false
       }
+    },
+
+    makeConnectable() {
+      //FIXME: also make as a plug in
+      //console.log(this.$refs.sheets)
+      var svg = this.$refs.sheets
+      svg.addEventListener('click', singleClick)
+      svg.addEventListener('dblclick', doubleClick)
+
+      function getMousePosition(evt) {
+        var CTM = svg.getScreenCTM()
+        if (evt.touches) {
+          evt = evt.touches[0]
+        }
+        return {
+          x: (evt.clientX - CTM.e) / CTM.a,
+          y: (evt.clientY - CTM.f) / CTM.d
+        }
+      }
+
+      var selectedElement, offset, transform
+
+      function singleClick(evt) {
+        if (evt.target.parentNode.classList.contains('draggable')) {
+          selectedElement = evt.target.parentNode
+          offset = getMousePosition(evt)
+          console.log('single')
+          //identify which object was clicked
+          console.log(selectedElement.firstElementChild.id)
+        }
+      }
+
+      function doubleClick(evt) {
+        if (evt.target.parentNode.classList.contains('draggable')) {
+          selectedElement = evt.target.parentNode
+          offset = getMousePosition(evt)
+          console.log('double')
+          //identify which object was clicked
+          console.log(selectedElement.firstElementChild.id)
+          this.editMode()
+        }
+      }
+    },
+
+    editMode() {
+      console.log('edit time')
+      //this.$emit('editMode')
     }
-  },
-
-  makeConnectable() {
-    //TODO: add in this code
-    //FIXME: probably also make as a plug in
-
-    var svg = this.$refs.sheets
-    svg.addEventListener('mousedown', startDrag)
   }
 }
 </script>

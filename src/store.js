@@ -42,7 +42,6 @@ const store = new Vuex.Store({
     },
 
     GET_MY_ATTACHMENTS(state) {
-      // console.log(state.myattachments)
       state.myattachments = []
       pouchdb.get(state.myclient, { attachments: true }).then(function(doc) {
         //FIXME: What is this for loop doing, need to understand this
@@ -80,7 +79,7 @@ const store = new Vuex.Store({
     },
 
     GET_MY_DOC(state) {
-      // keep in for quick debug of attachments
+      // REF: for quick debug of attachments
       // pouchdb.get(state.myclient, { attachments: true }).then(function(doc) {
       //   console.log(doc._attachments)
       //   // state.myattachments = doc._attachments
@@ -112,7 +111,7 @@ const store = new Vuex.Store({
                   id: uniqueid,
                   text: 'Device ' + state.myclient,
                   // get name from form as well (look at e thing!)
-                  owner: 'Your Name',
+                  owner: 'name',
                   deleted: false
                 }
               ]
