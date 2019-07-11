@@ -15,6 +15,7 @@
           points="14,0 0,32 32,32"
           fill="#989898"
           :class="note.content_type"
+          :id="note.id"
         />
         <rect
           v-if="note.content_type == 'sheet'"
@@ -22,9 +23,10 @@
           height="25"
           fill="#989898"
           :class="note.content_type"
+          :id="note.id"
         />
 
-        <!--FIXME: Keep for Ref for now
+        <!--REF: Keep for now
           <text y="15">{{ note.text }}</text>
         <text y="30">{{ note.content_type }}</text>-->
       </g>
@@ -35,11 +37,18 @@
         :transform="`translate(0, ${index * 75})`"
         class="draggable"
       >
-        <circle cx="16" cy="16" r="16" fill="#989898" :class="myattachment.content_type" />
+        <circle
+          cx="16"
+          cy="16"
+          r="16"
+          fill="#989898"
+          :class="myattachment.content_type"
+          :id="myattachment.id"
+        />
       </g>
     </svg>
 
-    <!-- FIXME: Keep for Ref for now 
+    <!-- REF: Keep for now
     <div v-for="(myattachment, index) in myattachments" :key="index">
     <img :src="myattachments[index].url" alt width="50%" height border="0" />-->
     <!-- </div> -->
@@ -62,7 +71,7 @@ export default {
     this.makeConnectable()
   },
 
-  // FIXME: Move this type of method to a plug in perhaps
+  // FIXME: Move these methods to a plug in ?
   methods: {
     makeDraggable() {
       // console.log(this.$refs.sheets)
@@ -130,8 +139,7 @@ export default {
     },
 
     makeConnectable() {
-      //TODO: add in this code
-      //FIXME: probably also make as a plug in
+      //FIXME: also make as a plug in
       //console.log(this.$refs.sheets)
       var svg = this.$refs.sheets
       svg.addEventListener('click', singleClick)
@@ -155,6 +163,8 @@ export default {
           selectedElement = evt.target.parentNode
           offset = getMousePosition(evt)
           console.log('single')
+          //identify which object was clicked
+          console.log(selectedElement.firstElementChild.id)
         }
       }
 
@@ -163,6 +173,8 @@ export default {
           selectedElement = evt.target.parentNode
           offset = getMousePosition(evt)
           console.log('double')
+          //identify which object was clicked
+          console.log(selectedElement.firstElementChild.id)
         }
       }
     }
