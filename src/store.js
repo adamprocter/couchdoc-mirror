@@ -170,6 +170,7 @@ const store = new Vuex.Store({
     },
     NOTE_ID(state, id) {
       localid = id
+      //console.log(id)
     },
     EDIT_NOTE(state, text) {
       var i
@@ -241,8 +242,8 @@ const store = new Vuex.Store({
           return pouchdb.remove(doc._id, doc._rev)
           //return pouchdb.remove(doc)
         })
-        .then(function(result) {
-          // handle result
+        .then(function() {
+          //REF: handle result - put result in function(result) if you want to use
           localStorage.removeItem('myNNClient')
           location.reload()
         })

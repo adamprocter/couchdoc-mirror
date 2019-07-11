@@ -73,13 +73,24 @@ export default {
   }),
 
   mounted() {
-    //console.log('mounted')
     this.makeDraggable()
     this.makeConnectable()
   },
 
-  // FIXME: Move these methods to a plug in ?
   methods: {
+    addDoc() {
+      this.$store.dispatch('addDoc')
+      this.$emit('editMode')
+    },
+    // FIXME: Edit note is not working as it seems that i cant dispatch and emit in this one place
+    editNote(e) {
+      console.log(e)
+      this.$store.dispatch('noteId', e)
+      this.$store.dispatch('editNote', e)
+      this.$emit('editMode')
+      // this.editMode()
+    },
+    // FIXME: Can I move these methods to a plug in instead?
     makeDraggable() {
       // console.log(this.$refs.sheets)
       var svg = this.$refs.sheets
@@ -94,7 +105,7 @@ export default {
       svg.addEventListener('touchleave', endDrag)
       svg.addEventListener('touchcancel', endDrag)
 
-      // FIXME: Can I make these ES6 arrow functions
+      // FIXME: Can I make these ES6 arrow functions??
       function getMousePosition(evt) {
         var CTM = svg.getScreenCTM()
         if (evt.touches) {
@@ -141,7 +152,7 @@ export default {
         }
       }
 
-      function endDrag(evt) {
+      function endDrag() {
         selectedElement = false
       }
     },
@@ -150,47 +161,34 @@ export default {
       //FIXME: also make as a plug in
       //console.log(this.$refs.sheets)
       var svg = this.$refs.sheets
+      var ref = this
       svg.addEventListener('click', singleClick)
       svg.addEventListener('dblclick', doubleClick)
 
-      function getMousePosition(evt) {
-        var CTM = svg.getScreenCTM()
-        if (evt.touches) {
-          evt = evt.touches[0]
-        }
-        return {
-          x: (evt.clientX - CTM.e) / CTM.a,
-          y: (evt.clientY - CTM.f) / CTM.d
-        }
-      }
-
-      var selectedElement, offset, transform
+      var selectedElement //, offset, transform
 
       function singleClick(evt) {
         if (evt.target.parentNode.classList.contains('draggable')) {
           selectedElement = evt.target.parentNode
-          offset = getMousePosition(evt)
-          console.log('single')
+          //console.log('single')
           //identify which object was clicked
-          console.log(selectedElement.firstElementChild.id)
+          //console.log(selectedElement.firstElementChild.id)
         }
       }
 
       function doubleClick(evt) {
         if (evt.target.parentNode.classList.contains('draggable')) {
           selectedElement = evt.target.parentNode
-          offset = getMousePosition(evt)
           console.log('double')
           //identify which object was clicked
-          console.log(selectedElement.firstElementChild.id)
-          this.editMode()
+          //console.log(selectedElement.firstElementChild.id)
+          var activenoteid = selectedElement.firstElementChild.id
+          ref.editNote(activenoteid)
+        } else {
+          //console.log('not on drag')
+          ref.addDoc()
         }
       }
-    },
-
-    editMode() {
-      console.log('edit time')
-      //this.$emit('editMode')
     }
   }
 }
