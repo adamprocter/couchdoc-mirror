@@ -3,10 +3,11 @@ import Vuex from 'vuex'
 import PouchDB from 'pouchdb'
 
 Vue.use(Vuex)
+// Objects
 var pouchdb = new PouchDB('couchdocs')
 var remote = 'https://nn.adamprocter.co.uk/couchdocs/'
-var localid = null
 
+var localid = null
 const store = new Vuex.Store({
   state: {
     instance: '',
@@ -138,7 +139,9 @@ const store = new Vuex.Store({
             text: 'EDIT ME',
             owner: 'YOU',
             content_type: 'sheet',
-            deleted: false
+            deleted: false,
+            xpos: '0',
+            ypos: '0'
           })
 
           // put the store into pouchdb
@@ -191,6 +194,47 @@ const store = new Vuex.Store({
           // state.activeNote.text = state.notes[i].text
         }
       }
+    },
+
+    MOVE_POS(state, e) {
+      // console.log(e)
+      localid = e.activenoteid
+      //console.log(localid)
+      var i
+      for (i = 0; i < Object.keys(state.notes).length; i++) {
+        if (localid == state.notes[i].id) {
+          //console.log('match')
+          //console.log(state.notes[i].xpos)
+          state.notes[i].xpos = e.xpos
+          state.notes[i].ypos = e.ypos
+        }
+      }
+
+      pouchdb
+        .get(state.myclient)
+        .then(function(doc) {
+          //console.log(doc)
+          // put the store into pouchdb
+          return pouchdb.bulkDocs([
+            {
+              _id: state.myclient,
+              _rev: doc._rev,
+              _attachments: doc._attachments,
+              notes: state.notes
+            }
+          ])
+        })
+        .then(function() {
+          return pouchdb.get(state.myclient).then(function(doc) {
+            state.notes = doc.notes
+            // console.log(state.notes)
+          })
+        })
+        .catch(function(err) {
+          if (err.status == 404) {
+            // pouchdb.put({  })
+          }
+        })
     },
 
     EDIT_NOTE(state, text) {
@@ -321,6 +365,9 @@ const store = new Vuex.Store({
     },
     getNoteText: ({ commit }, e) => {
       commit('GET_TEXT', e)
+    },
+    movePos: ({ commit }, { activenoteid, xpos, ypos }) => {
+      commit('MOVE_POS', { activenoteid, xpos, ypos })
     },
     editNote: ({ commit }, e) => {
       commit('EDIT_NOTE', e.target.value)
