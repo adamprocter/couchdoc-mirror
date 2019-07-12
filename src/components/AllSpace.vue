@@ -1,5 +1,5 @@
 <template>
-  <div class="spaceview">
+  <div class="allspaceview">
     <h2>All spatial view</h2>
     <!-- tips-->
     <!-- : is short for v-bind -->
@@ -14,7 +14,7 @@
         <g
           v-for="(note, index) in value.doc.notes"
           v-bind:key="index"
-          :transform="`translate(0, ${index * 75})`"
+          :transform="`translate(${note.xpos}, ${note.ypos})`"
           class="draggable"
         >
           <polygon
@@ -31,64 +31,56 @@
             :class="note.content_type"
           />
         </g>
-        <!--
-        <polygon
-          v-if="note.content_type == 'link'"
-          points="14,0 0,32 32,32"
-          fill="#989898"
-          :class="note.content_type"
-        />
-        <rect
-          v-if="note.content_type == 'sheet'"
-          width="25"
-          height="25"
-          fill="#989898"
-          :class="note.content_type"
-        />-->
-
-        <!-- <text y="15">{{ note.text }}</text>
-        <text y="30">{{ note.content_type }}</text>-->
       </g>
-
-      <!-- 
-        ATTACHMENTS
-        <g
-        v-for="(myattachment, index) in myattachments"
-        :key="index"
-        :transform="`translate(0, ${index * 75})`"
-        class="draggable"
-      >
-        <circle
-          cx="16"
-          cy="16"
-          r="16"
-          fill="#989898"
-          :class="myattachment.content_type"
-        />
-      </g>-->
     </svg>
+
+    <!-- REF: Keep for now
+    <div v-for="(myattachment, index) in myattachments" :key="index">
+    <img :src="myattachments[index].url" alt width="50%" height border="0" />-->
+    <!-- </div> -->
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex'
+var activenoteid
+var xpos
+var ypos
 
 export default {
   name: 'YourData',
   computed: mapState({
+    //notes: state => state.notes,
+    //myattachments: state => state.myattachments
     otherclients: state => state.otherclients
   }),
 
   mounted() {
-    //console.log('mounted')
     this.makeDraggable()
+    this.makeConnectable()
   },
 
-  // FIXME: Move this type of method to a plug in perhaps
   methods: {
+    addDoc() {
+      this.$store.dispatch('addDoc')
+      this.$emit('editMode')
+    },
+    // FIXME: Edit note
+    openSelected(e) {
+      // console.log(e)
+      this.$store.dispatch('noteId', e)
+      this.$store.dispatch('getNoteText', e)
+      this.$emit('editMode')
+      // this.editMode()
+    },
+    updatePos(activenoteid, xpos, ypos) {
+      this.$store.dispatch('movePos', { activenoteid, xpos, ypos })
+    },
+    // FIXME: Can I move these methods to a plug in instead?
     makeDraggable() {
-      //console.log(this.$refs.sheets.children)
+      // console.log(this.$refs.sheets)
       var svg = this.$refs.sheets
+      var ref = this
 
       svg.addEventListener('mousedown', startDrag)
       svg.addEventListener('mousemove', drag)
@@ -100,6 +92,7 @@ export default {
       svg.addEventListener('touchleave', endDrag)
       svg.addEventListener('touchcancel', endDrag)
 
+      // FIXME: Can I make these ES6 arrow functions??
       function getMousePosition(evt) {
         var CTM = svg.getScreenCTM()
         if (evt.touches) {
@@ -117,6 +110,9 @@ export default {
         if (evt.target.parentNode.classList.contains('draggable')) {
           selectedElement = evt.target.parentNode
           offset = getMousePosition(evt)
+          //identify which object was clicked
+          activenoteid = selectedElement.firstElementChild.id
+          console.log(activenoteid)
 
           // Make sure the first transform on the element is a translate transform
           var transforms = selectedElement.transform.baseVal
@@ -143,18 +139,61 @@ export default {
           evt.preventDefault()
           var coord = getMousePosition(evt)
           transform.setTranslate(coord.x - offset.x, coord.y - offset.y)
+          //console.log(coord.x - offset.x)
+          // send positions back to DB
+          // activenoteid = selectedElement.firstElementChild.id
+          // xpos = coord.x - offset.x
+          // ypos = coord.y - offset.y
+          // ref.updatePos(activenoteid, xpos, ypos)
         }
       }
 
       function endDrag(evt) {
+        if (selectedElement) {
+          evt.preventDefault()
+          var coord = getMousePosition(evt)
+          transform.setTranslate(coord.x - offset.x, coord.y - offset.y)
+          //console.log(coord.x - offset.x)
+          // send positions back to DB
+          activenoteid = selectedElement.firstElementChild.id
+          xpos = coord.x - offset.x
+          ypos = coord.y - offset.y
+          ref.updatePos(activenoteid, xpos, ypos)
+        }
         selectedElement = false
       }
-    }
-  },
+    },
 
-  makeConnectable() {
-    //TODO: add in this code
-    //FIXME: probably also make as a plug in
+    makeConnectable() {
+      //FIXME: also make as a plug in
+      //console.log(this.$refs.sheets)
+      var svg = this.$refs.sheets
+      var ref = this
+      svg.addEventListener('click', singleClick)
+      svg.addEventListener('dblclick', doubleClick)
+
+      var selectedElement //, offset, transform
+
+      function singleClick(evt) {
+        if (evt.target.parentNode.classList.contains('draggable')) {
+          selectedElement = evt.target.parentNode
+          //console.log('single')
+        }
+      }
+
+      function doubleClick(evt) {
+        if (evt.target.parentNode.classList.contains('draggable')) {
+          selectedElement = evt.target.parentNode
+          //console.log('double')
+          //identify which object was clicked
+          //console.log(selectedElement.firstElementChild.id)
+          activenoteid = selectedElement.firstElementChild.id
+          ref.openSelected(activenoteid)
+        } else {
+          ref.addDoc()
+        }
+      }
+    }
   }
 }
 </script>

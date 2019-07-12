@@ -3,7 +3,13 @@
     <h2>Your spatial view</h2>
     <!-- tips-->
     <!-- : is short for v-bind -->
-    <svg xmlns="http://www.w3.org/2000/svg" width="400" height="800" id="space" ref="sheets">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="400"
+      height="800"
+      id="space"
+      ref="sheets"
+    >
       <g
         v-for="(note, index) in notes"
         :key="index"
@@ -67,6 +73,7 @@ export default {
   computed: mapState({
     notes: state => state.notes,
     myattachments: state => state.myattachments
+    // otherclients: state => state.otherclients
   }),
 
   mounted() {
@@ -100,10 +107,13 @@ export default {
       svg.addEventListener('mousemove', drag)
       svg.addEventListener('mouseup', endDrag)
       svg.addEventListener('mouseleave', endDrag)
+
       svg.addEventListener('touchstart', startDrag)
       svg.addEventListener('touchmove', drag)
+      // touch end is not being picked up on Firefox
       svg.addEventListener('touchend', endDrag)
       svg.addEventListener('touchleave', endDrag)
+      // touch cancel works
       svg.addEventListener('touchcancel', endDrag)
 
       // FIXME: Can I make these ES6 arrow functions??
@@ -173,6 +183,7 @@ export default {
           xpos = coord.x - offset.x
           ypos = coord.y - offset.y
           ref.updatePos(activenoteid, xpos, ypos)
+          //alert('end dragg')
         }
         selectedElement = false
       }
