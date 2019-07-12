@@ -23,7 +23,7 @@ export default {
     editNote(e) {
       this.$store.dispatch('editNote', e)
       this.$store.dispatch('noteId', this.activeNote.id)
-      //console.log(this.activeNote.id)
+      // console.log(this.activeNote.id)
     },
     closeEdit() {
       //console.log('emitclose')

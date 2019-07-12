@@ -170,13 +170,36 @@ const store = new Vuex.Store({
     },
     NOTE_ID(state, id) {
       localid = id
-      //console.log(id)
+      //console.log(localid)
     },
-    EDIT_NOTE(state, text) {
+
+    GET_TEXT(state, id) {
+      localid = id
+      console.log(localid)
       var i
       for (i = 0; i < Object.keys(state.notes).length; i++) {
         if (localid == state.notes[i].id) {
-          // console.log('match')
+          // console.log(state.notes[i].text)
+          // console.log(state.activeNote)
+          // this now needs to dispatch EDIT NOTE
+          const newNote = {
+            text: state.notes[i].text,
+            id: state.notes[i].id
+          }
+          state.activeNote = newNote
+
+          // state.activeNote.text = state.notes[i].text
+        }
+      }
+    },
+
+    EDIT_NOTE(state, text) {
+      // console.log('editing')
+      // console.log(text)
+      var i
+      for (i = 0; i < Object.keys(state.notes).length; i++) {
+        if (localid == state.notes[i].id) {
+          //console.log('match')
           // console.log(state.notes[i].id)
           state.notes[i].text = text
         }
@@ -295,6 +318,9 @@ const store = new Vuex.Store({
     },
     noteId: ({ commit }, e) => {
       commit('NOTE_ID', e)
+    },
+    getNoteText: ({ commit }, e) => {
+      commit('GET_TEXT', e)
     },
     editNote: ({ commit }, e) => {
       commit('EDIT_NOTE', e.target.value)

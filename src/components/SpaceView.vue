@@ -82,11 +82,11 @@ export default {
       this.$store.dispatch('addDoc')
       this.$emit('editMode')
     },
-    // FIXME: Edit note is not working as it seems that i cant dispatch and emit in this one place
-    editNote(e) {
-      console.log(e)
+    // FIXME: Edit note
+    openSelected(e) {
+      // console.log(e)
       this.$store.dispatch('noteId', e)
-      this.$store.dispatch('editNote', e)
+      this.$store.dispatch('getNoteText', e)
       this.$emit('editMode')
       // this.editMode()
     },
@@ -170,7 +170,7 @@ export default {
       function singleClick(evt) {
         if (evt.target.parentNode.classList.contains('draggable')) {
           selectedElement = evt.target.parentNode
-          //console.log('single')
+          console.log('single')
           //identify which object was clicked
           //console.log(selectedElement.firstElementChild.id)
         }
@@ -183,7 +183,7 @@ export default {
           //identify which object was clicked
           //console.log(selectedElement.firstElementChild.id)
           var activenoteid = selectedElement.firstElementChild.id
-          ref.editNote(activenoteid)
+          ref.openSelected(activenoteid)
         } else {
           //console.log('not on drag')
           ref.addDoc()
