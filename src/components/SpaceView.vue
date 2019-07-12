@@ -3,17 +3,11 @@
     <h2>Your spatial view</h2>
     <!-- tips-->
     <!-- : is short for v-bind -->
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="400"
-      height="800"
-      id="space"
-      ref="sheets"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="400" height="800" id="space" ref="sheets">
       <g
         v-for="(note, index) in notes"
         :key="index"
-        :transform="`translate(0, ${index * 75})`"
+        :transform="`translate(${note.xpos}, ${note.ypos})`"
         class="draggable"
       >
         <polygon
@@ -64,6 +58,9 @@
 
 <script>
 import { mapState } from 'vuex'
+var activenoteid
+var xpos
+var ypos
 
 export default {
   name: 'YourData',
@@ -90,10 +87,14 @@ export default {
       this.$emit('editMode')
       // this.editMode()
     },
+    updatePos(activenoteid, xpos, ypos) {
+      this.$store.dispatch('movePos', { activenoteid, xpos, ypos })
+    },
     // FIXME: Can I move these methods to a plug in instead?
     makeDraggable() {
       // console.log(this.$refs.sheets)
       var svg = this.$refs.sheets
+      var ref = this
 
       svg.addEventListener('mousedown', startDrag)
       svg.addEventListener('mousemove', drag)
@@ -123,6 +124,9 @@ export default {
         if (evt.target.parentNode.classList.contains('draggable')) {
           selectedElement = evt.target.parentNode
           offset = getMousePosition(evt)
+          //identify which object was clicked
+          activenoteid = selectedElement.firstElementChild.id
+          console.log(activenoteid)
 
           // Make sure the first transform on the element is a translate transform
           var transforms = selectedElement.transform.baseVal
@@ -149,10 +153,27 @@ export default {
           evt.preventDefault()
           var coord = getMousePosition(evt)
           transform.setTranslate(coord.x - offset.x, coord.y - offset.y)
+          //console.log(coord.x - offset.x)
+          // send positions back to DB
+          // activenoteid = selectedElement.firstElementChild.id
+          // xpos = coord.x - offset.x
+          // ypos = coord.y - offset.y
+          // ref.updatePos(activenoteid, xpos, ypos)
         }
       }
 
-      function endDrag() {
+      function endDrag(evt) {
+        if (selectedElement) {
+          evt.preventDefault()
+          var coord = getMousePosition(evt)
+          transform.setTranslate(coord.x - offset.x, coord.y - offset.y)
+          //console.log(coord.x - offset.x)
+          // send positions back to DB
+          activenoteid = selectedElement.firstElementChild.id
+          xpos = coord.x - offset.x
+          ypos = coord.y - offset.y
+          ref.updatePos(activenoteid, xpos, ypos)
+        }
         selectedElement = false
       }
     },
@@ -171,8 +192,6 @@ export default {
         if (evt.target.parentNode.classList.contains('draggable')) {
           selectedElement = evt.target.parentNode
           //console.log('single')
-          //identify which object was clicked
-          //console.log(selectedElement.firstElementChild.id)
         }
       }
 
@@ -182,10 +201,9 @@ export default {
           //console.log('double')
           //identify which object was clicked
           //console.log(selectedElement.firstElementChild.id)
-          var activenoteid = selectedElement.firstElementChild.id
+          activenoteid = selectedElement.firstElementChild.id
           ref.openSelected(activenoteid)
         } else {
-          //console.log('not on drag')
           ref.addDoc()
         }
       }
