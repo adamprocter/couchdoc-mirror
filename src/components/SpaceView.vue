@@ -170,7 +170,7 @@ export default {
       function singleClick(evt) {
         if (evt.target.parentNode.classList.contains('draggable')) {
           selectedElement = evt.target.parentNode
-          console.log('single')
+          //console.log('single')
           //identify which object was clicked
           //console.log(selectedElement.firstElementChild.id)
         }
@@ -179,7 +179,7 @@ export default {
       function doubleClick(evt) {
         if (evt.target.parentNode.classList.contains('draggable')) {
           selectedElement = evt.target.parentNode
-          console.log('double')
+          //console.log('double')
           //identify which object was clicked
           //console.log(selectedElement.firstElementChild.id)
           var activenoteid = selectedElement.firstElementChild.id

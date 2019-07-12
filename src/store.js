@@ -175,7 +175,7 @@ const store = new Vuex.Store({
 
     GET_TEXT(state, id) {
       localid = id
-      console.log(localid)
+      //console.log(localid)
       var i
       for (i = 0; i < Object.keys(state.notes).length; i++) {
         if (localid == state.notes[i].id) {
