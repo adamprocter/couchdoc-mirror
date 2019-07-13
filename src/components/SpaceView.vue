@@ -3,13 +3,7 @@
     <h2>Your spatial view</h2>
     <!-- tips-->
     <!-- : is short for v-bind -->
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="400"
-      height="800"
-      id="space"
-      ref="sheets"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="400" height="800" id="space" ref="sheets">
       <g
         v-for="(note, index) in notes"
         :key="index"
@@ -136,7 +130,7 @@ export default {
           offset = getMousePosition(evt)
           //identify which object was clicked
           activenoteid = selectedElement.firstElementChild.id
-          console.log(activenoteid)
+          // console.log(activenoteid)
 
           // Make sure the first transform on the element is a translate transform
           var transforms = selectedElement.transform.baseVal

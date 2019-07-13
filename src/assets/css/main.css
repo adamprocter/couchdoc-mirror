@@ -181,7 +181,7 @@ em {
 }
 
 /* this is to style the input type file using a label */
-label {
+label.myFiles {
   cursor: pointer;
   color: white;
   border: none;
@@ -195,7 +195,7 @@ label {
   margin-right: 0.5em;
 }
 
-label:active {
+label:active.myFiles {
   box-shadow: 0px 0px 0px #000000;
 }
 

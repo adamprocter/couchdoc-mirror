@@ -19,7 +19,7 @@
     </button>
 
     <form>
-      <label for="myFiles">Add Media</label>
+      <label class="myFiles" for="myFiles">Add Media</label>
       <input type="file" @change="addFile" ref="myFiles" id="myFiles" />
     </form>
     <hr />

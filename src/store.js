@@ -160,7 +160,8 @@ const store = new Vuex.Store({
             var end = Object.keys(state.notes).length - 1
             const newNote = {
               text: state.notes[end].text,
-              id: state.notes[end].id
+              id: state.notes[end].id,
+              content_type: state.notes[end].content_type
             }
             state.activeNote = newNote
           })
@@ -187,7 +188,8 @@ const store = new Vuex.Store({
           // this now needs to dispatch EDIT NOTE
           const newNote = {
             text: state.notes[i].text,
-            id: state.notes[i].id
+            id: state.notes[i].id,
+            content_type: state.notes[i].content_type
           }
           state.activeNote = newNote
 
@@ -237,15 +239,17 @@ const store = new Vuex.Store({
         })
     },
 
-    EDIT_NOTE(state, text) {
+    EDIT_NOTE(state, e) {
       // console.log('editing')
-      // console.log(text)
+      // console.log(e.t)
+      //  console.log(type)
       var i
       for (i = 0; i < Object.keys(state.notes).length; i++) {
         if (localid == state.notes[i].id) {
           //console.log('match')
           // console.log(state.notes[i].id)
-          state.notes[i].text = text
+          state.notes[i].text = e.text
+          state.notes[i].content_type = e.t
         }
       }
 
@@ -356,7 +360,7 @@ const store = new Vuex.Store({
           })
       })
     },
-
+    //FIXME: I think number of these commit specifically with editing the note could / should probably be combined
     addDoc: ({ commit }) => {
       commit('ADD_DOC')
     },
@@ -369,8 +373,12 @@ const store = new Vuex.Store({
     movePos: ({ commit }, { activenoteid, xpos, ypos }) => {
       commit('MOVE_POS', { activenoteid, xpos, ypos })
     },
-    editNote: ({ commit }, e) => {
-      commit('EDIT_NOTE', e.target.value)
+    editNote: ({ commit }, { e, t }) => {
+      var text = e.target.value
+      commit('EDIT_NOTE', { text, t })
+    },
+    editType: ({ commit }, e) => {
+      commit('EDIT_TYPE', e.target.value)
     },
     setClient: ({ commit }, e) => {
       commit('SET_CLIENT', e)
