@@ -43,9 +43,6 @@
 
 <script>
 import { mapState } from 'vuex'
-var activenoteid
-var xpos
-var ypos
 
 export default {
   name: 'YourData',
