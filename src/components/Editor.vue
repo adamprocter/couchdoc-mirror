@@ -8,7 +8,11 @@
         <option value="link">link</option>
       </select>
       <br />
-      <textarea @input="editNote" v-model="activeNote.text" class="form-control"></textarea>
+      <textarea
+        @input="editNote"
+        v-model="activeNote.text"
+        class="form-control"
+      ></textarea>
       <input v-bind:value="activeNote.id" name="id" readonly hidden />
 
       <button @click="closeEdit()">Finish</button>

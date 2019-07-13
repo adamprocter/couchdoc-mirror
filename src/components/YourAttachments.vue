@@ -4,7 +4,21 @@
     <!-- tips -->
     <!-- : is short for v-bind -->
     <div v-for="(myattachment, index) in myattachments" :key="index">
-      <img :src="myattachments[index].url" alt width="50%" height border="0" />
+      <!-- could use file extenstion on name to render custom icon for anything not an image file 
+      could use .mp4 to render in <video>-->
+      <div v-if="myattachments[index].name != '.png'">
+        <img
+          :src="myattachments[index].url"
+          alt
+          width="50%"
+          height
+          border="0"
+        />
+        <p>{{ myattachments[index].name }}</p>
+      </div>
+      <!-- yet to have positions 
+
+      -->
     </div>
   </div>
 </template>

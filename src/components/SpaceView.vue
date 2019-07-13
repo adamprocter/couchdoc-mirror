@@ -38,14 +38,7 @@
         class="draggable"
       >
         <!-- FIXME: class and id are not in the attachments state -->
-        <circle
-          cx="16"
-          cy="16"
-          r="16"
-          fill="#989898"
-          :class="myattachment.content_type"
-          :id="myattachment.id"
-        />
+        <circle cx="16" cy="16" r="16" fill="#989898" :id="myattachment.name" />
       </g>
     </svg>
 

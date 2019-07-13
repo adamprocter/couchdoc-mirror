@@ -44,8 +44,10 @@ const store = new Vuex.Store({
 
     GET_MY_ATTACHMENTS(state) {
       state.myattachments = []
+      state.myattachmentnames = []
       pouchdb.get(state.myclient, { attachments: true }).then(function(doc) {
-        //FIXME: What is this for loop doing, need to understand this
+        //FIXME: this is getting the name out of attachment and then I can access them in a loop
+        // this could be totally wrong at this stage
         var filename
         for (var key in doc._attachments) {
           if (
@@ -60,6 +62,7 @@ const store = new Vuex.Store({
         }
 
         var i
+        var j = 0
         for (i = 0; i < Object.keys(doc._attachments).length; i++) {
           pouchdb
             .getAttachment(state.myclient, state.myattachmentnames[i].name)
@@ -68,9 +71,10 @@ const store = new Vuex.Store({
               var url = URL.createObjectURL(blob)
               //
               state.myattachments.push({
+                name: state.myattachmentnames[j].name,
                 url: url
               })
-              //
+              j++
             })
             .catch(function(err) {
               console.log(err)
@@ -281,9 +285,12 @@ const store = new Vuex.Store({
     },
 
     ADD_FILE(state, files) {
+      var tempdoc = null
+      console.log(state.myclient)
       pouchdb
         .get(state.myclient)
         .then(function(doc) {
+          tempdoc = doc
           return pouchdb.putAttachment(
             state.myclient,
             files.name,
@@ -295,7 +302,7 @@ const store = new Vuex.Store({
         .then(function(response) {
           // handle response
           if (response.ok == true) {
-            // not empty line
+            store.commit('GET_MY_ATTACHMENTS')
           }
         })
         .catch(function(err) {
