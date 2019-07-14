@@ -6,9 +6,30 @@
     <div v-for="(myattachment, index) in myattachments" :key="index">
       <!-- could use file extenstion on name to render custom icon for anything not an image file 
       could use .mp4 to render in <video>-->
-      <div v-if="myattachments[index].name != '.png'">
+      <div v-if="myattachments[index].name.endsWith('.png')">
         <img
           :src="myattachments[index].url"
+          alt
+          width="50%"
+          height
+          border="0"
+        />
+        <p>{{ myattachments[index].name }}</p>
+      </div>
+
+      <div v-else-if="myattachments[index].name.endsWith('.jpeg')">
+        <img
+          :src="myattachments[index].url"
+          alt
+          width="50%"
+          height
+          border="0"
+        />
+        <p>{{ myattachments[index].name }}</p>
+      </div>
+      <div v-else>
+        <img
+          src="../assets/img/icon-mac.jpg"
           alt
           width="50%"
           height
