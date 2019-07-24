@@ -6,7 +6,7 @@
     <svg xmlns="http://www.w3.org/2000/svg" width="400" height="800" id="space" ref="sheets">
       <g
         v-for="(note, index) in notes"
-        :key="index"
+        :key="'note'+index"
         :transform="`translate(${note.xpos}, ${note.ypos})`"
         class="draggable"
       >
@@ -26,14 +26,17 @@
           :id="note.id"
         />
 
+        <!-- if a note has connection draw a line -->
+        <line x1="0" y1="0" x2="50" y2="0" style="stroke:rgb(255,0,0);stroke-width:2" />
+
         <!--REF: Keep for now
           <text y="15">{{ note.text }}</text>
         <text y="30">{{ note.content_type }}</text>-->
       </g>
-      <!-- FIXME: duplicate key issue ?? -->
+
       <g
         v-for="(myattachment, index) in myattachments"
-        :key="index"
+        :key="'myattachment'+index"
         :transform="`translate(0, ${index * 75})`"
         class="draggable"
       >
@@ -52,8 +55,8 @@
 <script>
 import { mapState } from 'vuex'
 var activenoteid
-var xpos
-var ypos
+var xpos = 0
+var ypos = 0
 
 export default {
   name: 'YourData',
@@ -150,12 +153,6 @@ export default {
           evt.preventDefault()
           var coord = getMousePosition(evt)
           transform.setTranslate(coord.x - offset.x, coord.y - offset.y)
-          //console.log(coord.x - offset.x)
-          // send positions back to DB
-          // activenoteid = selectedElement.firstElementChild.id
-          // xpos = coord.x - offset.x
-          // ypos = coord.y - offset.y
-          // ref.updatePos(activenoteid, xpos, ypos)
         }
       }
 

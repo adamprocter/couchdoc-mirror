@@ -13,6 +13,7 @@ const store = new Vuex.Store({
     instance: '',
     myclient: '',
     notes: [],
+    connections: [],
     otherclients: {},
     activeNote: {},
     myattachments: [],
@@ -117,7 +118,20 @@ const store = new Vuex.Store({
                   text: 'Device ' + state.myclient,
                   // get name from form as well (look at e thing!)
                   owner: 'name',
+                  xpos: '0',
+                  ypos: '0',
                   deleted: false
+                }
+              ],
+              connections: [
+                {
+                  id: uniqueid,
+                  connections: {
+                    id: 0,
+                    endx: 0,
+                    endy: 0,
+                    connection: false
+                  }
                 }
               ]
             })
@@ -146,7 +160,16 @@ const store = new Vuex.Store({
             deleted: false,
             xpos: '0',
             ypos: '0'
-          })
+          }),
+            doc.connections.push({
+              id: uniqueid,
+              connections: {
+                id: 0,
+                endx: 0,
+                endy: 0,
+                connection: false
+              }
+            })
 
           // put the store into pouchdb
           return pouchdb.bulkDocs([
@@ -154,7 +177,8 @@ const store = new Vuex.Store({
               _id: state.myclient,
               _rev: doc._rev,
               _attachments: doc._attachments,
-              notes: doc.notes
+              notes: doc.notes,
+              connections: doc.connections
             }
           ])
         })
@@ -226,13 +250,15 @@ const store = new Vuex.Store({
               _id: state.myclient,
               _rev: doc._rev,
               _attachments: doc._attachments,
-              notes: state.notes
+              notes: state.notes,
+              connections: doc.connections
             }
           ])
         })
         .then(function() {
           return pouchdb.get(state.myclient).then(function(doc) {
             state.notes = doc.notes
+
             // console.log(state.notes)
           })
         })
@@ -267,13 +293,15 @@ const store = new Vuex.Store({
               _id: state.myclient,
               _rev: doc._rev,
               _attachments: doc._attachments,
-              notes: state.notes
+              notes: state.notes,
+              connections: doc.connections
             }
           ])
         })
         .then(function() {
           return pouchdb.get(state.myclient).then(function(doc) {
             state.notes = doc.notes
+
             // console.log(state.notes)
           })
         })
@@ -303,6 +331,7 @@ const store = new Vuex.Store({
           // handle response
           if (response.ok == true) {
             store.commit('GET_MY_ATTACHMENTS')
+            // put in details of attachment using same key
           }
         })
         .catch(function(err) {

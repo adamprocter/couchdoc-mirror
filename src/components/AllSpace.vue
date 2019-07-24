@@ -3,13 +3,7 @@
     <h2>All spatial view</h2>
     <!-- tips-->
     <!-- : is short for v-bind -->
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="400"
-      height="800"
-      id="space"
-      ref="sheets"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="400" height="800" id="space" ref="sheets">
       <g v-for="(value, index) in otherclients" :key="index">
         <g
           v-for="(note, index) in value.doc.notes"
