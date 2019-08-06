@@ -5,7 +5,9 @@ import PouchDB from 'pouchdb'
 Vue.use(Vuex)
 // Objects
 var pouchdb = new PouchDB('couchdocs')
-var remote = 'https://nn.adamprocter.co.uk/couchdocs/'
+//var remote = 'https://nn.adamprocter.co.uk/couchdocs/'
+// local couch on my mac
+var remote = 'http://127.0.0.1:5984/couchdocs/'
 
 var localid = null
 const store = new Vuex.Store({
@@ -96,9 +98,9 @@ const store = new Vuex.Store({
         .get(state.myclient)
         .then(function(doc) {
           state.notes = doc.notes
+          state.connections = doc.connections
           //state.myattachments = doc._attachments
           // console.log(doc._attachments)
-          //console.log(state.myattachments)
         })
         .catch(function(err) {
           if (err.status == 404) {
@@ -123,15 +125,19 @@ const store = new Vuex.Store({
                   deleted: false
                 }
               ],
+              //FIXME: Creates a useless connnection to device?
+              // but puts in unique ID
               connections: [
                 {
                   id: uniqueid,
-                  connections: {
-                    id: 0,
-                    endx: 0,
-                    endy: 0,
-                    connection: false
-                  }
+                  connection: [
+                    {
+                      id: '0',
+                      endx: '0',
+                      endy: '0',
+                      connected: false
+                    }
+                  ]
                 }
               ]
             })
@@ -161,14 +167,17 @@ const store = new Vuex.Store({
             xpos: '0',
             ypos: '0'
           }),
+            //FIXME: Creates one empty connection for every new doc
             doc.connections.push({
               id: uniqueid,
-              connections: {
-                id: 0,
-                endx: 0,
-                endy: 0,
-                connection: false
-              }
+              connection: [
+                {
+                  id: '0',
+                  endx: '0',
+                  endy: '0',
+                  connected: false
+                }
+              ]
             })
 
           // put the store into pouchdb
@@ -185,6 +194,7 @@ const store = new Vuex.Store({
         .then(function() {
           return pouchdb.get(state.myclient).then(function(doc) {
             state.notes = doc.notes
+            state.connections = doc.connections
             var end = Object.keys(state.notes).length - 1
             const newNote = {
               text: state.notes[end].text,
@@ -202,12 +212,10 @@ const store = new Vuex.Store({
     },
     NOTE_ID(state, id) {
       localid = id
-      //console.log(localid)
     },
 
     GET_TEXT(state, id) {
       localid = id
-      //console.log(localid)
       var i
       for (i = 0; i < Object.keys(state.notes).length; i++) {
         if (localid == state.notes[i].id) {
@@ -226,6 +234,61 @@ const store = new Vuex.Store({
       }
     },
 
+    MAKE_CONNECT(state, e) {
+      //console.log(state.connections[1].connection.id)
+      // add the new info connection here
+      //console.log(state.connections)
+
+      var first = e.e
+      var second = e.f
+
+      var i
+      for (i = 0; i < Object.keys(state.connections).length; i++) {
+        if (first == state.connections[i].id) {
+          var currentid = i
+          state.connections[currentid].connection.push({
+            id: second,
+            endx: e.xpos,
+            endy: e.ypos,
+            connected: true
+          })
+
+          //console.log(state.connections)
+
+          pouchdb
+            .get(state.myclient)
+            .then(function(doc) {
+              // put the store into pouchdb
+              //console.log(state.connections)
+              return pouchdb.bulkDocs([
+                {
+                  _id: state.myclient,
+                  _rev: doc._rev,
+                  _attachments: doc._attachments,
+                  notes: doc.notes,
+                  connections: state.connections
+                }
+              ])
+            })
+
+            .then(function() {
+              return pouchdb.get(state.myclient).then(function(doc) {
+                //state.connections = doc.connections
+                // console.log(state.connections[currentid])
+
+                // state.notes = doc.notes
+                state.connections = doc.connections
+              })
+            })
+            .catch(function(err) {
+              if (err.status == 404) {
+                // pouchdb.put({  })
+              }
+            })
+        }
+      }
+    },
+
     MOVE_POS(state, e) {
       // console.log(e)
       localid = e.activenoteid
@@ -233,10 +296,10 @@ const store = new Vuex.Store({
       var i
       for (i = 0; i < Object.keys(state.notes).length; i++) {
         if (localid == state.notes[i].id) {
-          //console.log('match')
-          //console.log(state.notes[i].xpos)
+          //UPDATE Dragged Positions
           state.notes[i].xpos = e.xpos
           state.notes[i].ypos = e.ypos
+          //FIXME: UPDATE Connection distance positions here if connected equals true ?
         }
       }
 
@@ -251,14 +314,14 @@ const store = new Vuex.Store({
               _rev: doc._rev,
               _attachments: doc._attachments,
               notes: state.notes,
-              connections: doc.connections
+              connections: state.connections
             }
           ])
         })
         .then(function() {
           return pouchdb.get(state.myclient).then(function(doc) {
             state.notes = doc.notes
-
+            //state.connections = doc.connections
             // console.log(state.notes)
           })
         })
@@ -301,7 +364,7 @@ const store = new Vuex.Store({
         .then(function() {
           return pouchdb.get(state.myclient).then(function(doc) {
             state.notes = doc.notes
-
+            // state.connections = doc.connections
             // console.log(state.notes)
           })
         })
@@ -406,8 +469,12 @@ const store = new Vuex.Store({
     getNoteText: ({ commit }, e) => {
       commit('GET_TEXT', e)
     },
+
     movePos: ({ commit }, { activenoteid, xpos, ypos }) => {
       commit('MOVE_POS', { activenoteid, xpos, ypos })
+    },
+    startConnect: ({ commit }, { e, f, xpos, ypos }) => {
+      commit('MAKE_CONNECT', { e, f, xpos, ypos })
     },
     editNote: ({ commit }, { e, t }) => {
       var text = e.target.value

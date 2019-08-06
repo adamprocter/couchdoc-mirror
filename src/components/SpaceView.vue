@@ -27,8 +27,17 @@
         />
 
         <!-- if a note has connection draw a line -->
-        <line x1="0" y1="0" x2="50" y2="0" style="stroke:rgb(255,0,0);stroke-width:2" />
-
+        <!-- FIXME: if there is true on connection -->
+        <g v-for="(connection, index) in connections" :key="index">
+          <line
+            v-for="connection in connection.connection"
+            x1="0"
+            y1="0"
+            :x2="connection.endx"
+            :y2="connection.endy"
+            style="stroke:rgb(255,0,0);stroke-width:2"
+          />
+        </g>
         <!--REF: Keep for now
           <text y="15">{{ note.text }}</text>
         <text y="30">{{ note.content_type }}</text>-->
@@ -45,6 +54,17 @@
       </g>
     </svg>
 
+    <div v-for="(connection, index) in connections" :key="index">
+      <div v-for="connection in connection.connection">
+        {{connection.endx}}
+        {{connection.endy}}
+      </div>
+    </div>
+
+    <!-- <ul class="data" v-for="(value, index) in connections" v-bind:key="index">
+      <li v-for="(connnection, index) in value.connections" v-bind:key="index">{{ connection.xpos }}</li>
+    </ul>-->
+
     <!-- REF: Keep for now
     <div v-for="(myattachment, index) in myattachments" :key="index">
     <img :src="myattachments[index].url" alt width="50%" height border="0" />-->
@@ -55,6 +75,8 @@
 <script>
 import { mapState } from 'vuex'
 var activenoteid
+var firsttap
+var secondtap
 var xpos = 0
 var ypos = 0
 
@@ -62,7 +84,9 @@ export default {
   name: 'YourData',
   computed: mapState({
     notes: state => state.notes,
-    myattachments: state => state.myattachments
+    myattachments: state => state.myattachments,
+    connections: state => state.connections
+
     // otherclients: state => state.otherclients
   }),
 
@@ -76,13 +100,13 @@ export default {
       this.$store.dispatch('addDoc')
       this.$emit('editMode')
     },
-    // FIXME: Edit note
     openSelected(e) {
-      // console.log(e)
       this.$store.dispatch('noteId', e)
       this.$store.dispatch('getNoteText', e)
       this.$emit('editMode')
-      // this.editMode()
+    },
+    startConnect(e, f, xpos, ypos) {
+      this.$store.dispatch('startConnect', { e, f, xpos, ypos })
     },
     updatePos(activenoteid, xpos, ypos) {
       this.$store.dispatch('movePos', { activenoteid, xpos, ypos })
@@ -181,12 +205,25 @@ export default {
       svg.addEventListener('click', singleClick)
       svg.addEventListener('dblclick', doubleClick)
 
-      var selectedElement //, offset, transform
+      var selectedElement
 
       function singleClick(evt) {
-        if (evt.target.parentNode.classList.contains('draggable')) {
-          selectedElement = evt.target.parentNode
-          //console.log('single')
+        if (firsttap == null) {
+          if (evt.target.parentNode.classList.contains('draggable')) {
+            selectedElement = evt.target.parentNode
+            //console.log('first')
+            firsttap = selectedElement.firstElementChild.id
+            //ref.startConnect(firsttap)
+          }
+        } else {
+          if (evt.target.parentNode.classList.contains('draggable')) {
+            selectedElement = evt.target.parentNode
+
+            secondtap = selectedElement.firstElementChild.id
+            ref.startConnect(firsttap, secondtap, xpos, ypos)
+            // firsttap = null
+            // console.log(firsttap)
+          }
         }
       }
 
