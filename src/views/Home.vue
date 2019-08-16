@@ -57,7 +57,7 @@ export default {
       this.clientset = !this.clientset
     },
     editMode() {
-      // console.log('heard')
+      //console.log('heard')
       this.editing = !this.editing
     },
     closeEdit() {

@@ -10,6 +10,7 @@
         :transform="`translate(${note.xpos}, ${note.ypos})`"
         class="draggable"
       >
+        <!-- FIXME: -->
         <polygon
           v-if="note.content_type == 'link'"
           points="14,0 0,32 32,32"
@@ -25,22 +26,27 @@
           :class="note.content_type"
           :id="note.id"
         />
-
-        <!-- if a note has connection draw a line -->
-        <!-- FIXME: if there is true on connection -->
         <g v-for="(connection, index) in connections" :key="index">
-          <line
-            v-for="connection in connection.connection"
-            x1="0"
-            y1="0"
-            :x2="connection.endx"
-            :y2="connection.endy"
-            style="stroke:rgb(255,0,0);stroke-width:2"
-          />
+          <!-- FIXME: Add conection is true ?  -->
+          <!-- FIXME: LINE start should be 0,0 not note.xpos -->
+          <!-- <g v-if="connection.connected == true"> -->
+          <g
+            v-if="note.id == connection.id"
+            :transform="`translate(${-note.xpos}, ${-note.ypos})`"
+          >
+            <g v-for="connection in connection.connection">
+              <line
+                :x1="note.xpos"
+                :y1="note.ypos"
+                :x2="connection.endx"
+                :y2="connection.endy"
+                style="stroke:rgb(255,0,0);stroke-width:2"
+              />
+            </g>
+          </g>
+          <!-- </g> -->
         </g>
-        <!--REF: Keep for now
-          <text y="15">{{ note.text }}</text>
-        <text y="30">{{ note.content_type }}</text>-->
+        <!-- <text>{{note.xpos}}</text> -->
       </g>
 
       <g
@@ -54,8 +60,10 @@
       </g>
     </svg>
 
+    <!-- FIXME: Temp Output -->
     <div v-for="(connection, index) in connections" :key="index">
       <div v-for="connection in connection.connection">
+        {{connection.id}}
         {{connection.endx}}
         {{connection.endy}}
       </div>
@@ -79,6 +87,9 @@ var firsttap
 var secondtap
 var xpos = 0
 var ypos = 0
+
+var myTimer
+var delay = 500
 
 export default {
   name: 'YourData',
@@ -111,6 +122,7 @@ export default {
     updatePos(activenoteid, xpos, ypos) {
       this.$store.dispatch('movePos', { activenoteid, xpos, ypos })
     },
+
     // FIXME: Can I move these methods to a plug in instead?
     makeDraggable() {
       // console.log(this.$refs.sheets)
@@ -124,11 +136,18 @@ export default {
 
       svg.addEventListener('touchstart', startDrag)
       svg.addEventListener('touchmove', drag)
-      // touch end is not being picked up on Firefox
+      // touch end is not being picked up on Firefox iOS
       svg.addEventListener('touchend', endDrag)
       svg.addEventListener('touchleave', endDrag)
       // touch cancel works
       svg.addEventListener('touchcancel', endDrag)
+
+      var selectedElement, offset, transform
+
+      function dontClick() {
+        firsttap = null
+        console.log(firsttap)
+      }
 
       // FIXME: Can I make these ES6 arrow functions??
       function getMousePosition(evt) {
@@ -142,10 +161,10 @@ export default {
         }
       }
 
-      var selectedElement, offset, transform
-
       function startDrag(evt) {
         if (evt.target.parentNode.classList.contains('draggable')) {
+          myTimer = setTimeout(dontClick, delay)
+
           selectedElement = evt.target.parentNode
           offset = getMousePosition(evt)
           //identify which object was clicked
@@ -173,27 +192,32 @@ export default {
       }
 
       function drag(evt) {
+        // console.log(clickvalid)
         if (selectedElement) {
           evt.preventDefault()
           var coord = getMousePosition(evt)
           transform.setTranslate(coord.x - offset.x, coord.y - offset.y)
         }
+        firsttap = null
       }
 
       function endDrag(evt) {
         if (selectedElement) {
+          //clearTimeout(myTimer)
+
           evt.preventDefault()
           var coord = getMousePosition(evt)
           transform.setTranslate(coord.x - offset.x, coord.y - offset.y)
           //console.log(coord.x - offset.x)
-          // send positions back to DB
+          //send positions back to DB
           activenoteid = selectedElement.firstElementChild.id
           xpos = coord.x - offset.x
           ypos = coord.y - offset.y
           ref.updatePos(activenoteid, xpos, ypos)
-          //alert('end dragg')
         }
+        // }
         selectedElement = false
+        firsttap = null
       }
     },
 
@@ -211,26 +235,26 @@ export default {
         if (firsttap == null) {
           if (evt.target.parentNode.classList.contains('draggable')) {
             selectedElement = evt.target.parentNode
-            //console.log('first')
             firsttap = selectedElement.firstElementChild.id
-            //ref.startConnect(firsttap)
+            console.log(firsttap)
           }
         } else {
           if (evt.target.parentNode.classList.contains('draggable')) {
             selectedElement = evt.target.parentNode
 
             secondtap = selectedElement.firstElementChild.id
+            // FIXME: perhaps need start positions here to pass?
             ref.startConnect(firsttap, secondtap, xpos, ypos)
-            // firsttap = null
-            // console.log(firsttap)
           }
         }
       }
 
       function doubleClick(evt) {
+        console.log('doubleclick start ' + firsttap)
         if (evt.target.parentNode.classList.contains('draggable')) {
           selectedElement = evt.target.parentNode
           //console.log('double')
+          firsttap = null
           //identify which object was clicked
           //console.log(selectedElement.firstElementChild.id)
           activenoteid = selectedElement.firstElementChild.id
