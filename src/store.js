@@ -131,12 +131,12 @@ const store = new Vuex.Store({
                 {
                   id: uniqueid,
                   connection: [
-                    {
-                      id: '0',
-                      endx: '0',
-                      endy: '0',
-                      connected: false
-                    }
+                    // {
+                    //   id: '0',
+                    //   endx: '0',
+                    //   endy: '0',
+                    //   connected: false
+                    // }
                   ]
                 }
               ]
@@ -171,12 +171,12 @@ const store = new Vuex.Store({
             doc.connections.push({
               id: uniqueid,
               connection: [
-                {
-                  id: '0',
-                  endx: '0',
-                  endy: '0',
-                  connected: false
-                }
+                // {
+                //   id: '0',
+                //   endx: '0',
+                //   endy: '0',
+                //   connected: false
+                // }
               ]
             })
 
@@ -356,39 +356,31 @@ const store = new Vuex.Store({
             state.connections[i].connection[j].endx = e.xpos
             state.connections[i].connection[j].endy = e.ypos
 
-            //not push but update all instances
-            // state.connections[currentid].connection[connectid]({
-            //   id: connectid,
-            //   endx: e.xpos,
-            //   endy: e.ypos,
-            //   connected: true
-            // })
-            console.log(state.connections)
-            // pouchdb
-            //   .get(state.myclient)
-            //   .then(function(doc) {
-            //     //console.log(doc)
-            //     // put the store into pouchdb
-            //     return pouchdb.bulkDocs([
-            //       {
-            //         _id: state.myclient,
-            //         _rev: doc._rev,
-            //         _attachments: doc._attachments,
-            //         notes: doc.notes,
-            //         connections: state.connections
-            //       }
-            //     ])
-            //   })
-            //   .then(function() {
-            //     return pouchdb.get(state.myclient).then(function(doc) {
-            //       state.connections = doc.connections
-            //     })
-            //   })
-            //   .catch(function(err) {
-            //     if (err.status == 404) {
-            //       // pouchdb.put({  })
-            //     }
-            //   })
+            pouchdb
+              .get(state.myclient)
+              .then(function(doc) {
+                //console.log(doc)
+                // put the store into pouchdb
+                return pouchdb.bulkDocs([
+                  {
+                    _id: state.myclient,
+                    _rev: doc._rev,
+                    _attachments: doc._attachments,
+                    notes: doc.notes,
+                    connections: state.connections
+                  }
+                ])
+              })
+              .then(function() {
+                return pouchdb.get(state.myclient).then(function(doc) {
+                  state.connections = doc.connections
+                })
+              })
+              .catch(function(err) {
+                if (err.status == 404) {
+                  // pouchdb.put({  })
+                }
+              })
           }
         }
       }
