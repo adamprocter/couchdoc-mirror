@@ -122,6 +122,9 @@ export default {
     updatePos(activenoteid, xpos, ypos) {
       this.$store.dispatch('movePos', { activenoteid, xpos, ypos })
     },
+    updateConnect(activenoteid, xpos, ypos) {
+      this.$store.dispatch('updateConnect', { activenoteid, xpos, ypos })
+    },
 
     // FIXME: Can I move these methods to a plug in instead?
     makeDraggable() {
@@ -145,8 +148,8 @@ export default {
       var selectedElement, offset, transform
 
       function dontClick() {
-        firsttap = null
-        console.log(firsttap)
+        firsttap = '0000'
+        console.log('called if timer over 500 ' + firsttap)
       }
 
       // FIXME: Can I make these ES6 arrow functions??
@@ -198,12 +201,11 @@ export default {
           var coord = getMousePosition(evt)
           transform.setTranslate(coord.x - offset.x, coord.y - offset.y)
         }
-        firsttap = null
       }
 
       function endDrag(evt) {
         if (selectedElement) {
-          //clearTimeout(myTimer)
+          clearTimeout(myTimer)
 
           evt.preventDefault()
           var coord = getMousePosition(evt)
@@ -214,10 +216,13 @@ export default {
           xpos = coord.x - offset.x
           ypos = coord.y - offset.y
           ref.updatePos(activenoteid, xpos, ypos)
+
+          // update any endx and ypos for connections connected to this id
+          //
+          ref.updateConnect(activenoteid, xpos, ypos)
         }
         // }
         selectedElement = false
-        firsttap = null
       }
     },
 
@@ -232,11 +237,14 @@ export default {
       var selectedElement
 
       function singleClick(evt) {
-        if (firsttap == null) {
+        if (firsttap == '0000') {
+          firsttap = null
+          console.log('timer out')
+        } else if (firsttap == null) {
           if (evt.target.parentNode.classList.contains('draggable')) {
             selectedElement = evt.target.parentNode
             firsttap = selectedElement.firstElementChild.id
-            console.log(firsttap)
+            console.log('inside single click ' + firsttap)
           }
         } else {
           if (evt.target.parentNode.classList.contains('draggable')) {
@@ -250,11 +258,11 @@ export default {
       }
 
       function doubleClick(evt) {
-        console.log('doubleclick start ' + firsttap)
+        console.log('inside doubleclick ' + firsttap)
         if (evt.target.parentNode.classList.contains('draggable')) {
           selectedElement = evt.target.parentNode
           //console.log('double')
-          firsttap = null
+          firsttap = '0000'
           //identify which object was clicked
           //console.log(selectedElement.firstElementChild.id)
           activenoteid = selectedElement.firstElementChild.id

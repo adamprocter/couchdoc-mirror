@@ -332,6 +332,68 @@ const store = new Vuex.Store({
         })
     },
 
+    UPDATE_CONNECT(state, e) {
+      //console.log(state.connections)
+      localid = e.activenoteid
+      console.log(localid)
+      var i
+      var j
+
+      for (i = 0; i < Object.keys(state.connections).length; i++) {
+        // console.log(state.connections[i].connection)
+        for (
+          j = 0;
+          j < Object.keys(state.connections[i].connection).length;
+          j++
+        ) {
+          console.log(state.connections[i].connection[j].id)
+
+          if (localid == state.connections[i].connection[j].id) {
+            console.log('match')
+            // var currentid = i
+            // var connectid = j
+
+            state.connections[i].connection[j].endx = e.xpos
+            state.connections[i].connection[j].endy = e.ypos
+
+            //not push but update all instances
+            // state.connections[currentid].connection[connectid]({
+            //   id: connectid,
+            //   endx: e.xpos,
+            //   endy: e.ypos,
+            //   connected: true
+            // })
+            console.log(state.connections)
+            // pouchdb
+            //   .get(state.myclient)
+            //   .then(function(doc) {
+            //     //console.log(doc)
+            //     // put the store into pouchdb
+            //     return pouchdb.bulkDocs([
+            //       {
+            //         _id: state.myclient,
+            //         _rev: doc._rev,
+            //         _attachments: doc._attachments,
+            //         notes: doc.notes,
+            //         connections: state.connections
+            //       }
+            //     ])
+            //   })
+            //   .then(function() {
+            //     return pouchdb.get(state.myclient).then(function(doc) {
+            //       state.connections = doc.connections
+            //     })
+            //   })
+            //   .catch(function(err) {
+            //     if (err.status == 404) {
+            //       // pouchdb.put({  })
+            //     }
+            //   })
+          }
+        }
+      }
+    },
+
     EDIT_NOTE(state, e) {
       // console.log('editing')
       // console.log(e.t)
@@ -475,6 +537,9 @@ const store = new Vuex.Store({
     },
     startConnect: ({ commit }, { e, f, xpos, ypos }) => {
       commit('MAKE_CONNECT', { e, f, xpos, ypos })
+    },
+    updateConnect: ({ commit }, { activenoteid, xpos, ypos }) => {
+      commit('UPDATE_CONNECT', { activenoteid, xpos, ypos })
     },
     editNote: ({ commit }, { e, t }) => {
       var text = e.target.value
