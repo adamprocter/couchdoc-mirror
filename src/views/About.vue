@@ -14,7 +14,7 @@
       <em>(and lots of helpers to be listed asap)</em>
     </p>
 
-    <h3>version 0.0.9</h3>
+    <h3>version 0.0.10</h3>
     <ul>
       <li>Contribute text and media with other people in realtime.</li>
       <li>
@@ -37,13 +37,19 @@
       <li>
         <a href="https://discursive.adamprocter.co.uk">discursive</a> (blog)
       </li>
-      <li><a href="https://researchnot.es">researchnot.es</a> (blog)</li>
-      <li><a href="https://manifold.soton.ac.uk">manifold</a> (writing)</li>
+      <li>
+        <a href="https://researchnot.es">researchnot.es</a> (blog)
+      </li>
+      <li>
+        <a href="https://manifold.soton.ac.uk">manifold</a> (writing)
+      </li>
       <li>
         <a href="https://fragmentum.adamprocter.co.uk">fragmentum</a>
         (microcast)
       </li>
-      <li><a href="https://gitlab.adamprocter.co.uk">gitlab</a> (code)</li>
+      <li>
+        <a href="https://gitlab.adamprocter.co.uk">gitlab</a> (code)
+      </li>
     </ul>
     <DeBug />
   </div>

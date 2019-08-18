@@ -9,14 +9,10 @@
       Press
       <em>Add Media</em> to attach media.
     </p>
-    <button
-      @click="
+    <button @click="
         addDoc()
         editMode()
-      "
-    >
-      Create
-    </button>
+      ">Create</button>
 
     <form>
       <label class="myFiles" for="myFiles">Add Media</label>
@@ -42,6 +38,7 @@ export default {
     },
     addFile() {
       // FIXME: possibly add unique ID to attachments as well in store.js
+
       this.files = this.$refs.myFiles.files
       // console.log(this.files)
       this.$store.dispatch('addFile', this.files[0])
