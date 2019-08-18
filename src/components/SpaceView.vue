@@ -60,14 +60,14 @@
       </g>
     </svg>
 
-    <!-- FIXME: Temp Output -->
-    <div v-for="(connection, index) in connections" :key="index">
+    <!-- FYI: Temp Output -->
+    <!-- <div v-for="(connection, index) in connections" :key="index">
       <div v-for="connection in connection.connection">
         {{connection.id}}
         {{connection.endx}}
         {{connection.endy}}
       </div>
-    </div>
+    </div>-->
 
     <!-- <ul class="data" v-for="(value, index) in connections" v-bind:key="index">
       <li v-for="(connnection, index) in value.connections" v-bind:key="index">{{ connection.xpos }}</li>
