@@ -25,7 +25,7 @@ const store = new Vuex.Store({
   mutations: {
     SET_CLIENT(state, doc) {
       state.myclient = doc
-      //console.log(state.myclient)
+      console.log(state)
       store.commit('GET_MY_DOC')
     },
     GET_ALL_DOCS(state) {

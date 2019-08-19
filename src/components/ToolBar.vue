@@ -3,11 +3,11 @@
     <h2>Create / Attach</h2>
     <p>
       Press
-      <em>Create</em> to add a contribution.
+      <em>Create</em> to add a note or link.
     </p>
     <p>
       Press
-      <em>Add Media</em> to attach media.
+      <em>Add</em> to add an attachments.
     </p>
     <button @click="
         addDoc()
@@ -15,7 +15,7 @@
       ">Create</button>
 
     <form>
-      <label class="myFiles" for="myFiles">Add Media</label>
+      <label class="myFiles" for="myFiles">Add</label>
       <input type="file" @change="addFile" ref="myFiles" id="myFiles" />
     </form>
     <hr />

@@ -18,7 +18,7 @@
     <ul>
       <li>Contribute text and media with other people in realtime.</li>
       <li>
-        Contributions displayed as both list and spatial view across all
+        Contributions displayed as a list and spatial view across all
         devices.
       </li>
     </ul>
@@ -48,7 +48,10 @@
         (microcast)
       </li>
       <li>
-        <a href="https://gitlab.adamprocter.co.uk">gitlab</a> (code)
+        <a href="https://gitlab.adamprocter.co.uk/adamprocter/couchdocs">gitlab</a> (code)
+      </li>
+      <li>
+        <a href="https://github.com/adamprocter/couchdoc-mirror/issues">issues</a> (raise and review)
       </li>
     </ul>
     <DeBug />

@@ -8,41 +8,40 @@
     <p>
       nodenoggin is a
       <span>work in progress</span> collaborative research and design thinking
-      tool, read more details and links in the about section.
+      tool, read more details and links in the
+      <a
+        href="/#/about"
+      >about</a> section.
     </p>
     <p>
-      You don't need a log in but you do however need to name this device (only
+      You don't need a log in but you do however need to name your device (only
       once) and then press
       <em>Lets Go!</em>
     </p>
 
     <h3>Start collaborating</h3>
-    <p>
-      Please name this device and provide a name that all contributions will be
-      attributed to.
-    </p>
+    <p>Please name your device.</p>
     <form>
       Device name:
       <input type="text" v-model="clientid" placeholder="myDeviceName" />
-      <br />Your name:
-      <input
+      <!-- <br />Your name: -->
+      <!-- <input
         type="text"
         v-model="name"
         name="name"
         placeholder="Fiona Applegate"
-      />
-      <br />--> <button @click="setClient()">Lets Go!!</button> <--
+      />-->
+      <br />-->
+      <button @click="setClient()">Lets Go!!</button> <--
     </form>
 
     <h3>Say what?</h3>
     <p>
-      Once you name this device and press
+      Once you name your device and press
       <em>Lets Go!</em>, you will be able to add a contribution by pressing
       <em>Create</em>.
     </p>
-    <p>
-      You will also see a list of other contributions added by other people.
-    </p>
+    <p>You will also see contributions added by other people.</p>
     <p>
       These contributions will update in realtime from the people connnected and
       contributions can be added offline and will sync once your back online.
@@ -53,8 +52,8 @@
     </h2>
     <ul>
       <li>This is a very much a work in progress</li>
-      <li>No contribution should be considered safe.</li>
-      <li>There will be glitches.</li>
+      <li>Contribution shouldn't be considered safe, the server and data are reset regulary.</li>
+      <li>&amp; there will be glitches.</li>
       <li>
         Please play and
         <a href="http://discourse.adamprocter.co.uk">feedback</a>.
