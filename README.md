@@ -8,7 +8,7 @@ This is very much a work in progress. Please take a moment to review this Intro 
 - [FORMAL READ](https://manifold.soton.ac.uk)
 - [BLOG READ](https://researchnot.es)
 - [FOLLOW](https://discursive.adamprocter.co.uk)
-- [RAISE CODE ISSUE](ISSUES.md)
+- [RAISE ISSUE](ISSUES.md)
 
 ## Project setup
 
