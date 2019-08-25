@@ -232,6 +232,8 @@ export default {
       var svg = this.$refs.sheets
       var ref = this
       svg.addEventListener('click', singleClick)
+      svg.addEventListener('touchstart', singleClick)
+
       svg.addEventListener('dblclick', doubleClick)
 
       var selectedElement
