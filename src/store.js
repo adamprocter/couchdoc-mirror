@@ -448,7 +448,7 @@ const store = new Vuex.Store({
           // handle response
           if (response.ok == true) {
             store.commit('GET_MY_ATTACHMENTS')
-            // put in details of attachment using same key
+            // FIXME: run ADD_DOC riping files.name into a new DOC
           }
         })
         .catch(function(err) {
