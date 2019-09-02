@@ -16,7 +16,7 @@
 
     <form>
       <label class="myFiles" for="myFiles">Add</label>
-      <input type="file" @change="addFile" ref="myFiles" id="myFiles" />
+      <input type="file" @change="addFile()" ref="myFiles" id="myFiles" />
     </form>
     <hr />
   </div>
@@ -37,10 +37,8 @@ export default {
       this.$emit('editMode')
     },
     addFile() {
-      // FIXME: possibly add unique ID to attachments as well in store.js
-
       this.files = this.$refs.myFiles.files
-      // console.log(this.files)
+      // console.log(this.files[0].name)
       this.$store.dispatch('addFile', this.files[0])
     }
   }

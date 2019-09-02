@@ -18,6 +18,7 @@ const store = new Vuex.Store({
     connections: [],
     otherclients: {},
     activeNote: {},
+    activeAttachment: {},
     myattachments: [],
     myattachmentnames: [],
     otherattachments: {}
@@ -47,10 +48,10 @@ const store = new Vuex.Store({
 
     GET_MY_ATTACHMENTS(state) {
       state.myattachments = []
+      //FIXME: this is getting the name out of attachment and then I can access them in a loop
+      // this could be totally wrong at this stage
       state.myattachmentnames = []
       pouchdb.get(state.myclient, { attachments: true }).then(function(doc) {
-        //FIXME: this is getting the name out of attachment and then I can access them in a loop
-        // this could be totally wrong at this stage
         var filename
         for (var key in doc._attachments) {
           if (
@@ -86,6 +87,26 @@ const store = new Vuex.Store({
       })
     },
 
+    GET_MY_ATTACHMENT(state, e) {
+      state.activeAttachment = []
+      //console.log(state)
+      console.log(e)
+      console.log('go get it then!')
+      pouchdb
+        .getAttachment(state.myclient, e)
+        .then(function(blob) {
+          // put img URL into store to render
+          var url = URL.createObjectURL(blob)
+          // console.log(url)
+          state.activeAttachment.push({
+            url: url
+          })
+        })
+        .catch(function(err) {
+          console.log(err)
+        })
+    },
+
     GET_MY_DOC(state) {
       // REF: for quick debug of attachments
       // pouchdb.get(state.myclient, { attachments: true }).then(function(doc) {
@@ -117,12 +138,12 @@ const store = new Vuex.Store({
               notes: [
                 {
                   id: uniqueid,
-                  text: 'Device ' + state.myclient,
+                  text: 'Device ' + state.myclient
                   // get name from form as well (look at e thing!)
-                  owner: 'name',
-                  xpos: '0',
-                  ypos: '0',
-                  deleted: false
+                  // owner: 'name',
+                  // xpos: '0',
+                  // ypos: '0',
+                  // deleted: false
                 }
               ],
               //FIXME: Creates a useless connnection to device?
@@ -144,7 +165,8 @@ const store = new Vuex.Store({
           }
         })
     },
-    ADD_DOC(state) {
+    ADD_DOC(state, e) {
+      console.log(e)
       var uniqueid =
         Math.random()
           .toString(36)
@@ -157,29 +179,54 @@ const store = new Vuex.Store({
         .get(state.myclient)
         .then(function(doc) {
           // pop new note onto the end of the doc
-          // console.log(doc._attachments)
-          doc.notes.push({
-            id: uniqueid,
-            text: 'EDIT ME',
-            owner: 'YOU',
-            content_type: 'sheet',
-            deleted: false,
-            xpos: '0',
-            ypos: '0'
-          }),
-            //FIXME: Creates one empty connection for every new doc
-            doc.connections.push({
+          console.log(e)
+          if (e == undefined) {
+            doc.notes.push({
               id: uniqueid,
-              connection: [
-                // {
-                //   id: '0',
-                //   endx: '0',
-                //   endy: '0',
-                //   connected: false
-                // }
-              ]
-            })
-
+              text: 'EDIT TEXT',
+              owner: 'You',
+              content_type: 'sheet',
+              deleted: false,
+              xpos: '0',
+              ypos: '0',
+              attachment_name: e
+            }),
+              //FIXME: Creates an empty connection for every new doc not needed
+              doc.connections.push({
+                id: uniqueid,
+                connection: [
+                  // {
+                  //   id: '0',
+                  //   endx: '0',
+                  //   endy: '0',
+                  //   connected: false
+                  // }
+                ]
+              })
+          } else {
+            doc.notes.push({
+              id: uniqueid,
+              text: 'EDIT TEXT FOR ATTACHMENT',
+              owner: 'You',
+              content_type: 'attachment',
+              deleted: false,
+              xpos: '0',
+              ypos: '0',
+              attachment_name: e
+            }),
+              //FIXME: Creates one empty connection for every new doc
+              doc.connections.push({
+                id: uniqueid,
+                connection: [
+                  // {
+                  //   id: '0',
+                  //   endx: '0',
+                  //   endy: '0',
+                  //   connected: false
+                  // }
+                ]
+              })
+          }
           // put the store into pouchdb
           return pouchdb.bulkDocs([
             {
@@ -199,7 +246,8 @@ const store = new Vuex.Store({
             const newNote = {
               text: state.notes[end].text,
               id: state.notes[end].id,
-              content_type: state.notes[end].content_type
+              content_type: state.notes[end].content_type,
+              attachment_name: state.notes[end].attachment_name
             }
             state.activeNote = newNote
           })
@@ -221,14 +269,20 @@ const store = new Vuex.Store({
         if (localid == state.notes[i].id) {
           // console.log(state.notes[i].text)
           // console.log(state.activeNote)
-          // this now needs to dispatch EDIT NOTE
+          // this now needs to dispatch EDIT NOTE ????
           const newNote = {
             text: state.notes[i].text,
             id: state.notes[i].id,
-            content_type: state.notes[i].content_type
+            content_type: state.notes[i].content_type,
+            attachment_name: state.notes[i].attachment_name
           }
           state.activeNote = newNote
-
+          //
+          if (state.activeNote.attachment_name != undefined) {
+            //FIXME: get and render the attachment with same name as attachment_name here please
+            this.commit('GET_MY_ATTACHMENT', state.activeNote.attachment_name)
+          }
+          //console.log(newNote)
           // state.activeNote.text = state.notes[i].text
         }
       }
@@ -296,7 +350,6 @@ const store = new Vuex.Store({
       var i
       for (i = 0; i < Object.keys(state.notes).length; i++) {
         if (localid == state.notes[i].id) {
-          //UPDATE Dragged Positions
           state.notes[i].xpos = e.xpos
           state.notes[i].ypos = e.ypos
           //FIXME: UPDATE Connection distance positions here if connected equals true ?
@@ -335,7 +388,7 @@ const store = new Vuex.Store({
     UPDATE_CONNECT(state, e) {
       //console.log(state.connections)
       localid = e.activenoteid
-      console.log(localid)
+      // console.log(localid)
       var i
       var j
 
@@ -346,10 +399,10 @@ const store = new Vuex.Store({
           j < Object.keys(state.connections[i].connection).length;
           j++
         ) {
-          console.log(state.connections[i].connection[j].id)
+          // console.log(state.connections[i].connection[j].id)
 
           if (localid == state.connections[i].connection[j].id) {
-            console.log('match')
+            //console.log('match')
             // var currentid = i
             // var connectid = j
 
@@ -387,16 +440,12 @@ const store = new Vuex.Store({
     },
 
     EDIT_NOTE(state, e) {
-      // console.log('editing')
-      // console.log(e.t)
-      //  console.log(type)
       var i
       for (i = 0; i < Object.keys(state.notes).length; i++) {
         if (localid == state.notes[i].id) {
-          //console.log('match')
-          // console.log(state.notes[i].id)
           state.notes[i].text = e.text
           state.notes[i].content_type = e.t
+          state.notes[i].attachment_name = e.aname
         }
       }
 
@@ -448,7 +497,7 @@ const store = new Vuex.Store({
           // handle response
           if (response.ok == true) {
             store.commit('GET_MY_ATTACHMENTS')
-            // FIXME: run ADD_DOC riping files.name into a new DOC
+            store.commit('ADD_DOC', files.name)
           }
         })
         .catch(function(err) {
@@ -514,8 +563,8 @@ const store = new Vuex.Store({
       })
     },
     //FIXME: I think number of these commit specifically with editing the note could / should probably be combined
-    addDoc: ({ commit }) => {
-      commit('ADD_DOC')
+    addDoc: ({ commit }, e) => {
+      commit('ADD_DOC', e)
     },
     noteId: ({ commit }, e) => {
       commit('NOTE_ID', e)
@@ -533,9 +582,9 @@ const store = new Vuex.Store({
     updateConnect: ({ commit }, { activenoteid, xpos, ypos }) => {
       commit('UPDATE_CONNECT', { activenoteid, xpos, ypos })
     },
-    editNote: ({ commit }, { e, t }) => {
+    editNote: ({ commit }, { e, t, aname }) => {
       var text = e.target.value
-      commit('EDIT_NOTE', { text, t })
+      commit('EDIT_NOTE', { text, t, aname })
     },
     editType: ({ commit }, e) => {
       commit('EDIT_TYPE', e.target.value)
