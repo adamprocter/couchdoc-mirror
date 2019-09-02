@@ -13,19 +13,27 @@
         <!-- FIXME: -->
         <polygon
           v-if="note.content_type == 'link'"
-          points="14,0 0,32 32,32"
+          points="9.500000000000002,16.454482671904334 -19,2.326828918379971e-15 9.499999999999986,-16.45448267190434"
           fill="#989898"
           :class="note.content_type"
           :id="note.id"
         />
-        <rect
+        <polygon
           v-if="note.content_type == 'sheet'"
-          width="25"
-          height="25"
+          points="13.435028842544403,13.435028842544401 -13.435028842544401,13.435028842544403 -13.435028842544407,-13.435028842544401 13.435028842544401,-13.435028842544407"
           fill="#989898"
           :class="note.content_type"
           :id="note.id"
         />
+
+        <polygon
+          v-if="note.content_type == 'attachment'"
+          points="14.782072520180588,6.1229349178414365 6.122934917841437,14.782072520180588 -6.122934917841436,14.782072520180588 -14.782072520180588,6.122934917841437 -14.782072520180588,-6.122934917841435 -6.122934917841445,-14.782072520180584 6.12293491784144,-14.782072520180586 14.782072520180584,-6.122934917841446"
+          fill="#989898"
+          :class="note.content_type"
+          :id="note.id"
+        />
+
         <g v-for="(connection, index) in connections" :key="index">
           <!-- FIXME: Add conection is true ?  -->
           <!-- FIXME: LINE start should be 0,0 not note.xpos -->
@@ -49,15 +57,18 @@
         <!-- <text>{{note.xpos}}</text> -->
       </g>
 
-      <g
+      <!-- REMOVE: cannot render attachments this way-->
+      <!-- <g
         v-for="(myattachment, index) in myattachments"
         :key="'myattachment'+index"
         :transform="`translate(0, ${index * 75})`"
         class="draggable"
       >
-        <!-- FIXME: class and id are not in the attachments state -->
-        <circle cx="16" cy="16" r="16" fill="#989898" :id="myattachment.name" />
-      </g>
+     
+      <circle cx="16" cy="16" r="16" fill="#989898" :id="myattachment.name" />
+      </g> 
+
+      -->
     </svg>
 
     <!-- FYI: Temp Output -->
@@ -149,7 +160,7 @@ export default {
 
       function dontClick() {
         firsttap = '0000'
-        console.log('called if timer over 500 ' + firsttap)
+        //   console.log('called if timer over 500 ' + firsttap)
       }
 
       // FIXME: Can I make these ES6 arrow functions??
@@ -241,12 +252,12 @@ export default {
       function singleClick(evt) {
         if (firsttap == '0000') {
           firsttap = null
-          console.log('timer out')
+          //console.log('timer out')
         } else if (firsttap == null) {
           if (evt.target.parentNode.classList.contains('draggable')) {
             selectedElement = evt.target.parentNode
             firsttap = selectedElement.firstElementChild.id
-            console.log('inside single click ' + firsttap)
+            // console.log('inside single click ' + firsttap)
           }
         } else {
           if (evt.target.parentNode.classList.contains('draggable')) {
@@ -260,7 +271,7 @@ export default {
       }
 
       function doubleClick(evt) {
-        console.log('inside doubleclick ' + firsttap)
+        // console.log('inside doubleclick ' + firsttap)
         if (evt.target.parentNode.classList.contains('draggable')) {
           selectedElement = evt.target.parentNode
           //console.log('double')
