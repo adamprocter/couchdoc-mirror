@@ -25,7 +25,6 @@
     <h4>issues</h4>
     <ul>
       <li>Touch device use touch cancel to save positions</li>
-      <li>Media (circle icons) do not save positions (yet)</li>
       <li>Minimal layout or style.</li>
     </ul>
     <h2>Design-led ethical Edutech</h2>
