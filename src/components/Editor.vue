@@ -3,16 +3,36 @@
     <form id="editForm">
       <h2>Edit item</h2>
       <label>Choose Type</label>
-      <select v-model="activeNote.content_type" id="myList">
-        <option value="sheet">note</option>
-        <option value="link">link</option>
-        <option value="attachment">attachment</option>
-      </select>
+
+      <div v-if="activeNote.attachment_name == undefined">
+        <select v-model="activeNote.content_type" id="myList">
+          <option value="sheet">note</option>
+          <option value="link">link</option>
+          <option value="attachment">attachment</option>
+        </select>
+      </div>
       <br />
       <textarea @input="editNote" v-model="activeNote.text" class="form-control"></textarea>
-      <!-- <input v-bind:value="activeNote.id" name="id" readonly hidden /> -->
-      <input v-bind:value="activeNote.id" name="id" readonly hidden />
-      <input v-bind:value="activeNote.attachment_name" name="attachmentname" readonly hidden />
+
+      <div v-if="activeNote.attachment_name != undefined">
+        <div v-if="activeNote.attachment_name.endsWith('.jpeg')">
+          <img :src="activeAttachment[0].url" alt width="20%" height border="0" />
+        </div>
+
+        <div v-else-if="activeNote.attachment_name.endsWith('.jpg')">
+          <img :src="activeAttachment[0].url" alt width="20%" height border="0" />
+        </div>
+        <div v-else-if="activeNote.attachment_name.endsWith('.png')">
+          <img :src="activeAttachment[0].url" alt width="20%" height border="0" />
+        </div>
+
+        <div v-else>
+          <img src="../assets/img/icon-mac.jpg" alt width="20%" height border="0" />
+        </div>
+      </div>
+
+      <input :value="activeNote.id" name="id" readonly hidden />
+      <input :value="activeNote.attachment_name" name="attachmentname" readonly hidden />
       <button @click="closeEdit()">Finish</button>
     </form>
   </div>
@@ -36,7 +56,8 @@ export default {
     }
   },
   computed: mapState({
-    activeNote: state => state.activeNote
+    activeNote: state => state.activeNote,
+    activeAttachment: state => state.activeAttachment
   })
 }
 </script>

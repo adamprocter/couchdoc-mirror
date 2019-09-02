@@ -18,6 +18,7 @@ const store = new Vuex.Store({
     connections: [],
     otherclients: {},
     activeNote: {},
+    activeAttachment: {},
     myattachments: [],
     myattachmentnames: [],
     otherattachments: {}
@@ -84,6 +85,26 @@ const store = new Vuex.Store({
             })
         }
       })
+    },
+
+    GET_MY_ATTACHMENT(state, e) {
+      state.activeAttachment = []
+      //console.log(state)
+      console.log(e)
+      console.log('go get it then!')
+      pouchdb
+        .getAttachment(state.myclient, e)
+        .then(function(blob) {
+          // put img URL into store to render
+          var url = URL.createObjectURL(blob)
+          // console.log(url)
+          state.activeAttachment.push({
+            url: url
+          })
+        })
+        .catch(function(err) {
+          console.log(err)
+        })
     },
 
     GET_MY_DOC(state) {
@@ -162,7 +183,7 @@ const store = new Vuex.Store({
           if (e == undefined) {
             doc.notes.push({
               id: uniqueid,
-              text: 'EDIT ME',
+              text: 'EDIT TEXT',
               owner: 'You',
               content_type: 'sheet',
               deleted: false,
@@ -170,7 +191,7 @@ const store = new Vuex.Store({
               ypos: '0',
               attachment_name: e
             }),
-              //FIXME: Creates one empty connection for every new doc
+              //FIXME: Creates an empty connection for every new doc not needed
               doc.connections.push({
                 id: uniqueid,
                 connection: [
@@ -185,7 +206,7 @@ const store = new Vuex.Store({
           } else {
             doc.notes.push({
               id: uniqueid,
-              text: 'EDIT ME - This is an attachment do not change type',
+              text: 'EDIT TEXT FOR ATTACHMENT',
               owner: 'You',
               content_type: 'attachment',
               deleted: false,
@@ -256,6 +277,11 @@ const store = new Vuex.Store({
             attachment_name: state.notes[i].attachment_name
           }
           state.activeNote = newNote
+          //
+          if (state.activeNote.attachment_name != undefined) {
+            //FIXME: get and render the attachment with same name as attachment_name here please
+            this.commit('GET_MY_ATTACHMENT', state.activeNote.attachment_name)
+          }
           //console.log(newNote)
           // state.activeNote.text = state.notes[i].text
         }

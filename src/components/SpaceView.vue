@@ -3,6 +3,7 @@
     <h2>Your spatial view</h2>
     <!-- tips-->
     <!-- : is short for v-bind -->
+    <!-- FIXME: Fixed width of SVG Object here -->
     <svg xmlns="http://www.w3.org/2000/svg" width="400" height="800" id="space" ref="sheets">
       <g
         v-for="(note, index) in notes"
@@ -123,8 +124,11 @@ export default {
       this.$emit('editMode')
     },
     openSelected(e) {
+      // e = id
       this.$store.dispatch('noteId', e)
+      // this gets the note with said ID now not just the text
       this.$store.dispatch('getNoteText', e)
+
       this.$emit('editMode')
     },
     startConnect(e, f, xpos, ypos) {
