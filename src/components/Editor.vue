@@ -2,9 +2,8 @@
   <div class="editor">
     <form id="editForm">
       <h2>Edit item</h2>
-      <label>Choose Type</label>
-
       <div v-if="activeNote.attachment_name == undefined">
+        <label>Choose Type</label>
         <select v-model="activeNote.content_type" id="myList">
           <option value="sheet">note</option>
           <option value="link">link</option>
