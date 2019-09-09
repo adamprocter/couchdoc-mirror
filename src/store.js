@@ -4,10 +4,11 @@ import PouchDB from 'pouchdb'
 
 Vue.use(Vuex)
 // Objects
-var pouchdb = new PouchDB('couchdocs')
-var remote = 'https://nn.adamprocter.co.uk/couchdocs/'
+//var pouchdb = new PouchDB('couchdocs')
+//var remote = 'https://nn.adamprocter.co.uk/couchdocs/'
 // local couch on my mac
-//var remote = 'http://127.0.0.1:5984/couchdocs/'
+var pouchdb = new PouchDB('local_couchdocs')
+var remote = 'http://127.0.0.1:5984/local_couchdocs/'
 
 var localid = null
 const store = new Vuex.Store({
@@ -27,15 +28,17 @@ const store = new Vuex.Store({
     SET_CLIENT(state, doc) {
       state.myclient = doc
       //console.log(state)
-      store.commit('GET_MY_DOC')
+      store.commit('GET_ALL_DOCS')
     },
     GET_ALL_DOCS(state) {
       pouchdb
         .allDocs({
           include_docs: true,
           attachments: true
+          // skip: 1
         })
         .then(function(doc) {
+          console.log(doc)
           state.instance = pouchdb.name
           state.otherclients = doc.rows
         })
@@ -90,8 +93,8 @@ const store = new Vuex.Store({
     GET_MY_ATTACHMENT(state, e) {
       state.activeAttachment = []
       //console.log(state)
-      console.log(e)
-      console.log('go get it then!')
+      //console.log(e)
+      //console.log('go get it then!')
       pouchdb
         .getAttachment(state.myclient, e)
         .then(function(blob) {
@@ -107,64 +110,6 @@ const store = new Vuex.Store({
         })
     },
 
-    GET_MY_DOC(state) {
-      // REF: for quick debug of attachments
-      // pouchdb.get(state.myclient, { attachments: true }).then(function(doc) {
-      //   console.log(doc._attachments)
-      //   // state.myattachments = doc._attachments
-      //   // console.log(state.myattachments)
-      // })
-
-      pouchdb
-        .get(state.myclient)
-        .then(function(doc) {
-          state.notes = doc.notes
-          state.connections = doc.connections
-          //state.myattachments = doc._attachments
-          // console.log(doc._attachments)
-        })
-        .catch(function(err) {
-          if (err.status == 404) {
-            var uniqueid =
-              Math.random()
-                .toString(36)
-                .substring(2, 15) +
-              Math.random()
-                .toString(36)
-                .substring(2, 15)
-            return pouchdb.put({
-              _id: state.myclient,
-              _attachments: {},
-              notes: [
-                {
-                  id: uniqueid,
-                  text: 'Device ' + state.myclient
-                  // get name from form as well (look at e thing!)
-                  // owner: 'name',
-                  // xpos: '0',
-                  // ypos: '0',
-                  // deleted: false
-                }
-              ],
-              //FIXME: Creates a useless connnection to device?
-              // but puts in unique ID
-              connections: [
-                {
-                  id: uniqueid,
-                  connection: [
-                    // {
-                    //   id: '0',
-                    //   endx: '0',
-                    //   endy: '0',
-                    //   connected: false
-                    // }
-                  ]
-                }
-              ]
-            })
-          }
-        })
-    },
     ADD_DOC(state, e) {
       var uniqueid =
         Math.random()
@@ -331,7 +276,7 @@ const store = new Vuex.Store({
                 //state.connections = doc.connections
                 // console.log(state.connections[currentid])
 
-                // state.notes = doc.notes
+                state.notes = doc.notes
                 state.connections = doc.connections
               })
             })
@@ -345,9 +290,9 @@ const store = new Vuex.Store({
     },
 
     MOVE_POS(state, e) {
-      // console.log(e)
+      console.log(state)
       localid = e.activenoteid
-      //console.log(localid)
+      console.log(localid)
       var i
       for (i = 0; i < Object.keys(state.notes).length; i++) {
         if (localid == state.notes[i].id) {
@@ -361,8 +306,9 @@ const store = new Vuex.Store({
       pouchdb
         .get(state.myclient)
         .then(function(doc) {
-          //console.log(doc)
+          //console.log(state)
           // put the store into pouchdb
+          //pouchdb.allDocs({
           return pouchdb.bulkDocs([
             {
               _id: state.myclient,
@@ -376,7 +322,7 @@ const store = new Vuex.Store({
         .then(function() {
           return pouchdb.get(state.myclient).then(function(doc) {
             state.notes = doc.notes
-            //state.connections = doc.connections
+            state.connections = doc.connections
             // console.log(state.notes)
           })
         })
@@ -415,6 +361,7 @@ const store = new Vuex.Store({
         .then(function() {
           return pouchdb.get(state.myclient).then(function(doc) {
             state.notes = doc.notes
+            state.connections = doc.connections
           })
         })
         .catch(function(err) {
@@ -505,8 +452,6 @@ const store = new Vuex.Store({
         .then(function() {
           return pouchdb.get(state.myclient).then(function(doc) {
             state.notes = doc.notes
-            // state.connections = doc.connections
-            // console.log(state.notes)
           })
         })
         .catch(function(err) {
@@ -566,7 +511,6 @@ const store = new Vuex.Store({
   actions: {
     syncDB: () => {
       pouchdb.replicate.from(remote).on('complete', function() {
-        store.commit('GET_MY_DOC')
         store.commit('GET_ALL_DOCS')
         store.commit('GET_MY_ATTACHMENTS')
         // turn on two-way, continuous, retriable sync
@@ -575,25 +519,19 @@ const store = new Vuex.Store({
           .on('change', function() {
             // pop info into function to find out more
             // handle change
-            //console.log('change')
-            store.commit('GET_MY_DOC')
             store.commit('GET_ALL_DOCS')
-            //  store.commit('GET_MY_ATTACHMENTS')
           })
           .on('paused', function() {
             // replication paused (e.g. replication up to date, user went offline)
-            // console.log('replication paused')
           })
           .on('active', function() {
             // replicate resumed (e.g. new changes replicating, user went back online)
-            //console.log('back active')
           })
           .on('denied', function() {
             // a document failed to replicate (e.g. due to permissions)
           })
           .on('complete', function() {
             // handle complete
-            //console.log('complete')
           })
           .on('error', function(err) {
             console.log(err)
