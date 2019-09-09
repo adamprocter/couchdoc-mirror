@@ -166,7 +166,6 @@ const store = new Vuex.Store({
         })
     },
     ADD_DOC(state, e) {
-      console.log(e)
       var uniqueid =
         Math.random()
           .toString(36)
@@ -179,7 +178,7 @@ const store = new Vuex.Store({
         .get(state.myclient)
         .then(function(doc) {
           // pop new note onto the end of the doc
-          console.log(e)
+
           if (e == undefined) {
             doc.notes.push({
               id: uniqueid,
@@ -187,6 +186,7 @@ const store = new Vuex.Store({
               owner: 'You',
               content_type: 'sheet',
               deleted: false,
+              isActive: false,
               xpos: '0',
               ypos: '0',
               attachment_name: e
@@ -210,6 +210,7 @@ const store = new Vuex.Store({
               owner: 'You',
               content_type: 'attachment',
               deleted: false,
+              isActive: false,
               xpos: '0',
               ypos: '0',
               attachment_name: e
@@ -352,6 +353,7 @@ const store = new Vuex.Store({
         if (localid == state.notes[i].id) {
           state.notes[i].xpos = e.xpos
           state.notes[i].ypos = e.ypos
+          state.notes[i].isActive = e.isActive
           //FIXME: UPDATE Connection distance positions here if connected equals true ?
         }
       }
@@ -381,6 +383,42 @@ const store = new Vuex.Store({
         .catch(function(err) {
           if (err.status == 404) {
             // pouchdb.put({  })
+          }
+        })
+    },
+
+    UPDATE_ACTIVE(state, e) {
+      localid = e.activenoteid
+      //console.log(e)
+      var i
+      for (i = 0; i < Object.keys(state.notes).length; i++) {
+        if (localid == state.notes[i].id) {
+          state.notes[i].isActive = e.isActive
+        }
+      }
+
+      pouchdb
+        .get(state.myclient)
+        .then(function(doc) {
+          //console.log(doc)
+          // put the store into pouchdb
+          return pouchdb.bulkDocs([
+            {
+              _id: state.myclient,
+              _rev: doc._rev,
+              _attachments: doc._attachments,
+              notes: state.notes,
+              connections: state.connections
+            }
+          ])
+        })
+        .then(function() {
+          return pouchdb.get(state.myclient).then(function(doc) {
+            state.notes = doc.notes
+          })
+        })
+        .catch(function(err) {
+          if (err.status == 404) {
           }
         })
     },
@@ -480,7 +518,7 @@ const store = new Vuex.Store({
 
     ADD_FILE(state, files) {
       var tempdoc = null
-      console.log(state.myclient)
+      // console.log(state.myclient)
       pouchdb
         .get(state.myclient)
         .then(function(doc) {
@@ -572,15 +610,17 @@ const store = new Vuex.Store({
     getNoteText: ({ commit }, e) => {
       commit('GET_TEXT', e)
     },
-
-    movePos: ({ commit }, { activenoteid, xpos, ypos }) => {
-      commit('MOVE_POS', { activenoteid, xpos, ypos })
+    movePos: ({ commit }, { activenoteid, xpos, ypos, isActive }) => {
+      commit('MOVE_POS', { activenoteid, xpos, ypos, isActive })
     },
     startConnect: ({ commit }, { e, f, xpos, ypos }) => {
       commit('MAKE_CONNECT', { e, f, xpos, ypos })
     },
     updateConnect: ({ commit }, { activenoteid, xpos, ypos }) => {
       commit('UPDATE_CONNECT', { activenoteid, xpos, ypos })
+    },
+    updateActive: ({ commit }, { activenoteid, isActive }) => {
+      commit('UPDATE_ACTIVE', { activenoteid, isActive })
     },
     editNote: ({ commit }, { e, t, aname }) => {
       var text = e.target.value

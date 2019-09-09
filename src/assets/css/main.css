@@ -255,6 +255,10 @@ hr {
 span {
   color: red;
 }
+.highlighted {
+  stroke: red;
+  stroke-width: 5px;
+}
 
 a:link {
   color: black;
