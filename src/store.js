@@ -28,7 +28,7 @@ const store = new Vuex.Store({
     SET_CLIENT(state, doc) {
       state.myclient = doc
       //console.log(state)
-      store.commit('GET_ALL_DOCS')
+      store.commit('START_MY_DOC')
     },
     GET_ALL_DOCS(state) {
       pouchdb
@@ -41,10 +41,58 @@ const store = new Vuex.Store({
           console.log(doc)
           state.instance = pouchdb.name
           state.otherclients = doc.rows
+          //FIXME: THIS IS WHERE WE SHOULD GET ALL THE DATA
+          //state.notes = doc.notes
+          // state.connections = doc.connections
         })
         .catch(function(err) {
           if (err.status == 404) {
-            // error if no data
+            console.log('404')
+          }
+        })
+    },
+
+    START_MY_DOC(state) {
+      // REF: for quick debug of attachments
+      // pouchdb.get(state.myclient, { attachments: true }).then(function(doc) {
+      //   console.log(doc._attachments)
+      //   // state.myattachments = doc._attachments
+      //   // console.log(state.myattachments)
+      // })
+
+      pouchdb
+        .get(state.myclient)
+        .then(function(doc) {
+          // state.notes = doc.notes
+          // state.connections = doc.connections
+        })
+        .catch(function(err) {
+          if (err.status == 404) {
+            var uniqueid =
+              Math.random()
+                .toString(36)
+                .substring(2, 15) +
+              Math.random()
+                .toString(36)
+                .substring(2, 15)
+            return pouchdb.put({
+              _id: state.myclient,
+              _attachments: {},
+              notes: [
+                {
+                  id: uniqueid,
+                  text: 'Device ' + state.myclient
+                }
+              ],
+              //FIXME: Creates a useless connnection to device?
+              // but puts in unique ID
+              connections: [
+                {
+                  id: uniqueid,
+                  connection: []
+                }
+              ]
+            })
           }
         })
     },
