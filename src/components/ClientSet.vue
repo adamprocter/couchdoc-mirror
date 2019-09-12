@@ -68,8 +68,8 @@ import { mapState } from 'vuex'
 export default {
   data: function() {
     return {
-      clientid: '',
-      name: ''
+      clientid: ''
+      //,name: ''
     }
   },
 
