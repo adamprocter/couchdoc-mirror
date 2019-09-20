@@ -5,59 +5,60 @@
     <!-- : is short for v-bind -->
     <!-- FIXME: Fixed width of SVG Object here -->
     <svg xmlns="http://www.w3.org/2000/svg" width="400" height="800" id="space" ref="sheets">
-      <g
-        v-for="(note, index) in notes"
-        :key="'note'+index"
-        :transform="`translate(${note.xpos}, ${note.ypos})`"
-        class="draggable"
-      >
-        <!-- FIXME: -->
-        <polygon
-          v-if="note.content_type == 'link'"
-          points="9.500000000000002,16.454482671904334 -19,2.326828918379971e-15 9.499999999999986,-16.45448267190434"
-          fill="#989898"
-          :class="[note.content_type, note.isActive ? 'highlighted' : '']"
-          :id="note.id"
-        />
-        <polygon
-          v-if="note.content_type == 'sheet'"
-          points="13.435028842544403,13.435028842544401 -13.435028842544401,13.435028842544403 -13.435028842544407,-13.435028842544401 13.435028842544401,-13.435028842544407"
-          fill="#989898"
-          :class="[note.content_type, note.isActive ? 'highlighted' : '']"
-          :id="note.id"
-        />
+      <g v-for="(position, index) in positions">
+        <g
+          v-for="(note, index) in notes"
+          :key="'note'+index"
+          :transform="`translate(${position.xpos}, ${position.ypos})`"
+          class="draggable"
+        >
+          <!-- FIXME: -->
+          <polygon
+            v-if="note.content_type == 'link'"
+            points="9.500000000000002,16.454482671904334 -19,2.326828918379971e-15 9.499999999999986,-16.45448267190434"
+            fill="#989898"
+            :class="[note.content_type, note.isActive ? 'highlighted' : '']"
+            :id="note.id"
+          />
+          <polygon
+            v-if="note.content_type == 'sheet'"
+            points="13.435028842544403,13.435028842544401 -13.435028842544401,13.435028842544403 -13.435028842544407,-13.435028842544401 13.435028842544401,-13.435028842544407"
+            fill="#989898"
+            :class="[note.content_type, note.isActive ? 'highlighted' : '']"
+            :id="note.id"
+          />
 
-        <polygon
-          v-if="note.content_type == 'attachment'"
-          points="14.782072520180588,6.1229349178414365 6.122934917841437,14.782072520180588 -6.122934917841436,14.782072520180588 -14.782072520180588,6.122934917841437 -14.782072520180588,-6.122934917841435 -6.122934917841445,-14.782072520180584 6.12293491784144,-14.782072520180586 14.782072520180584,-6.122934917841446"
-          fill="#989898"
-          :class="[note.content_type, note.isActive ? 'highlighted' : '']"
-          :id="note.id"
-        />
+          <polygon
+            v-if="note.content_type == 'attachment'"
+            points="14.782072520180588,6.1229349178414365 6.122934917841437,14.782072520180588 -6.122934917841436,14.782072520180588 -14.782072520180588,6.122934917841437 -14.782072520180588,-6.122934917841435 -6.122934917841445,-14.782072520180584 6.12293491784144,-14.782072520180586 14.782072520180584,-6.122934917841446"
+            fill="#989898"
+            :class="[note.content_type, note.isActive ? 'highlighted' : '']"
+            :id="note.id"
+          />
 
-        <g v-for="(connection, index) in connections" :key="index">
-          <!-- FIXME: Add conection is true ?  -->
-          <!-- FIXME: LINE start should be 0,0 not note.xpos -->
-          <!-- <g v-if="connection.connected == true"> -->
-          <g
-            v-if="note.id == connection.id"
-            :transform="`translate(${-note.xpos}, ${-note.ypos})`"
-          >
-            <g v-for="connection in connection.connection">
-              <line
-                :x1="note.xpos"
-                :y1="note.ypos"
-                :x2="connection.endx"
-                :y2="connection.endy"
-                style="stroke:rgb(255,0,0);stroke-width:2"
-              />
+          <g v-for="(connection, index) in connections" :key="index">
+            <!-- FIXME: Add conection is true ?  -->
+            <!-- FIXME: LINE start should be 0,0 not note.xpos -->
+            <!-- <g v-if="connection.connected == true"> -->
+            <g
+              v-if="note.id == connection.id"
+              :transform="`translate(${-position.xpos}, ${-position.ypos})`"
+            >
+              <g v-for="connection in connection.connection">
+                <line
+                  :x1="position.xpos"
+                  :y1="position.ypos"
+                  :x2="connection.endx"
+                  :y2="connection.endy"
+                  style="stroke:rgb(255,0,0);stroke-width:2"
+                />
+              </g>
             </g>
+            <!-- </g> -->
           </g>
-          <!-- </g> -->
+          <!-- <text>{{note.xpos}}</text> -->
         </g>
-        <!-- <text>{{note.xpos}}</text> -->
       </g>
-
       <!-- REMOVE: cannot render attachments this way-->
       <!-- <g
         v-for="(myattachment, index) in myattachments"
@@ -108,7 +109,8 @@ export default {
   computed: mapState({
     notes: state => state.notes,
     myattachments: state => state.myattachments,
-    connections: state => state.connections
+    connections: state => state.connections,
+    positions: state => state.positions
 
     // otherclients: state => state.otherclients
   }),

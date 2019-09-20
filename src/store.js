@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import PouchDB from 'pouchdb'
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable'
 
 Vue.use(Vuex)
 // Objects
@@ -33,63 +34,6 @@ const store = new Vuex.Store({
       store.commit('GET_POSITIONS')
       store.commit('GET_CONNECTIONS')
     },
-    // GET_ALL_DOCS(state) {
-    //   pouchdb
-    //     .allDocs({
-    //       include_docs: true,
-    //       attachments: true
-    //     })
-    //     .then(function(doc) {
-    //       state.instance = pouchdb.name
-    //       state.otherclients = doc.rows
-    //     })
-    //     .catch(function(err) {
-    //       if (err.status == 404) {
-    //         // error if no data
-    //       }
-    //     })
-    // },
-
-    // GET_MY_ATTACHMENTS(state) {
-    //   state.myattachments = []
-    //   //FIXME: this is getting the name out of attachment and then I can access them in a loop
-    //   // this could be totally wrong at this stage
-    //   state.myattachmentnames = []
-    //   pouchdb.get(state.myclient, { attachments: true }).then(function(doc) {
-    //     var filename
-    //     for (var key in doc._attachments) {
-    //       if (
-    //         doc._attachments.hasOwnProperty(key) &&
-    //         typeof key !== 'function'
-    //       ) {
-    //         filename = key
-    //       }
-    //       state.myattachmentnames.push({
-    //         name: filename
-    //       })
-    //     }
-
-    //     var i
-    //     var j = 0
-    //     for (i = 0; i < Object.keys(doc._attachments).length; i++) {
-    //       pouchdb
-    //         .getAttachment(state.myclient, state.myattachmentnames[i].name)
-    //         .then(function(blob) {
-    //           // put img URL into store to render
-    //           var url = URL.createObjectURL(blob)
-    //           //
-    //           state.myattachments.push({
-    //             name: state.myattachmentnames[j].name,
-    //             url: url
-    //           })
-    //           j++
-    //         })
-    //         .catch(function(err) {
-    //           console.log(err)
-    //         })
-    //     }
-    //   })
-    // },
 
     GET_MY_ATTACHMENT(state, e) {
       state.activeAttachment = []
@@ -131,26 +75,8 @@ const store = new Vuex.Store({
                 {
                   id: uniqueid,
                   text: 'Device ' + state.myclient
-                  // get name from form as well (look at e thing!)
-                  // owner: 'name',
-                  // deleted: false
                 }
-              ] //,
-              // //FIXME: Creates a useless connnection to device?
-              // // but puts in unique ID
-              // connections: [
-              //   {
-              //     id: uniqueid,
-              //     connection: [
-              //       // {
-              //       //   id: '0',
-              //       //   endx: '0',
-              //       //   endy: '0',
-              //       //   connected: false
-              //       // }
-              //     ]
-              //   }
-              // ]
+              ]
             })
           }
         })
@@ -159,6 +85,7 @@ const store = new Vuex.Store({
       pouchdb
         .get(state.glo_pos)
         .then(function(doc) {
+          console.log(doc)
           state.positions = doc.positions
         })
         .catch(function(err) {
@@ -227,113 +154,72 @@ const store = new Vuex.Store({
           .toString(36)
           .substring(2, 15)
       localid = uniqueid
-      pouchdb
-        .allDocs({
-          include_docs: true,
-          attachments: true
-        })
-        .then(function(doc) {
-          // 1.pop new note onto the end of the doc for your device
-          // 2.add to global positions doc
-          //
-          //console.log(doc.rows[1].doc.notes)
-          // console.log(doc.rows[1].doc._id)
-          // console.log(doc.rows[3].doc.positions)
-          var i
-          for (i = 0; i < doc.rows.length; i++) {
-            if (state.myclient == doc.rows[i].doc._id) {
-              console.log('super match game')
-              if (e == undefined) {
-                console.log(doc)
-                doc.rows[i].doc.notes.push({
-                  id: uniqueid,
-                  text: 'EDIT TEXT',
-                  owner: 'You',
-                  content_type: 'sheet',
-                  deleted: false,
-                  isActive: false,
-                  attachment_name: e
-                }) //,
-                // //HARDCODED This is wrong
-                // doc.rows[3].doc.positions.push({
-                //   id: glo_pos,
-                //   positions: [
-                //     {
-                //       id: uniqueid,
-                //       endx: '0',
-                //       endy: '0'
-                //     }
-                //   ]
-                // })
-              } else {
-                doc.rows[i].doc.notes.push({
-                  id: uniqueid,
-                  text: 'EDIT TEXT FOR ATTACHMENT',
-                  owner: 'You',
-                  content_type: 'attachment',
-                  deleted: false,
-                  isActive: false,
-                  attachment_name: e
-                }) //,
-                //HARDCODED This is wrong
-                // doc.rows[3].doc.positions.push({
-                //   id: glo_pos,
-                //   positions: [
-                //     {
-                //       id: uniqueid,
-                //       endx: '0',
-                //       endy: '0'
-                //     }
-                //   ]
-                // })
-              }
-            }
-            console.log(doc)
-            //}
-            // put the store into pouchdb
-            // PUT IN 3 DOCS ?? you, pos and cons
-            return pouchdb.bulkDocs([
-              {
-                _id: state.myclient,
-                _rev: doc.rows[i].doc._rev,
-                _attachments: doc.rows[i].doc._attachments,
-                notes: doc.rows[i].doc.notes
-              } //,
-              // {
-              //   _id: positions,
-              //   _rev: doc._rev,
-              //   positions: doc.positions
-              // },
-              // {
-              //   _id: connections,
-              //   _rev: doc._rev,
-              //   connections: doc.connections
-              // }
-            ])
-            //END OF FOR LOOP
-          }
-        })
-
-        .then(function() {
-          return pouchdb.get(state.myclient).then(function(doc) {
-            console.log('returning?')
-            state.notes = doc.notes
-            // state.connections = doc.connections
-            var end = Object.keys(state.notes).length - 1
-            const newNote = {
-              text: state.notes[end].text,
-              id: state.notes[end].id,
-              content_type: state.notes[end].content_type,
-              attachment_name: state.notes[end].attachment_name
-            }
-            state.activeNote = newNote
+      pouchdb.get(state.myclient).then(function(doc) {
+        if (e == undefined) {
+          doc.notes.push({
+            id: uniqueid,
+            text: 'EDIT TEXT',
+            owner: 'You',
+            content_type: 'sheet',
+            deleted: false,
+            isActive: false,
+            attachment_name: e
           })
+        } else {
+          doc.notes.push({
+            id: uniqueid,
+            text: 'EDIT TEXT FOR ATTACHMENT',
+            owner: 'You',
+            content_type: 'attachment',
+            deleted: false,
+            isActive: false,
+            attachment_name: e
+          })
+        }
+        return pouchdb
+          .put({
+            _id: state.myclient,
+            _rev: doc._rev,
+            _attachments: doc._attachments,
+            notes: doc.notes
+          })
+          .then(function() {
+            return pouchdb.get(state.myclient).then(function(doc) {
+              state.notes = doc.notes
+              var end = Object.keys(state.notes).length - 1
+              const newNote = {
+                text: state.notes[end].text,
+                id: state.notes[end].id,
+                content_type: state.notes[end].content_type,
+                attachment_name: state.notes[end].attachment_name
+              }
+
+              state.activeNote = newNote
+            })
+          })
+          .catch(function(err) {
+            if (err.status == 404) {
+              // pouchdb.put({  })
+            }
+          })
+      })
+      pouchdb.get(state.glo_pos).then(function(doc) {
+        console.log('possp')
+        doc.positions.push({
+          id: uniqueid,
+          xpos: 0,
+          ypos: 0
         })
-        .catch(function(err) {
-          if (err.status == 404) {
-            // pouchdb.put({  })
-          }
-        })
+        return pouchdb
+          .put({
+            _id: state.glo_pos,
+            _rev: doc._rev,
+            positions: doc.positions
+          })
+          .catch(function(err) {
+            console.log(err)
+          })
+      })
     },
     NOTE_ID(state, id) {
       localid = id
@@ -369,75 +255,66 @@ const store = new Vuex.Store({
       //console.log(state.connections[1].connection.id)
       // add the new info connection here
       //console.log(state.connections)
-
-      var first = e.e
-      var second = e.f
-
-      var i
-      for (i = 0; i < Object.keys(state.connections).length; i++) {
-        if (first == state.connections[i].id) {
-          var currentid = i
-          state.connections[currentid].connection.push({
-            id: second,
-            endx: e.xpos,
-            endy: e.ypos,
-            connected: true
-          })
-
-          //console.log(state.connections)
-
-          pouchdb
-            .get(state.myclient)
-            .then(function(doc) {
-              // put the store into pouchdb
-              //console.log(state.connections)
-              return pouchdb.bulkDocs([
-                {
-                  _id: state.myclient,
-                  _rev: doc._rev,
-                  _attachments: doc._attachments,
-                  notes: doc.notes,
-                  connections: state.connections
-                }
-              ])
-            })
-
-            .then(function() {
-              return pouchdb.get(state.myclient).then(function(doc) {
-                //state.connections = doc.connections
-                // console.log(state.connections[currentid])
-
-                // state.notes = doc.notes
-                state.connections = doc.connections
-              })
-            })
-            .catch(function(err) {
-              if (err.status == 404) {
-                // pouchdb.put({  })
-              }
-            })
-        }
-      }
+      // var first = e.e
+      // var second = e.f
+      // var i
+      // for (i = 0; i < Object.keys(state.connections).length; i++) {
+      //   if (first == state.connections[i].id) {
+      //     var currentid = i
+      //     state.connections[currentid].connection.push({
+      //       id: second,
+      //       endx: e.xpos,
+      //       endy: e.ypos,
+      //       connected: true
+      //     })
+      //     //console.log(state.connections)
+      //     pouchdb
+      //       .get(state.myclient)
+      //       .then(function(doc) {
+      //         // put the store into pouchdb
+      //         //console.log(state.connections)
+      //         return pouchdb.bulkDocs([
+      //           {
+      //             _id: state.myclient,
+      //             _rev: doc._rev,
+      //             _attachments: doc._attachments,
+      //             notes: doc.notes,
+      //             connections: state.connections
+      //           }
+      //         ])
+      //       })
+      //       .then(function() {
+      //         return pouchdb.get(state.myclient).then(function(doc) {
+      //           //state.connections = doc.connections
+      //           // console.log(state.connections[currentid])
+      //           // state.notes = doc.notes
+      //           state.connections = doc.connections
+      //         })
+      //       })
+      //       .catch(function(err) {
+      //         if (err.status == 404) {
+      //           // pouchdb.put({  })
+      //         }
+      //       })
+      //   }
+      // }
     },
 
     MOVE_POS(state, e) {
       localid = e.activenoteid
       console.log(localid)
-      console.log(e)
       var i
       for (i = 0; i < Object.keys(state.positions).length; i++) {
         if (localid == state.positions[i].id) {
           state.positions[i].xpos = e.xpos
           state.positions[i].ypos = e.ypos
-          // state.positions[i].isActive = e.isActive
-          //FIXME: UPDATE Connection distance positions here if connected equals true ?
         }
       }
 
       pouchdb
-        .get(state)
+        .get(state.glo_pos)
         .then(function(doc) {
-          //console.log(doc)
+          console.log(doc)
           // put the store into pouchdb
           return pouchdb.bulkDocs([
             {
@@ -448,11 +325,9 @@ const store = new Vuex.Store({
           ])
         })
         .then(function() {
-          // return pouchdb.get(state.myclient).then(function(doc) {
-          // state.notes = doc.notes
-          //state.positions = doc.positions
-          // console.log(state.notes)
-          //  })
+          return pouchdb.get(state.glo_pos).then(function(doc) {
+            state.positions = doc.positions
+          })
         })
         .catch(function(err) {
           if (err.status == 404) {
@@ -462,93 +337,88 @@ const store = new Vuex.Store({
     },
 
     UPDATE_ACTIVE(state, e) {
-      localid = e.activenoteid
-      //console.log(e)
-      var i
-      for (i = 0; i < Object.keys(state.notes).length; i++) {
-        if (localid == state.notes[i].id) {
-          state.notes[i].isActive = e.isActive
-        }
-      }
-
-      pouchdb
-        .get(state.myclient)
-        .then(function(doc) {
-          //console.log(doc)
-          // put the store into pouchdb
-          return pouchdb.bulkDocs([
-            {
-              _id: state.myclient,
-              _rev: doc._rev,
-              _attachments: doc._attachments,
-              notes: state.notes
-              //    connections: state.connections
-            }
-          ])
-        })
-        .then(function() {
-          return pouchdb.get(state.myclient).then(function(doc) {
-            state.notes = doc.notes
-          })
-        })
-        .catch(function(err) {
-          if (err.status == 404) {
-          }
-        })
+      // localid = e.activenoteid
+      // //console.log(e)
+      // var i
+      // for (i = 0; i < Object.keys(state.notes).length; i++) {
+      //   if (localid == state.notes[i].id) {
+      //     state.notes[i].isActive = e.isActive
+      //   }
+      // }
+      // pouchdb
+      //   .get(state.myclient)
+      //   .then(function(doc) {
+      //     //console.log(doc)
+      //     // put the store into pouchdb
+      //     return pouchdb.bulkDocs([
+      //       {
+      //         _id: state.myclient,
+      //         _rev: doc._rev,
+      //         _attachments: doc._attachments,
+      //         notes: state.notes,
+      //         positions: state.positions
+      //       }
+      //     ])
+      //   })
+      //   .then(function() {
+      //     return pouchdb.get(state.myclient).then(function(doc) {
+      //       state.notes = doc.notes
+      //     })
+      //   })
+      //   .catch(function(err) {
+      //     if (err.status == 404) {
+      //     }
+      //   })
     },
 
     UPDATE_CONNECT(state, e) {
       //console.log(state.connections)
-      localid = e.activenoteid
-      // console.log(localid)
-      var i
-      var j
-
-      for (i = 0; i < Object.keys(state.connections).length; i++) {
-        // console.log(state.connections[i].connection)
-        for (
-          j = 0;
-          j < Object.keys(state.connections[i].connection).length;
-          j++
-        ) {
-          // console.log(state.connections[i].connection[j].id)
-
-          if (localid == state.connections[i].connection[j].id) {
-            //console.log('match')
-            // var currentid = i
-            // var connectid = j
-
-            state.connections[i].connection[j].endx = e.xpos
-            state.connections[i].connection[j].endy = e.ypos
-
-            pouchdb
-              .get(state.myclient)
-              .then(function(doc) {
-                //console.log(doc)
-                // put the store into pouchdb
-                return pouchdb.bulkDocs([
-                  {
-                    _id: state.myclient,
-                    _rev: doc._rev,
-                    _attachments: doc._attachments,
-                    notes: doc.notes,
-                    connections: state.connections
-                  }
-                ])
-              })
-              .then(function() {
-                return pouchdb.get(state.myclient).then(function(doc) {
-                  state.connections = doc.connections
-                })
-              })
-              .catch(function(err) {
-                if (err.status == 404) {
-                  // pouchdb.put({  })
-                }
-              })
-          }
-        }
-      }
+      // localid = e.activenoteid
+      // // console.log(localid)
+      // var i
+      // var j
+      // for (i = 0; i < Object.keys(state.connections).length; i++) {
+      //   // console.log(state.connections[i].connection)
+      //   for (
+      //     j = 0;
+      //     j < Object.keys(state.connections[i].connection).length;
+      //     j++
+      //   ) {
+      //     // console.log(state.connections[i].connection[j].id)
+      //     if (localid == state.connections[i].connection[j].id) {
+      //       //console.log('match')
+      //       // var currentid = i
+      //       // var connectid = j
+      //       state.connections[i].connection[j].endx = e.xpos
+      //       state.connections[i].connection[j].endy = e.ypos
+      //       pouchdb
+      //         .get(state.myclient)
+      //         .then(function(doc) {
+      //           //console.log(doc)
+      //           // put the store into pouchdb
+      //           return pouchdb.bulkDocs([
+      //             {
+      //               _id: state.myclient,
+      //               _rev: doc._rev,
+      //               _attachments: doc._attachments,
+      //               notes: doc.notes,
+      //               connections: state.connections
+      //             }
+      //           ])
+      //         })
+      //         .then(function() {
+      //           return pouchdb.get(state.myclient).then(function(doc) {
+      //             state.connections = doc.connections
+      //           })
+      //         })
+      //         .catch(function(err) {
+      //           if (err.status == 404) {
+      //             // pouchdb.put({  })
+      //           }
+      //         })
+      //     }
+      //   }
+      //  }
     },
 
     EDIT_NOTE(state, e) {
