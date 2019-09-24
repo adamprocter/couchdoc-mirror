@@ -253,7 +253,7 @@ export default {
             // FIXME: perhaps need start positions here to pass?
             endx = xpos
             endy = ypos
-            console.log(startx, starty, endx, endy)
+            // console.log(startx, starty, endx, endy)
             ref.startConnect(firsttap, secondtap, startx, starty, endx, endy)
           }
         }

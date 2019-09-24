@@ -252,7 +252,7 @@ const store = new Vuex.Store({
     MAKE_CONNECT(state, e) {
       // console.log(state.connections[1].connection.id)
       //add the new info connection here
-      console.log(e)
+      // console.log(e)
       //var first = e.e
       //var second = e.f
 
@@ -265,7 +265,7 @@ const store = new Vuex.Store({
         endy: e.endy,
         connected: true
       })
-      console.log(state.connections)
+      //console.log(state.connections)
       pouchdb
         .get(state.glo_con)
         .then(function(doc) {
@@ -365,53 +365,53 @@ const store = new Vuex.Store({
     },
 
     UPDATE_CONNECT(state, e) {
-      //console.log(state.connections)
-      // localid = e.activenoteid
-      // // console.log(localid)
-      // var i
-      // var j
-      // for (i = 0; i < Object.keys(state.connections).length; i++) {
-      //   // console.log(state.connections[i].connection)
-      //   for (
-      //     j = 0;
-      //     j < Object.keys(state.connections[i].connection).length;
-      //     j++
-      //   ) {
-      //     // console.log(state.connections[i].connection[j].id)
-      //     if (localid == state.connections[i].connection[j].id) {
-      //       //console.log('match')
-      //       // var currentid = i
-      //       // var connectid = j
-      //       state.connections[i].connection[j].endx = e.xpos
-      //       state.connections[i].connection[j].endy = e.ypos
-      //       pouchdb
-      //         .get(state.myclient)
-      //         .then(function(doc) {
-      //           //console.log(doc)
-      //           // put the store into pouchdb
-      //           return pouchdb.bulkDocs([
-      //             {
-      //               _id: state.myclient,
-      //               _rev: doc._rev,
-      //               _attachments: doc._attachments,
-      //               notes: doc.notes,
-      //               connections: state.connections
-      //             }
-      //           ])
-      //         })
-      //         .then(function() {
-      //           return pouchdb.get(state.myclient).then(function(doc) {
-      //             state.connections = doc.connections
-      //           })
-      //         })
-      //         .catch(function(err) {
-      //           if (err.status == 404) {
-      //             // pouchdb.put({  })
-      //           }
-      //         })
-      //     }
-      //   }
-      //  }
+      console.log(state.connections)
+      localid = e.activenoteid
+      // console.log(localid)
+      var i
+      var j
+      for (i = 0; i < Object.keys(state.connections).length; i++) {
+        // console.log(state.connections[i].connection)
+        for (
+          j = 0;
+          j < Object.keys(state.connections[i].connection).length;
+          j++
+        ) {
+          // console.log(state.connections[i].connection[j].id)
+          if (localid == state.connections[i].connection[j].id) {
+            //console.log('match')
+            // var currentid = i
+            // var connectid = j
+            state.connections[i].connection[j].endx = e.xpos
+            state.connections[i].connection[j].endy = e.ypos
+            pouchdb
+              .get(state.myclient)
+              .then(function(doc) {
+                //console.log(doc)
+                // put the store into pouchdb
+                return pouchdb.bulkDocs([
+                  {
+                    _id: state.myclient,
+                    _rev: doc._rev,
+                    _attachments: doc._attachments,
+                    notes: doc.notes,
+                    connections: state.connections
+                  }
+                ])
+              })
+              .then(function() {
+                return pouchdb.get(state.myclient).then(function(doc) {
+                  state.connections = doc.connections
+                })
+              })
+              .catch(function(err) {
+                if (err.status == 404) {
+                  // pouchdb.put({  })
+                }
+              })
+          }
+        }
+      }
     },
 
     EDIT_NOTE(state, e) {
