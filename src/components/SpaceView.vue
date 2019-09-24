@@ -36,27 +36,23 @@
             :id="note.id"
           />
 
+          <!-- FIXME: LINE start should be 0,0 not note.xpos -->
+          <!-- <g v-if="connection.connected == true"> -->
           <g v-for="(connection, index) in connections" :key="index">
-            <!-- FIXME: Add conection is true ?  -->
-            <!-- FIXME: LINE start should be 0,0 not note.xpos -->
-            <!-- <g v-if="connection.connected == true"> -->
             <g
-              v-if="note.id == connection.id"
-              :transform="`translate(${-position.xpos}, ${-position.ypos})`"
+              v-if="note.id == connection.startid"
+              :transform="`translate(${-connection.startx}, ${-connection.starty})`"
             >
-              <g v-for="connection in connection.connection">
-                <line
-                  :x1="position.xpos"
-                  :y1="position.ypos"
-                  :x2="connection.endx"
-                  :y2="connection.endy"
-                  style="stroke:rgb(255,0,0);stroke-width:2"
-                />
-              </g>
+              <!-- <g v-for="connection in connection.connection"> -->
+              <line
+                :x1="connection.startx"
+                :y1="connection.starty"
+                :x2="connection.endx"
+                :y2="connection.endy"
+                style="stroke:rgb(255,0,0);stroke-width:2"
+              />
             </g>
-            <!-- </g> -->
           </g>
-          <!-- <text>{{note.xpos}}</text> -->
         </g>
       </g>
       <!-- REMOVE: cannot render attachments this way-->
@@ -118,8 +114,8 @@ export default {
 
       this.$emit('editMode')
     },
-    startConnect(e, f, xpos, ypos) {
-      this.$store.dispatch('startConnect', { e, f, xpos, ypos })
+    startConnect(e, f, startx, starty, endx, endy) {
+      this.$store.dispatch('startConnect', { e, f, startx, starty, endx, endy })
     },
     updatePos(activenoteid, xpos, ypos, isActive) {
       this.$store.dispatch('movePos', { activenoteid, xpos, ypos, isActive })
