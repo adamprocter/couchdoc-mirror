@@ -216,7 +216,7 @@ export default {
           ref.updatePos(activenoteid, xpos, ypos, isActive)
           //selectedElement.firstElementChild.classList.remove('highlighted')
           // update any endx and ypos for connections connected to this id
-          //  ref.updateConnect(activenoteid, xpos, ypos)
+          ref.updateConnect(activenoteid, xpos, ypos)
         }
         // }
         selectedElement = false

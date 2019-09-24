@@ -365,53 +365,48 @@ const store = new Vuex.Store({
     },
 
     UPDATE_CONNECT(state, e) {
-      console.log(state.connections)
       localid = e.activenoteid
-      // console.log(localid)
       var i
-      var j
       for (i = 0; i < Object.keys(state.connections).length; i++) {
-        // console.log(state.connections[i].connection)
-        for (
-          j = 0;
-          j < Object.keys(state.connections[i].connection).length;
-          j++
-        ) {
-          // console.log(state.connections[i].connection[j].id)
-          if (localid == state.connections[i].connection[j].id) {
-            //console.log('match')
-            // var currentid = i
-            // var connectid = j
-            state.connections[i].connection[j].endx = e.xpos
-            state.connections[i].connection[j].endy = e.ypos
-            pouchdb
-              .get(state.myclient)
-              .then(function(doc) {
-                //console.log(doc)
-                // put the store into pouchdb
-                return pouchdb.bulkDocs([
-                  {
-                    _id: state.myclient,
-                    _rev: doc._rev,
-                    _attachments: doc._attachments,
-                    notes: doc.notes,
-                    connections: state.connections
-                  }
-                ])
-              })
-              .then(function() {
-                return pouchdb.get(state.myclient).then(function(doc) {
-                  state.connections = doc.connections
-                })
-              })
-              .catch(function(err) {
-                if (err.status == 404) {
-                  // pouchdb.put({  })
-                }
-              })
-          }
+        //
+        // if endid matches update endx and endy else if startid matchs update startx /y
+        if (localid == state.connections[i].startid) {
+          state.connections[i].startx = e.xpos
+          state.connections[i].starty = e.ypos
+          // console.log(state.connections)
+        } else if (localid == state.connections[i].endid) {
+          state.connections[i].endx = e.xpos
+          state.connections[i].endy = e.ypos
+        } else {
         }
       }
+
+      pouchdb
+        .get(state.glo_con)
+        .then(function(doc) {
+          //console.log(doc)
+          // put the store into pouchdb
+          return pouchdb.bulkDocs([
+            {
+              _id: state.glo_con,
+              _rev: doc._rev,
+              connections: state.connections
+            }
+          ])
+        })
+        .then(function() {
+          return pouchdb.get(state.glo_con).then(function(doc) {
+            state.connections = doc.connections
+          })
+        })
+        .catch(function(err) {
+          if (err.status == 404) {
+            // pouchdb.put({  })
+          }
+        })
+      //     }
+      //    }
+      //  }
     },
 
     EDIT_NOTE(state, e) {
