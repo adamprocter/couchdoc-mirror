@@ -101,11 +101,11 @@ const store = new Vuex.Store({
             return pouchdb.put({
               _id: state.glo_pos,
               positions: [
-                {
-                  id: uniqueid,
-                  xpos: 0,
-                  ypos: 0
-                }
+                //   {
+                //     id: uniqueid,
+                //     xpos: 0,
+                //     ypos: 0
+                //   }
               ]
             })
           }
@@ -131,14 +131,14 @@ const store = new Vuex.Store({
             return pouchdb.put({
               _id: state.glo_con,
               connections: [
-                {
-                  startid: uniqueid,
-                  xpos: 0,
-                  ypos: 0,
-                  endid: uniqueid,
-                  endxpos: 0,
-                  endypos: 0
-                }
+                //   {
+                //     startid: uniqueid,
+                //     xpos: 0,
+                //     ypos: 0,
+                //     endid: uniqueid,
+                //     endxpos: 0,
+                //     endypos: 0
+                //   }
               ]
             })
           }
@@ -204,7 +204,6 @@ const store = new Vuex.Store({
           })
       })
       pouchdb.get(state.glo_pos).then(function(doc) {
-        console.log('possp')
         doc.positions.push({
           id: uniqueid,
           xpos: 0,
@@ -314,7 +313,7 @@ const store = new Vuex.Store({
       pouchdb
         .get(state.glo_pos)
         .then(function(doc) {
-          console.log(doc)
+          //console.log(doc)
           // put the store into pouchdb
           return pouchdb.bulkDocs([
             {
@@ -337,38 +336,37 @@ const store = new Vuex.Store({
     },
 
     UPDATE_ACTIVE(state, e) {
-      // localid = e.activenoteid
-      // //console.log(e)
-      // var i
-      // for (i = 0; i < Object.keys(state.notes).length; i++) {
-      //   if (localid == state.notes[i].id) {
-      //     state.notes[i].isActive = e.isActive
-      //   }
-      // }
-      // pouchdb
-      //   .get(state.myclient)
-      //   .then(function(doc) {
-      //     //console.log(doc)
-      //     // put the store into pouchdb
-      //     return pouchdb.bulkDocs([
-      //       {
-      //         _id: state.myclient,
-      //         _rev: doc._rev,
-      //         _attachments: doc._attachments,
-      //         notes: state.notes,
-      //         positions: state.positions
-      //       }
-      //     ])
-      //   })
-      //   .then(function() {
-      //     return pouchdb.get(state.myclient).then(function(doc) {
-      //       state.notes = doc.notes
-      //     })
-      //   })
-      //   .catch(function(err) {
-      //     if (err.status == 404) {
-      //     }
-      //   })
+      localid = e.activenoteid
+      //console.log(e)
+      var i
+      for (i = 0; i < Object.keys(state.notes).length; i++) {
+        if (localid == state.notes[i].id) {
+          state.notes[i].isActive = e.isActive
+        }
+      }
+      pouchdb
+        .get(state.myclient)
+        .then(function(doc) {
+          //console.log(doc)
+          // put the store into pouchdb
+          return pouchdb.bulkDocs([
+            {
+              _id: state.myclient,
+              _rev: doc._rev,
+              _attachments: doc._attachments,
+              notes: state.notes
+            }
+          ])
+        })
+        .then(function() {
+          return pouchdb.get(state.myclient).then(function(doc) {
+            state.notes = doc.notes
+          })
+        })
+        .catch(function(err) {
+          if (err.status == 404) {
+          }
+        })
     },
 
     UPDATE_CONNECT(state, e) {

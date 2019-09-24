@@ -5,14 +5,14 @@
     <!-- : is short for v-bind -->
     <!-- FIXME: Fixed width of SVG Object here -->
     <svg xmlns="http://www.w3.org/2000/svg" width="400" height="800" id="space" ref="sheets">
-      <g v-for="(position, index) in positions">
+      <g v-for="(note, index) in notes" :key="'note'+index">
         <g
-          v-for="(note, index) in notes"
-          :key="'note'+index"
+          v-for="(position, index) in positions"
+          :key="index"
+          v-if="note.id == position.id"
           :transform="`translate(${position.xpos}, ${position.ypos})`"
           class="draggable"
         >
-          <!-- FIXME: -->
           <polygon
             v-if="note.content_type == 'link'"
             points="9.500000000000002,16.454482671904334 -19,2.326828918379971e-15 9.499999999999986,-16.45448267190434"
@@ -111,8 +111,6 @@ export default {
     myattachments: state => state.myattachments,
     connections: state => state.connections,
     positions: state => state.positions
-
-    // otherclients: state => state.otherclients
   }),
 
   mounted() {
@@ -191,7 +189,7 @@ export default {
           offset = getMousePosition(evt)
           // identify which object was clicked
           activenoteid = selectedElement.firstElementChild.id
-          // console.log(activenoteid)
+          console.log(activenoteid)
 
           // make sure the first transform on the element is a translate transform
           var transforms = selectedElement.transform.baseVal
@@ -230,7 +228,7 @@ export default {
           evt.preventDefault()
           var coord = getMousePosition(evt)
           transform.setTranslate(coord.x - offset.x, coord.y - offset.y)
-          // console.log(coord.x - offset.x)
+          console.log(coord.x - offset.x)
           // send positions back to DB
           activenoteid = selectedElement.firstElementChild.id
           xpos = coord.x - offset.x
@@ -238,7 +236,6 @@ export default {
           ref.updatePos(activenoteid, xpos, ypos, isActive)
           //selectedElement.firstElementChild.classList.remove('highlighted')
           // update any endx and ypos for connections connected to this id
-          //
           ref.updateConnect(activenoteid, xpos, ypos)
         }
         // }
