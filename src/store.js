@@ -85,7 +85,6 @@ const store = new Vuex.Store({
       pouchdb
         .get(state.glo_pos)
         .then(function(doc) {
-          console.log(doc)
           state.positions = doc.positions
         })
         .catch(function(err) {
@@ -301,7 +300,7 @@ const store = new Vuex.Store({
 
     MOVE_POS(state, e) {
       localid = e.activenoteid
-      console.log(localid)
+      //console.log(localid)
       var i
       for (i = 0; i < Object.keys(state.positions).length; i++) {
         if (localid == state.positions[i].id) {
@@ -559,8 +558,8 @@ const store = new Vuex.Store({
     movePos: ({ commit }, { activenoteid, xpos, ypos, isActive }) => {
       commit('MOVE_POS', { activenoteid, xpos, ypos, isActive })
     },
-    startConnect: ({ commit }, { e, f, xpos, ypos }) => {
-      commit('MAKE_CONNECT', { e, f, xpos, ypos })
+    startConnect: ({ commit }, { e, f, startx, starty, endx, endy }) => {
+      commit('MAKE_CONNECT', { e, f, startx, starty, endx, endy })
     },
     updateConnect: ({ commit }, { activenoteid, xpos, ypos }) => {
       commit('UPDATE_CONNECT', { activenoteid, xpos, ypos })

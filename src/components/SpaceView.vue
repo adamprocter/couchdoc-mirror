@@ -72,24 +72,6 @@
 
       -->
     </svg>
-
-    <!-- FYI: Temp Output -->
-    <!-- <div v-for="(connection, index) in connections" :key="index">
-      <div v-for="connection in connection.connection">
-        {{connection.id}}
-        {{connection.endx}}
-        {{connection.endy}}
-      </div>
-    </div>-->
-
-    <!-- <ul class="data" v-for="(value, index) in connections" v-bind:key="index">
-      <li v-for="(connnection, index) in value.connections" v-bind:key="index">{{ connection.xpos }}</li>
-    </ul>-->
-
-    <!-- REF: Keep for now
-    <div v-for="(myattachment, index) in myattachments" :key="index">
-    <img :src="myattachments[index].url" alt width="50%" height border="0" />-->
-    <!-- </div> -->
   </div>
 </template>
 
@@ -100,6 +82,11 @@ var firsttap
 var secondtap
 var xpos = 0
 var ypos = 0
+
+var startx = 0
+var starty = 0
+var endx = 0
+var endy = 0
 
 var myTimer
 var delay = 500
@@ -189,8 +176,6 @@ export default {
           offset = getMousePosition(evt)
           // identify which object was clicked
           activenoteid = selectedElement.firstElementChild.id
-          console.log(activenoteid)
-
           // make sure the first transform on the element is a translate transform
           var transforms = selectedElement.transform.baseVal
 
@@ -228,7 +213,6 @@ export default {
           evt.preventDefault()
           var coord = getMousePosition(evt)
           transform.setTranslate(coord.x - offset.x, coord.y - offset.y)
-          console.log(coord.x - offset.x)
           // send positions back to DB
           activenoteid = selectedElement.firstElementChild.id
           xpos = coord.x - offset.x
@@ -236,7 +220,7 @@ export default {
           ref.updatePos(activenoteid, xpos, ypos, isActive)
           //selectedElement.firstElementChild.classList.remove('highlighted')
           // update any endx and ypos for connections connected to this id
-          ref.updateConnect(activenoteid, xpos, ypos)
+          //  ref.updateConnect(activenoteid, xpos, ypos)
         }
         // }
         selectedElement = false
@@ -263,13 +247,18 @@ export default {
           if (evt.target.parentNode.classList.contains('draggable')) {
             selectedElement = evt.target.parentNode
             firsttap = selectedElement.firstElementChild.id
+            startx = xpos
+            starty = ypos
           }
         } else {
           if (evt.target.parentNode.classList.contains('draggable')) {
             selectedElement = evt.target.parentNode
             secondtap = selectedElement.firstElementChild.id
             // FIXME: perhaps need start positions here to pass?
-            ref.startConnect(firsttap, secondtap, xpos, ypos)
+            endx = xpos
+            endy = ypos
+            console.log(startx, starty, endx, endy)
+            ref.startConnect(firsttap, secondtap, startx, starty, endx, endy)
           }
         }
       }
