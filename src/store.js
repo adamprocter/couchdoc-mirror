@@ -6,9 +6,9 @@ import { connectableObservableDescriptor } from 'rxjs/internal/observable/Connec
 Vue.use(Vuex)
 // Objects
 var pouchdb = new PouchDB('couchdocs')
-var remote = 'https://nn.adamprocter.co.uk/couchdocs/'
+//var remote = 'https://nn.adamprocter.co.uk/couchdocs/'
 // local couch on my mac
-//var remote = 'http://127.0.0.1:5984/couchdocs/'
+var remote = 'http://127.0.0.1:5984/couchdocs/'
 
 var localid = null
 const store = new Vuex.Store({
@@ -20,7 +20,7 @@ const store = new Vuex.Store({
     notes: [],
     positions: [],
     connections: [],
-    otherclients: {},
+    allnotes: {},
     activeNote: {},
     activeAttachment: {},
     myattachments: [],
@@ -33,6 +33,35 @@ const store = new Vuex.Store({
       store.commit('GET_MY_DOC')
       store.commit('GET_POSITIONS')
       store.commit('GET_CONNECTIONS')
+    },
+
+    GET_ALL_DOCS(state) {
+      pouchdb
+        .allDocs({
+          include_docs: true,
+          attachments: true
+        })
+        .then(function(result) {
+          //handleresult
+          // filter: function(result){
+          //   return doc.type ==='postions'
+          // }
+          var i
+          for (i = 0; i < Object.keys(result.rows).length; i++) {
+            //console.log(result.rows[i].doc.notes)
+            // state.allnotes.push({
+            //  state.allnotes: result.rows[i].doc.notes
+            // )}
+            state.allnotes = result.rows[i].doc.notes
+            console.log(state.allnotes)
+          }
+
+          console.log(result)
+          console.log(state.allnotes)
+        })
+        .catch(function(err) {
+          console.log(err)
+        })
     },
 
     GET_MY_ATTACHMENT(state, e) {
@@ -52,7 +81,6 @@ const store = new Vuex.Store({
           console.log(err)
         })
     },
-
     GET_MY_DOC(state) {
       pouchdb
         .get(state.myclient)
@@ -498,7 +526,7 @@ const store = new Vuex.Store({
   actions: {
     syncDB: () => {
       pouchdb.replicate.from(remote).on('complete', function() {
-        store.commit('GET_MY_DOC')
+        store.commit('GET_ALL_DOCS')
         store.commit('GET_POSITIONS')
         store.commit('GET_CONNECTIONS')
         //store.commit('GET_ALL_DOCS')
@@ -510,7 +538,7 @@ const store = new Vuex.Store({
             // pop info into function to find out more
             // handle change
             //console.log('change')
-            store.commit('GET_MY_DOC')
+            store.commit('GET_ALL_DOCS')
             store.commit('GET_POSITIONS')
             store.commit('GET_CONNECTIONS')
             // store.commit('GET_ALL_DOCS')
