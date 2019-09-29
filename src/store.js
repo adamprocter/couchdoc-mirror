@@ -53,6 +53,7 @@ const store = new Vuex.Store({
             //  state.allnotes: result.rows[i].doc.notes
             // )}
             state.allnotes = result.rows[i].doc.notes
+            //state.otherclients = doc.rows
             console.log(state.allnotes)
           }
 
