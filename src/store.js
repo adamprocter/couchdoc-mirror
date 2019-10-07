@@ -218,8 +218,8 @@ const store = new Vuex.Store({
       pouchdb.get(state.glo_pos).then(function(doc) {
         doc.positions.push({
           id: uniqueid,
-          xpos: 0,
-          ypos: 0
+          xpos: 50,
+          ypos: 50
         })
         return pouchdb
           .put({
