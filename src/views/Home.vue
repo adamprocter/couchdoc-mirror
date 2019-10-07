@@ -11,10 +11,11 @@
     <Editor v-if="editing" @closeEdit="closeEdit()" />
     <ToolBar v-else-if="clientset" @editMode="editMode()" />
     <YourData v-if="clientset" />
-    <SpaceView v-if="clientset" @editMode="editMode()" />
+    <!-- <SpaceView v-if="clientset" @editMode="editMode()" />-->
+
     <!-- <AllData v-if="clientset" /> -->
-    <!-- <AllSpace v-if="clientset" /> -->
-    <YourAttachments v-if="clientset" />
+    <AllSpace v-if="clientset" @editMode="editMode()" />
+    <!-- <YourAttachments v-if="clientset" /> -->
     <ClientSet v-else @clientAdded="clientAdded()" />
     <DeBug />
   </div>

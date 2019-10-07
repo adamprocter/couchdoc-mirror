@@ -1,63 +1,60 @@
 <template>
   <div class="spaceview">
-    <h2>Your spatial view</h2>
+    <h2>Single Spatial view</h2>
     <!-- tips-->
     <!-- : is short for v-bind -->
     <!-- FIXME: Fixed width of SVG Object here -->
-    <svg xmlns="http://www.w3.org/2000/svg" width="400" height="800" id="space" ref="sheets">
-      <g
-        v-for="(note, index) in notes"
-        :key="'note'+index"
-        :transform="`translate(${note.xpos}, ${note.ypos})`"
-        class="draggable"
-      >
-        <!-- FIXME: -->
-        <polygon
-          v-if="note.content_type == 'link'"
-          points="9.500000000000002,16.454482671904334 -19,2.326828918379971e-15 9.499999999999986,-16.45448267190434"
-          fill="#989898"
-          :class="[note.content_type, note.isActive ? 'highlighted' : '']"
-          :id="note.id"
-        />
-        <polygon
-          v-if="note.content_type == 'sheet'"
-          points="13.435028842544403,13.435028842544401 -13.435028842544401,13.435028842544403 -13.435028842544407,-13.435028842544401 13.435028842544401,-13.435028842544407"
-          fill="#989898"
-          :class="[note.content_type, note.isActive ? 'highlighted' : '']"
-          :id="note.id"
-        />
+    <svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" id="space" ref="sheets">
+      <g v-for="(note, index) in notes" :key="'note'+index">
+        <g
+          v-for="(position, index) in positions"
+          :key="index"
+          v-if="note.id == position.id"
+          :transform="`translate(${position.xpos}, ${position.ypos})`"
+          class="draggable"
+        >
+          <polygon
+            v-if="note.content_type == 'link'"
+            points="9.500000000000002,16.454482671904334 -19,2.326828918379971e-15 9.499999999999986,-16.45448267190434"
+            fill="#989898"
+            :class="[note.content_type, note.isActive ? 'highlighted' : '']"
+            :id="note.id"
+          />
+          <polygon
+            v-if="note.content_type == 'sheet'"
+            points="13.435028842544403,13.435028842544401 -13.435028842544401,13.435028842544403 -13.435028842544407,-13.435028842544401 13.435028842544401,-13.435028842544407"
+            fill="#989898"
+            :class="[note.content_type, note.isActive ? 'highlighted' : '']"
+            :id="note.id"
+          />
 
-        <polygon
-          v-if="note.content_type == 'attachment'"
-          points="14.782072520180588,6.1229349178414365 6.122934917841437,14.782072520180588 -6.122934917841436,14.782072520180588 -14.782072520180588,6.122934917841437 -14.782072520180588,-6.122934917841435 -6.122934917841445,-14.782072520180584 6.12293491784144,-14.782072520180586 14.782072520180584,-6.122934917841446"
-          fill="#989898"
-          :class="[note.content_type, note.isActive ? 'highlighted' : '']"
-          :id="note.id"
-        />
+          <polygon
+            v-if="note.content_type == 'attachment'"
+            points="14.782072520180588,6.1229349178414365 6.122934917841437,14.782072520180588 -6.122934917841436,14.782072520180588 -14.782072520180588,6.122934917841437 -14.782072520180588,-6.122934917841435 -6.122934917841445,-14.782072520180584 6.12293491784144,-14.782072520180586 14.782072520180584,-6.122934917841446"
+            fill="#989898"
+            :class="[note.content_type, note.isActive ? 'highlighted' : '']"
+            :id="note.id"
+          />
 
-        <g v-for="(connection, index) in connections" :key="index">
-          <!-- FIXME: Add conection is true ?  -->
           <!-- FIXME: LINE start should be 0,0 not note.xpos -->
           <!-- <g v-if="connection.connected == true"> -->
-          <g
-            v-if="note.id == connection.id"
-            :transform="`translate(${-note.xpos}, ${-note.ypos})`"
-          >
-            <g v-for="connection in connection.connection">
+          <g v-for="(connection, index) in connections" :key="index">
+            <g
+              v-if="note.id == connection.startid"
+              :transform="`translate(${-connection.startx}, ${-connection.starty})`"
+            >
+              <!-- <g v-for="connection in connection.connection"> -->
               <line
-                :x1="note.xpos"
-                :y1="note.ypos"
+                :x1="connection.startx"
+                :y1="connection.starty"
                 :x2="connection.endx"
                 :y2="connection.endy"
                 style="stroke:rgb(255,0,0);stroke-width:2"
               />
             </g>
           </g>
-          <!-- </g> -->
         </g>
-        <!-- <text>{{note.xpos}}</text> -->
       </g>
-
       <!-- REMOVE: cannot render attachments this way-->
       <!-- <g
         v-for="(myattachment, index) in myattachments"
@@ -71,24 +68,6 @@
 
       -->
     </svg>
-
-    <!-- FYI: Temp Output -->
-    <!-- <div v-for="(connection, index) in connections" :key="index">
-      <div v-for="connection in connection.connection">
-        {{connection.id}}
-        {{connection.endx}}
-        {{connection.endy}}
-      </div>
-    </div>-->
-
-    <!-- <ul class="data" v-for="(value, index) in connections" v-bind:key="index">
-      <li v-for="(connnection, index) in value.connections" v-bind:key="index">{{ connection.xpos }}</li>
-    </ul>-->
-
-    <!-- REF: Keep for now
-    <div v-for="(myattachment, index) in myattachments" :key="index">
-    <img :src="myattachments[index].url" alt width="50%" height border="0" />-->
-    <!-- </div> -->
   </div>
 </template>
 
@@ -100,6 +79,11 @@ var secondtap
 var xpos = 0
 var ypos = 0
 
+var startx = 0
+var starty = 0
+var endx = 0
+var endy = 0
+
 var myTimer
 var delay = 500
 
@@ -108,9 +92,8 @@ export default {
   computed: mapState({
     notes: state => state.notes,
     myattachments: state => state.myattachments,
-    connections: state => state.connections
-
-    // otherclients: state => state.otherclients
+    connections: state => state.connections,
+    positions: state => state.positions
   }),
 
   mounted() {
@@ -131,8 +114,8 @@ export default {
 
       this.$emit('editMode')
     },
-    startConnect(e, f, xpos, ypos) {
-      this.$store.dispatch('startConnect', { e, f, xpos, ypos })
+    startConnect(e, f, startx, starty, endx, endy) {
+      this.$store.dispatch('startConnect', { e, f, startx, starty, endx, endy })
     },
     updatePos(activenoteid, xpos, ypos, isActive) {
       this.$store.dispatch('movePos', { activenoteid, xpos, ypos, isActive })
@@ -189,8 +172,6 @@ export default {
           offset = getMousePosition(evt)
           // identify which object was clicked
           activenoteid = selectedElement.firstElementChild.id
-          // console.log(activenoteid)
-
           // make sure the first transform on the element is a translate transform
           var transforms = selectedElement.transform.baseVal
 
@@ -228,7 +209,6 @@ export default {
           evt.preventDefault()
           var coord = getMousePosition(evt)
           transform.setTranslate(coord.x - offset.x, coord.y - offset.y)
-          // console.log(coord.x - offset.x)
           // send positions back to DB
           activenoteid = selectedElement.firstElementChild.id
           xpos = coord.x - offset.x
@@ -236,7 +216,6 @@ export default {
           ref.updatePos(activenoteid, xpos, ypos, isActive)
           //selectedElement.firstElementChild.classList.remove('highlighted')
           // update any endx and ypos for connections connected to this id
-          //
           ref.updateConnect(activenoteid, xpos, ypos)
         }
         // }
@@ -264,13 +243,18 @@ export default {
           if (evt.target.parentNode.classList.contains('draggable')) {
             selectedElement = evt.target.parentNode
             firsttap = selectedElement.firstElementChild.id
+            startx = xpos
+            starty = ypos
           }
         } else {
           if (evt.target.parentNode.classList.contains('draggable')) {
             selectedElement = evt.target.parentNode
             secondtap = selectedElement.firstElementChild.id
             // FIXME: perhaps need start positions here to pass?
-            ref.startConnect(firsttap, secondtap, xpos, ypos)
+            endx = xpos
+            endy = ypos
+            // console.log(startx, starty, endx, endy)
+            ref.startConnect(firsttap, secondtap, startx, starty, endx, endy)
           }
         }
       }

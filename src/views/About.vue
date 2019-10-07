@@ -14,11 +14,11 @@
       <em>(and lots of helpers to be listed asap)</em>
     </p>
 
-    <h3>version 0.0.13d</h3>
+    <h3>version 0.0.14d</h3>
     <ul>
       <li>Contribute text and media with other people in realtime.</li>
       <li>
-        Contributions displayed as a list and spatial view across all
+        Contributions displayed as a list and shared spatial view across all
         devices.
       </li>
     </ul>
