@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import PouchDB from 'pouchdb'
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable'
 
 Vue.use(Vuex)
 // Objects
@@ -42,38 +41,8 @@ const store = new Vuex.Store({
           attachments: true
         })
         .then(function(doc) {
-          //handleresult
-          // filter: function(result){
-          //   return doc.type ==='postions'
-          // }
-          // if (doc.rows.id == 'connections') {
-          //   console.log('found one')
-          // }
-          var i
-          for (i = 0; i < Object.keys(doc.rows).length; i++) {
-            //  console.log(doc.rows[i].id)
-            if (
-              doc.rows[i].id != 'connections' &&
-              doc.rows[i].id != 'positions'
-            ) {
-              console.log(doc.rows[i])
-              state.allnotes = doc.rows
-            }
-          }
-
-          //var i
-          // for (i = 0; i < Object.keys(result.rows).length; i++) {
-          //   //console.log(result.rows[i].doc.notes)
-          //   // state.allnotes.push({
-          //   //  state.allnotes: result.rows[i].doc.notes
-          //   // )}
-          //   state.allnotes = result.rows[i].doc.notes
-          //   //state.otherclients = doc.rows
-          //   console.log(state.allnotes)
-          // }
-
-          //console.log(result)
-          console.log(state.allnotes)
+          state.instance = pouchdb.name
+          state.allnotes = doc.rows
         })
         .catch(function(err) {
           console.log(err)
