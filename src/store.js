@@ -6,9 +6,9 @@ import { connectableObservableDescriptor } from 'rxjs/internal/observable/Connec
 Vue.use(Vuex)
 // Objects
 var pouchdb = new PouchDB('couchdocs')
-//var remote = 'https://nn.adamprocter.co.uk/couchdocs/'
+var remote = 'https://nn.adamprocter.co.uk/couchdocs/'
 // local couch on my mac
-var remote = 'http://127.0.0.1:5984/couchdocs/'
+//var remote = 'http://127.0.0.1:5984/couchdocs/'
 
 var localid = null
 const store = new Vuex.Store({
@@ -41,23 +41,38 @@ const store = new Vuex.Store({
           include_docs: true,
           attachments: true
         })
-        .then(function(result) {
+        .then(function(doc) {
           //handleresult
           // filter: function(result){
           //   return doc.type ==='postions'
           // }
+          // if (doc.rows.id == 'connections') {
+          //   console.log('found one')
+          // }
           var i
-          for (i = 0; i < Object.keys(result.rows).length; i++) {
-            //console.log(result.rows[i].doc.notes)
-            // state.allnotes.push({
-            //  state.allnotes: result.rows[i].doc.notes
-            // )}
-            state.allnotes = result.rows[i].doc.notes
-            //state.otherclients = doc.rows
-            console.log(state.allnotes)
+          for (i = 0; i < Object.keys(doc.rows).length; i++) {
+            //  console.log(doc.rows[i].id)
+            if (
+              doc.rows[i].id != 'connections' &&
+              doc.rows[i].id != 'positions'
+            ) {
+              console.log(doc.rows[i])
+              state.allnotes = doc.rows
+            }
           }
 
-          console.log(result)
+          //var i
+          // for (i = 0; i < Object.keys(result.rows).length; i++) {
+          //   //console.log(result.rows[i].doc.notes)
+          //   // state.allnotes.push({
+          //   //  state.allnotes: result.rows[i].doc.notes
+          //   // )}
+          //   state.allnotes = result.rows[i].doc.notes
+          //   //state.otherclients = doc.rows
+          //   console.log(state.allnotes)
+          // }
+
+          //console.log(result)
           console.log(state.allnotes)
         })
         .catch(function(err) {
