@@ -508,6 +508,9 @@ const store = new Vuex.Store({
         })
     }
   },
+  getters: {
+    // currently not being used. may help to filter UI
+  },
   actions: {
     syncDB: () => {
       pouchdb.replicate.from(remote).on('complete', function() {

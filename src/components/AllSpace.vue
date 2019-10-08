@@ -111,9 +111,14 @@ export default {
   mounted() {
     this.makeDraggable()
     this.makeConnectable()
+    this.trimText()
   },
 
   methods: {
+    trimText() {
+      console.log(this.allnotes)
+    },
+
     addDoc() {
       this.$store.dispatch('addDoc')
       this.$emit('editMode')

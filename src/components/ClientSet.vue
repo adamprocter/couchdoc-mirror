@@ -7,7 +7,7 @@
     <!-- <button>Create new instance</button> -->
     <p>
       nodenoggin is a
-      <span>work in progress</span> collaborative research and design thinking
+      <span>work in progress</span> collaborative co-creation research and design thinking
       tool, read more details and links in the
       <a
         href="/#/about"
@@ -19,7 +19,7 @@
       <em>Lets Go!</em>
     </p>
 
-    <h3>Start collaborating</h3>
+    <h3>Start co-creating</h3>
     <p>Please name your device.</p>
     <form>
       Device name:
