@@ -6,8 +6,8 @@
       studio design thinking processes.
     </p>
     <p>
-      This tool is designed to support a new type of collobrative, spatial and
-      messy space to work together connecting ideas and concepts.
+      This tool is designed to support a new type of co-creation, a spatial and
+      messy area to work together connecting ideas and concepts.
     </p>
     <p>
       Made by Adam Procter
@@ -24,7 +24,7 @@
     </ul>
     <h4>issues</h4>
     <ul>
-      <li>Touch device use touch cancel to save positions</li>
+      <li>Touch device are very buggy as they use touch cancel to save positions</li>
       <li>Minimal layout or style.</li>
     </ul>
     <h2>Design-led ethical Edutech</h2>
@@ -34,7 +34,9 @@
         <a href="https://discourse.adamprocter.co.uk">discuss</a>(and feedback)
       </li>
       <li>
-        <a href="https://discursive.adamprocter.co.uk">discursive</a> (blog)
+        <a
+          href="https://discursive.adamprocter.co.uk/categories/phd/"
+        >discursive (phd catergory link)</a> (blog)
       </li>
       <li>
         <a href="https://researchnot.es">researchnot.es</a> (blog)
