@@ -423,6 +423,10 @@ ul {
   .debug {
     grid-column: 1 / 6;
   }
+
+  .alldata {
+    grid-column: 2 / 6;
+  }
 }
 
 /* @media (prefers-color-scheme: dark) {

@@ -2,7 +2,9 @@
   <div class="alldata">
     <h2>All contributions (in realtime)</h2>
     <ul class="data" v-for="(value, index) in allnotes" v-bind:key="index">
-      <li v-for="(note, index) in value.doc.notes" v-bind:key="index">{{ note.text }} - {{note.id}}</li>
+      <li v-for="(note, index) in value.doc.notes" v-bind:key="index">
+        <p>{{ note.text }}</p>
+      </li>
     </ul>
   </div>
 </template>
