@@ -2,7 +2,7 @@
   <div class="notlogged">
     <h2>
       Welcome! You are connected to the instance
-      <em>{{ instance }}</em>
+      <b>{{ instance }}</b>
     </h2>
     <!-- <button>Create new instance</button> -->
     <p>
