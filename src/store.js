@@ -1,18 +1,24 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import PouchDB from 'pouchdb'
+import accounts from '../src/assets/settings.json'
 
 Vue.use(Vuex)
 // Objects
 var localinstance = 'alpha'
 var pouchdb = new PouchDB(localinstance)
 var remote =
-  'https://nogg:N/9d^9cn23@nn.adamprocter.co.uk/' + localinstance + '/'
+  'https://' +
+  accounts.settings[0].name +
+  ':' +
+  accounts.settings[0].password +
+  '@nn.adamprocter.co.uk/' +
+  localinstance +
+  '/'
 // local couch on my mac
 //var remote = 'http://127.0.0.1:5984/couchdocs/'
 
 var localid = null
-
 const store = new Vuex.Store({
   state: {
     instance: '',
@@ -35,7 +41,13 @@ const store = new Vuex.Store({
         localinstance = doc
         pouchdb = new PouchDB(localinstance)
         remote =
-          'https://nogg:N/9d^9cn23@nn.adamprocter.co.uk/' + localinstance + '/'
+          'https://' +
+          accounts.settings[0].name +
+          ':' +
+          accounts.settings[0].password +
+          '@nn.adamprocter.co.uk/' +
+          localinstance +
+          '/'
         store.dispatch('syncDB')
       })
     },
