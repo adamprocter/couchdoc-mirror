@@ -5,7 +5,7 @@
     <!-- tips-->
     <!-- : is short for v-bind -->
     <!-- FIXME: Fixed width of SVG Object here -->
-    <svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" id="space" ref="sheets">
+    <svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" id="space" ref="sheets">
       <rect width="100%" height="100%" fill="#f1f1f1" />
       <g v-for="(value, index) in allnotes" v-bind:key="index">
         <g v-for="(note, index) in value.doc.notes" v-bind:key="index">

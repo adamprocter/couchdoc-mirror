@@ -424,9 +424,9 @@ ul {
     grid-column: 1 / 6;
   }
 
-  .alldata {
+  /* .alldata {
     grid-column: 2 / 6;
-  }
+  } */
 }
 
 /* @media (prefers-color-scheme: dark) {

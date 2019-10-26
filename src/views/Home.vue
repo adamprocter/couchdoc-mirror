@@ -14,7 +14,7 @@
     <!-- <SpaceView v-if="clientset" @editMode="editMode()" />-->
 
     <AllData v-if="clientset" />
-    <!-- <AllSpace v-if="clientset" @editMode="editMode()" /> -->
+    <AllSpace v-if="clientset" @editMode="editMode()" />
     <!-- <YourAttachments v-if="clientset" /> -->
     <ClientSet v-else @clientAdded="clientAdded()" />
     <DeBug />
