@@ -69,7 +69,6 @@ export default {
   data: function() {
     return {
       clientid: ''
-      //,name: ''
     }
   },
 

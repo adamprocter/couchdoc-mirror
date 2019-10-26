@@ -420,7 +420,8 @@ ul {
     grid-row: 1;
   }
 
-  .debug {
+  .debug,
+  .adminpanel {
     grid-column: 1 / 6;
   }
 

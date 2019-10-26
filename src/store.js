@@ -4,12 +4,14 @@ import PouchDB from 'pouchdb'
 
 Vue.use(Vuex)
 // Objects
-var pouchdb = new PouchDB('friday17')
-var remote = 'https://nn.adamprocter.co.uk/friday17/'
+var localinstance = 'alpha'
+var pouchdb = new PouchDB(localinstance)
+var remote = 'https://name:password@nn.adamprocter.co.uk/' + localinstance + '/'
 // local couch on my mac
 //var remote = 'http://127.0.0.1:5984/couchdocs/'
 
 var localid = null
+
 const store = new Vuex.Store({
   state: {
     instance: '',
@@ -27,6 +29,15 @@ const store = new Vuex.Store({
     otherattachments: {}
   },
   mutations: {
+    CREATE_INSTANCE(state, doc) {
+      pouchdb.close().then(function() {
+        localinstance = doc
+        pouchdb = new PouchDB(localinstance)
+        remote =
+          'https://name:password@nn.adamprocter.co.uk/' + localinstance + '/'
+        store.dispatch('syncDB')
+      })
+    },
     SET_CLIENT(state, doc) {
       state.myclient = doc
       store.commit('GET_MY_DOC')
@@ -41,7 +52,7 @@ const store = new Vuex.Store({
           attachments: true
         })
         .then(function(doc) {
-          state.instance = pouchdb.name
+          state.instance = localinstance
           state.allnotes = doc.rows
         })
         .catch(function(err) {
@@ -489,6 +500,7 @@ const store = new Vuex.Store({
           }
         })
     },
+
     DELETE_CLIENT(state) {
       //console.log('delete')
       pouchdb
@@ -586,6 +598,9 @@ const store = new Vuex.Store({
     },
     deleteClient: ({ commit }, e) => {
       commit('DELETE_CLIENT', e)
+    },
+    createInstance: ({ commit }, e) => {
+      commit('CREATE_INSTANCE', e)
     },
     addFile: ({ commit }, e) => {
       commit('ADD_FILE', e)
