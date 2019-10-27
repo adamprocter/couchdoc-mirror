@@ -18,6 +18,7 @@
     <!-- <YourAttachments v-if="clientset" /> -->
     <ClientSet v-else @clientAdded="clientAdded()" />
     <AdminPanel />
+
     <DeBug />
   </div>
 </template>

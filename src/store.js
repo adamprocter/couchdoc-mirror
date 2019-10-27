@@ -36,6 +36,25 @@ const store = new Vuex.Store({
     otherattachments: {}
   },
   mutations: {
+    REMOVE_INSTANCE(state, doc) {
+      pouchdb.close().then(function() {
+        localinstance = doc
+        console.log(localinstance)
+        var DBDeleteRequest = window.indexedDB.deleteDatabase(
+          '_pouch_' + localinstance
+        )
+
+        DBDeleteRequest.onerror = function(event) {
+          console.log('Error deleting database.')
+        }
+
+        DBDeleteRequest.onsuccess = function(event) {
+          console.log('Database deleted successfully')
+          location.reload()
+          //console.log(event.result) // should be undefined
+        }
+      })
+    },
     CREATE_INSTANCE(state, doc) {
       pouchdb.close().then(function() {
         localinstance = doc
@@ -614,6 +633,9 @@ const store = new Vuex.Store({
     },
     createInstance: ({ commit }, e) => {
       commit('CREATE_INSTANCE', e)
+    },
+    removeInstance: ({ commit }, e) => {
+      commit('REMOVE_INSTANCE', e)
     },
     addFile: ({ commit }, e) => {
       commit('ADD_FILE', e)
