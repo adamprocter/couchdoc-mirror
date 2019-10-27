@@ -180,6 +180,10 @@ em {
   padding-left: 0.2em;
 }
 
+b {
+  background-color: rgb(116, 255, 82);
+}
+
 /* this is to style the input type file using a label */
 label.myFiles {
   cursor: pointer;
@@ -219,6 +223,9 @@ button {
   margin-bottom: 1em;
   margin-left: 0.5em;
   margin-right: 0.5em;
+}
+.danger {
+  background-color: red;
 }
 
 button:active {
@@ -420,13 +427,14 @@ ul {
     grid-row: 1;
   }
 
-  .debug {
+  .debug,
+  .adminpanel {
     grid-column: 1 / 6;
   }
 
-  .alldata {
+  /* .alldata {
     grid-column: 2 / 6;
-  }
+  } */
 }
 
 /* @media (prefers-color-scheme: dark) {

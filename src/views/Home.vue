@@ -14,9 +14,11 @@
     <!-- <SpaceView v-if="clientset" @editMode="editMode()" />-->
 
     <AllData v-if="clientset" />
-    <!-- <AllSpace v-if="clientset" @editMode="editMode()" /> -->
+    <AllSpace v-if="clientset" @editMode="editMode()" />
     <!-- <YourAttachments v-if="clientset" /> -->
     <ClientSet v-else @clientAdded="clientAdded()" />
+    <AdminPanel />
+
     <DeBug />
   </div>
 </template>
@@ -25,6 +27,7 @@
 // tips
 // @ is an alias to /src
 import ClientSet from '@/components/ClientSet.vue'
+import AdminPanel from '@/components/AdminPanel.vue'
 import YourData from '@/components/YourData.vue'
 import SpaceView from '@/components/SpaceView.vue'
 import YourAttachments from '@/components/YourAttachments.vue'
@@ -44,6 +47,7 @@ export default {
   },
   components: {
     ClientSet,
+    AdminPanel,
     ToolBar,
     YourData,
     SpaceView,

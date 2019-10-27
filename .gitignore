@@ -2,6 +2,7 @@
 node_modules
 /dist
 /design_files
+/assets/settings.json
 
 # local env files
 .env.local

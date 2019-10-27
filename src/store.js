@@ -1,11 +1,20 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import PouchDB from 'pouchdb'
+import accounts from '../src/assets/settings.json'
 
 Vue.use(Vuex)
 // Objects
-var pouchdb = new PouchDB('friday17')
-var remote = 'https://nn.adamprocter.co.uk/friday17/'
+var localinstance = 'alpha'
+var pouchdb = new PouchDB(localinstance)
+var remote =
+  'https://' +
+  accounts.settings[0].name +
+  ':' +
+  accounts.settings[0].password +
+  '@nn.adamprocter.co.uk/' +
+  localinstance +
+  '/'
 // local couch on my mac
 //var remote = 'http://127.0.0.1:5984/couchdocs/'
 
@@ -27,6 +36,40 @@ const store = new Vuex.Store({
     otherattachments: {}
   },
   mutations: {
+    REMOVE_INSTANCE(state, doc) {
+      pouchdb.close().then(function() {
+        localinstance = doc
+        console.log(localinstance)
+        var DBDeleteRequest = window.indexedDB.deleteDatabase(
+          '_pouch_' + localinstance
+        )
+
+        DBDeleteRequest.onerror = function(event) {
+          console.log('Error deleting database.')
+        }
+
+        DBDeleteRequest.onsuccess = function(event) {
+          console.log('Database deleted successfully')
+          location.reload()
+          //console.log(event.result) // should be undefined
+        }
+      })
+    },
+    CREATE_INSTANCE(state, doc) {
+      pouchdb.close().then(function() {
+        localinstance = doc
+        pouchdb = new PouchDB(localinstance)
+        remote =
+          'https://' +
+          accounts.settings[0].name +
+          ':' +
+          accounts.settings[0].password +
+          '@nn.adamprocter.co.uk/' +
+          localinstance +
+          '/'
+        store.dispatch('syncDB')
+      })
+    },
     SET_CLIENT(state, doc) {
       state.myclient = doc
       store.commit('GET_MY_DOC')
@@ -41,7 +84,7 @@ const store = new Vuex.Store({
           attachments: true
         })
         .then(function(doc) {
-          state.instance = pouchdb.name
+          state.instance = localinstance
           state.allnotes = doc.rows
         })
         .catch(function(err) {
@@ -489,6 +532,7 @@ const store = new Vuex.Store({
           }
         })
     },
+
     DELETE_CLIENT(state) {
       //console.log('delete')
       pouchdb
@@ -586,6 +630,12 @@ const store = new Vuex.Store({
     },
     deleteClient: ({ commit }, e) => {
       commit('DELETE_CLIENT', e)
+    },
+    createInstance: ({ commit }, e) => {
+      commit('CREATE_INSTANCE', e)
+    },
+    removeInstance: ({ commit }, e) => {
+      commit('REMOVE_INSTANCE', e)
     },
     addFile: ({ commit }, e) => {
       commit('ADD_FILE', e)
