@@ -26,6 +26,7 @@
 <script>
 // tips
 // @ is an alias to /src
+
 import ClientSet from '@/components/ClientSet.vue'
 import AdminPanel from '@/components/AdminPanel.vue'
 import YourData from '@/components/YourData.vue'
@@ -45,6 +46,7 @@ export default {
       clientset: false
     }
   },
+
   components: {
     ClientSet,
     AdminPanel,
@@ -63,6 +65,7 @@ export default {
     },
     editMode() {
       //console.log('heard')
+      console.log(state)
       this.editing = !this.editing
     },
     closeEdit() {

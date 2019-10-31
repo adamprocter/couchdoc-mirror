@@ -16,9 +16,7 @@
       <br />
       <button @click="createInstance()">Create/ Join Instance</button>
 
-      <button class="danger" @click="removeIndex()">
-        Delete Local Instance
-      </button>
+      <button class="danger" @click="removeIndex()">Delete Local Instance</button>
     </form>
   </div>
 </template>
@@ -39,7 +37,7 @@ export default {
       this.$store.dispatch('createInstance', this.instance)
     },
     removeIndex() {
-      console.log('remove1')
+      // console.log('remove1')
       this.$store.dispatch('removeInstance', this.instance)
     }
   }

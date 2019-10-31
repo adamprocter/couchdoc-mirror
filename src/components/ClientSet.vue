@@ -4,7 +4,6 @@
       Welcome! You are connected to the instance
       <b>{{ instance }}</b>
     </h2>
-    <!-- <button>Create new instance</button> -->
     <p>
       nodenoggin is a
       <span>work in progress</span> collaborative co-creation research and

@@ -1,16 +1,14 @@
 <template>
   <div class="spaceview">
+    <p>
+      Welcome! You are connected to the instance
+      <b>{{ instance }}</b>
+    </p>
     <h2>Single Spatial view</h2>
     <!-- tips-->
     <!-- : is short for v-bind -->
     <!-- FIXME: Fixed width of SVG Object here -->
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="800"
-      height="600"
-      id="space"
-      ref="sheets"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" id="space" ref="sheets">
       <g v-for="(note, index) in notes" :key="'note' + index">
         <g
           v-for="(position, index) in positions"

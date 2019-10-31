@@ -110,6 +110,7 @@ var delay = 500
 
 export default {
   name: 'AllSpace',
+
   computed: mapState({
     allnotes: state => state.allnotes,
     connections: state => state.connections,
@@ -124,7 +125,7 @@ export default {
 
   methods: {
     trimText() {
-      console.log(this.allnotes)
+      //console.log(this.allnotes)
     },
 
     addDoc() {
