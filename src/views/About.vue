@@ -24,7 +24,9 @@
     </ul>
     <h4>issues</h4>
     <ul>
-      <li>Touch device are very buggy as they use touch cancel to save positions</li>
+      <li>
+        Touch device are very buggy as they use touch cancel to save positions
+      </li>
       <li>Minimal layout or style.</li>
     </ul>
     <h2>Design-led ethical Edutech</h2>
@@ -34,25 +36,28 @@
         <a href="https://discourse.adamprocter.co.uk">discuss</a>(and feedback)
       </li>
       <li>
-        <a
-          href="https://discursive.adamprocter.co.uk/categories/phd/"
-        >discursive (phd catergory link)</a> (blog)
+        <a href="https://discursive.adamprocter.co.uk/categories/phd/"
+          >discursive (phd catergory link)</a
+        >
+        (blog)
       </li>
-      <li>
-        <a href="https://researchnot.es">researchnot.es</a> (blog)
-      </li>
-      <li>
-        <a href="https://manifold.soton.ac.uk">manifold</a> (writing)
-      </li>
+      <li><a href="https://researchnot.es">researchnot.es</a> (blog)</li>
+      <li><a href="https://manifold.soton.ac.uk">manifold</a> (writing)</li>
       <li>
         <a href="https://fragmentum.adamprocter.co.uk">fragmentum</a>
         (microcast)
       </li>
       <li>
-        <a href="https://gitlab.adamprocter.co.uk/adamprocter/couchdocs">gitlab</a> (code)
+        <a href="https://gitlab.adamprocter.co.uk/adamprocter/couchdocs"
+          >gitlab</a
+        >
+        (code)
       </li>
       <li>
-        <a href="https://github.com/adamprocter/couchdoc-mirror/issues">issues</a> (raise and review)
+        <a href="https://github.com/adamprocter/couchdoc-mirror/issues"
+          >issues</a
+        >
+        (raise and review)
       </li>
     </ul>
     <DeBug />

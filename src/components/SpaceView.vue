@@ -4,8 +4,14 @@
     <!-- tips-->
     <!-- : is short for v-bind -->
     <!-- FIXME: Fixed width of SVG Object here -->
-    <svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" id="space" ref="sheets">
-      <g v-for="(note, index) in notes" :key="'note'+index">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="800"
+      height="600"
+      id="space"
+      ref="sheets"
+    >
+      <g v-for="(note, index) in notes" :key="'note' + index">
         <g
           v-for="(position, index) in positions"
           :key="index"
@@ -41,7 +47,9 @@
           <g v-for="(connection, index) in connections" :key="index">
             <g
               v-if="note.id == connection.startid"
-              :transform="`translate(${-connection.startx}, ${-connection.starty})`"
+              :transform="
+                `translate(${-connection.startx}, ${-connection.starty})`
+              "
             >
               <!-- <g v-for="connection in connection.connection"> -->
               <line

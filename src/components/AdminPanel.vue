@@ -2,10 +2,13 @@
   <div class="adminpanel">
     <hr />
     <h2>Admin Panel</h2>
-    <p>If you type in an instance that is already created you will join/rejoin said instance, otherwise a brand new instance will be created for you.</p>
+    <p>
+      If you type in an instance that is already created you will join/rejoin
+      said instance, otherwise a brand new instance will be created for you.
+    </p>
     <p>
       Connected to instance :
-      <b>{{activeinstance}}</b>
+      <b>{{ activeinstance }}</b>
     </p>
     <form>
       Instance name:
@@ -13,7 +16,9 @@
       <br />
       <button @click="createInstance()">Create/ Join Instance</button>
 
-      <button class="danger" @click="removeIndex()">Delete Local Instance</button>
+      <button class="danger" @click="removeIndex()">
+        Delete Local Instance
+      </button>
     </form>
   </div>
 </template>

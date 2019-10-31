@@ -5,7 +5,13 @@
     <!-- tips-->
     <!-- : is short for v-bind -->
     <!-- FIXME: Fixed width of SVG Object here -->
-    <svg xmlns="http://www.w3.org/2000/svg" width="900" height="1200" id="space" ref="sheets">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="900"
+      height="1200"
+      id="space"
+      ref="sheets"
+    >
       <rect width="100%" height="100%" fill="#f1f1f1" />
       <g v-for="(value, index) in allnotes" v-bind:key="index">
         <g v-for="(note, index) in value.doc.notes" v-bind:key="index">
@@ -52,7 +58,9 @@
             <g v-for="(connection, index) in connections" :key="index">
               <g
                 v-if="note.id == connection.startid"
-                :transform="`translate(${-connection.startx}, ${-connection.starty})`"
+                :transform="
+                  `translate(${-connection.startx}, ${-connection.starty})`
+                "
               >
                 <!-- <g v-for="connection in connection.connection"> -->
                 <line
@@ -64,7 +72,7 @@
                 />
               </g>
             </g>
-            <text>{{note.text}}</text>
+            <text>{{ note.text }}</text>
           </g>
         </g>
       </g>

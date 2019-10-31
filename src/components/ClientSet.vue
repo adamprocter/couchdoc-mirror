@@ -7,11 +7,9 @@
     <!-- <button>Create new instance</button> -->
     <p>
       nodenoggin is a
-      <span>work in progress</span> collaborative co-creation research and design thinking
-      tool, read more details and links in the
-      <a
-        href="/#/about"
-      >about</a> section.
+      <span>work in progress</span> collaborative co-creation research and
+      design thinking tool, read more details and links in the
+      <a href="/#/about">about</a> section.
     </p>
     <p>
       You don't need a log in but you do however need to name your device (only
@@ -31,8 +29,7 @@
         name="name"
         placeholder="Fiona Applegate"
       />-->
-      <br />-->
-      <button @click="setClient()">Lets Go!!</button> <--
+      <br />--> <button @click="setClient()">Lets Go!!</button> <--
     </form>
 
     <h3>Say what?</h3>
@@ -52,7 +49,10 @@
     </h2>
     <ul>
       <li>This is a very much a work in progress</li>
-      <li>Contribution shouldn't be considered safe, the server and data are reset regulary.</li>
+      <li>
+        Contribution shouldn't be considered safe, the server and data are reset
+        regulary.
+      </li>
       <li>&amp; there will be glitches.</li>
       <li>
         Please play and
