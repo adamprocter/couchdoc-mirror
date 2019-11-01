@@ -63,13 +63,14 @@
                 "
               >
                 <!-- <g v-for="connection in connection.connection"> -->
-                <line
+                <!-- FIXME: HIDE CONNECTIONS FOR NOW -->
+                <!-- <line
                   :x1="connection.startx"
                   :y1="connection.starty"
                   :x2="connection.endx"
                   :y2="connection.endy"
                   style="stroke:rgb(255,0,0);stroke-width:2"
-                />
+                />-->
               </g>
             </g>
             <text>{{ note.text }}</text>
