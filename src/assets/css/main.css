@@ -262,11 +262,12 @@ hr {
 span {
   color: red;
 }
+/* FIXME: Hide highlights for now 
 .highlighted {
   stroke: red;
   stroke-width: 5px;
 }
-
+*/
 a:link {
   color: black;
 }

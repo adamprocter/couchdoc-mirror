@@ -65,7 +65,7 @@ export default {
     },
     editMode() {
       //console.log('heard')
-      console.log(state)
+      // console.log(state)
       this.editing = !this.editing
     },
     closeEdit() {
