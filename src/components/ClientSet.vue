@@ -28,7 +28,8 @@
         name="name"
         placeholder="Fiona Applegate"
       />-->
-      <br />--> <button @click="setClient()">Lets Go!!</button> <--
+      <br />
+      <button @click="setClient()">Lets Go!!</button>
     </form>
 
     <h3>Say what?</h3>
