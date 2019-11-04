@@ -7,10 +7,10 @@
     <!-- FIXME: Fixed width of SVG Object here -->
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="900"
-      height="1200"
       id="space"
       ref="sheets"
+      viewBox="0 0 1200 1000"
+      preserveAspectRatio="xMidYMid meet"
     >
       <rect width="100%" height="100%" fill="#f1f1f1" />
       <g v-for="(value, index) in allnotes" v-bind:key="index">
@@ -64,13 +64,13 @@
               >
                 <!-- <g v-for="connection in connection.connection"> -->
                 <!-- FIXME: HIDE CONNECTIONS FOR NOW -->
-                <!-- <line
+                <line
                   :x1="connection.startx"
                   :y1="connection.starty"
                   :x2="connection.endx"
                   :y2="connection.endy"
                   style="stroke:rgb(255,0,0);stroke-width:2"
-                />-->
+                />
               </g>
             </g>
             <text>{{ note.text }}</text>
@@ -123,8 +123,25 @@ export default {
     this.makeConnectable()
     this.trimText()
   },
-
+  created() {
+    if (typeof window !== 'undefined') {
+      document.addEventListener('keydown', this.handleKeyPress)
+    }
+  },
+  beforeDestroy() {
+    if (typeof window !== 'undefined') {
+      document.removeEventListener('keydown', this.handleKeyPress)
+    }
+  },
   methods: {
+    handleKeyPress(e) {
+      if (e.keyCode == 88 && e.ctrlKey) {
+        // COMMENT: CTRl + x
+        this.$emit('closeEdit')
+      } else if (e.keyCode == 78 && e.ctrlKey) {
+        this.addDoc()
+      }
+    },
     trimText() {
       //console.log(this.allnotes)
     },
@@ -246,6 +263,7 @@ export default {
           ref.updateConnect(activenoteid, xpos, ypos)
         }
         // }
+
         selectedElement = false
       }
     },
@@ -288,12 +306,13 @@ export default {
 
       function doubleClick(evt) {
         // console.log('inside doubleclick ' + firsttap)
+        ref.$emit('closeEdit')
         if (evt.target.parentNode.classList.contains('draggable')) {
           selectedElement = evt.target.parentNode
           // console.log('double')
           firsttap = '0000'
           // identify which object was clicked
-          // console.log(selectedElement.firstElementChild.id)
+          console.log(selectedElement.firstElementChild.id)
           activenoteid = selectedElement.firstElementChild.id
           ref.openSelected(activenoteid)
         } else {

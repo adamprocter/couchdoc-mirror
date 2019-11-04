@@ -9,15 +9,13 @@
       Press
       <em>Add</em> to add an attachments.
     </p>
-    <button
-      @click="
+    <button @click="
         addDoc()
         editMode()
-      "
-    >
-      Create
-    </button>
-
+      ">Create</button>
+    <p>
+      <b>Shortcut :</b> Ctrl + n to create
+    </p>
     <form>
       <label class="myFiles" for="myFiles">Add</label>
       <input type="file" @change="addFile()" ref="myFiles" id="myFiles" />

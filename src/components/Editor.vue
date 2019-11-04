@@ -66,6 +66,7 @@
         hidden
       />
       <button @click="closeEdit()">Finish</button>
+      <p><b>Shortcut :</b> Ctrl + x to Finish</p>
     </form>
   </div>
 </template>
