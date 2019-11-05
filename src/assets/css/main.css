@@ -184,6 +184,14 @@ b {
   background-color: rgb(116, 255, 82);
 }
 
+.connectionoff,
+.false {
+  display: none;
+}
+.connectionon {
+  display: block;
+}
+
 /* this is to style the input type file using a label */
 label.myFiles {
   cursor: pointer;
@@ -426,6 +434,11 @@ ul {
   .notlogged {
     grid-column: 2 / 6;
     grid-row: 1;
+  }
+
+  .spaceview {
+    grid-column: 2 / 6;
+    grid-row: 2;
   }
 
   .debug,

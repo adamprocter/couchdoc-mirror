@@ -1,16 +1,19 @@
 <template>
   <div class="spaceview">
     <h2>Spatial view</h2>
-
+    <p><b>Press:</b> Shift + c key to turn on/off connection mode</p>
+    <p id="modeon" class="connectionoff">
+      <b>connection mode is on + tapping connections will remove them</b>
+    </p>
     <!-- tips-->
     <!-- : is short for v-bind -->
     <!-- FIXME: Fixed width of SVG Object here -->
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="900"
-      height="1200"
       id="space"
       ref="sheets"
+      viewBox="0 0 1200 1000"
+      preserveAspectRatio="xMidYMid meet"
     >
       <rect width="100%" height="100%" fill="#f1f1f1" />
       <g v-for="(value, index) in allnotes" v-bind:key="index">
@@ -58,19 +61,21 @@
             <g v-for="(connection, index) in connections" :key="index">
               <g
                 v-if="note.id == connection.startid"
+                id="lines"
+                :class="connection.connected"
                 :transform="
                   `translate(${-connection.startx}, ${-connection.starty})`
                 "
               >
                 <!-- <g v-for="connection in connection.connection"> -->
-                <!-- FIXME: HIDE CONNECTIONS FOR NOW -->
-                <!-- <line
+
+                <line
                   :x1="connection.startx"
                   :y1="connection.starty"
                   :x2="connection.endx"
                   :y2="connection.endy"
                   style="stroke:rgb(255,0,0);stroke-width:2"
-                />-->
+                />
               </g>
             </g>
             <text>{{ note.text }}</text>
@@ -96,8 +101,9 @@
 <script>
 import { mapState } from 'vuex'
 var activenoteid
-var firsttap
+var firsttap = null
 var secondtap
+var connkey = false
 var xpos = 0
 var ypos = 0
 
@@ -105,6 +111,7 @@ var startx = 0
 var starty = 0
 var endx = 0
 var endy = 0
+var connected = 'false'
 
 var myTimer
 var delay = 500
@@ -123,8 +130,46 @@ export default {
     this.makeConnectable()
     this.trimText()
   },
-
+  created() {
+    if (typeof window !== 'undefined') {
+      document.addEventListener('keydown', this.handleKeyPress)
+    }
+  },
+  beforeDestroy() {
+    if (typeof window !== 'undefined') {
+      document.removeEventListener('keydown', this.handleKeyPress)
+    }
+  },
   methods: {
+    handleKeyPress(e) {
+      if (e.keyCode == 88 && e.shiftKey) {
+        // COMMENT: Shift + x
+        this.$emit('closeEdit')
+      } else if (e.keyCode == 90 && e.shiftKey) {
+        // shiftKey + z
+        this.addDoc()
+      } else if (e.keyCode == 67 && e.shiftKey) {
+        // Pressing shiftKey + c key to turn on connect mode
+        this.$emit('closeEdit')
+        if (connkey == true) {
+          connkey = false
+        } else {
+          connkey = true
+        }
+
+        this.connKey()
+      }
+    },
+
+    connKey() {
+      if (connkey == true) {
+        document.getElementById('modeon').classList.add('connectionon')
+      } else {
+        document.getElementById('modeon').classList.add('connectionoff')
+        document.getElementById('modeon').classList.remove('connectionon')
+      }
+    },
+
     trimText() {
       //console.log(this.allnotes)
     },
@@ -138,17 +183,29 @@ export default {
       this.$store.dispatch('noteId', e)
       // this gets the note with said ID now not just the text
       this.$store.dispatch('getNoteText', e)
-
       this.$emit('editMode')
     },
-    startConnect(e, f, startx, starty, endx, endy) {
-      this.$store.dispatch('startConnect', { e, f, startx, starty, endx, endy })
+    startConnect(e, f, startx, starty, endx, endy, connected) {
+      this.$store.dispatch('startConnect', {
+        e,
+        f,
+        startx,
+        starty,
+        endx,
+        endy,
+        connected
+      })
     },
     updatePos(activenoteid, xpos, ypos, isActive) {
       this.$store.dispatch('movePos', { activenoteid, xpos, ypos, isActive })
     },
-    updateConnect(activenoteid, xpos, ypos) {
-      this.$store.dispatch('updateConnect', { activenoteid, xpos, ypos })
+    updateConnect(activenoteid, xpos, ypos, connected) {
+      this.$store.dispatch('updateConnect', {
+        activenoteid,
+        xpos,
+        ypos,
+        connected
+      })
     },
     updateActive(activenoteid, isActive) {
       this.$store.dispatch('updateActive', { activenoteid, isActive })
@@ -175,8 +232,11 @@ export default {
       var selectedElement, offset, transform
 
       function dontClick() {
-        firsttap = '0000'
-        //console.log('called if timer over 500 ' + firsttap)
+        connkey = false
+        ref.connKey()
+        // REMOVE: This is old code now
+        // this is called when dragging
+        //firsttap = '0000'
       }
 
       // FIXME: Can I make these ES6 arrow functions??
@@ -243,9 +303,10 @@ export default {
           ref.updatePos(activenoteid, xpos, ypos, isActive)
           //selectedElement.firstElementChild.classList.remove('highlighted')
           // update any endx and ypos for connections connected to this id
-          ref.updateConnect(activenoteid, xpos, ypos)
+          ref.updateConnect(activenoteid, xpos, ypos, connected)
         }
         // }
+
         selectedElement = false
       }
     },
@@ -263,35 +324,90 @@ export default {
 
       function singleClick(evt) {
         var isActive = true
-
-        if (firsttap == '0000') {
-          firsttap = null
-        } else if (firsttap == null) {
+        // FIXME: Not Connkey maybe another key
+        if (connkey == true) {
+          //console.log(evt.target.parentNode.parentNode.parentNode)
+          selectedElement = evt.target.parentNode.parentNode.parentNode
+          activenoteid = selectedElement.firstElementChild.id
+          // console.log(activenoteid)
+          if (evt.target.parentNode.classList.contains('true')) {
+            connected = 'false'
+            ref.updateConnect(activenoteid, xpos, ypos, connected)
+            connkey = false
+            firsttap = null
+            ref.connKey()
+          } else {
+            //do nothing
+          }
+        }
+        if (connkey == true && firsttap == null) {
           if (evt.target.parentNode.classList.contains('draggable')) {
             selectedElement = evt.target.parentNode
             firsttap = selectedElement.firstElementChild.id
+
             startx = xpos
             starty = ypos
           }
-        } else {
+        } else if (connkey == true && firsttap != null) {
           if (evt.target.parentNode.classList.contains('draggable')) {
             selectedElement = evt.target.parentNode
             secondtap = selectedElement.firstElementChild.id
             // FIXME: perhaps need start positions here to pass?
             endx = xpos
             endy = ypos
+            connected = 'true'
             // console.log(startx, starty, endx, endy)
-            ref.startConnect(firsttap, secondtap, startx, starty, endx, endy)
+            ref.startConnect(
+              firsttap,
+              secondtap,
+              startx,
+              starty,
+              endx,
+              endy,
+              connected
+            )
           }
+          connkey = false
+          firsttap = null
+          ref.connKey()
         }
       }
+      //REMOVE: this is older code now
+      // function singleClick(evt) {
+      //   var isActive = true
+      //   console.log(firsttap)
+      //   if (firsttap == '0000') {
+      //     firsttap = null
+      //   } else if (firsttap == null) {
+      //     console.log(firsttap)
+      //     if (evt.target.parentNode.classList.contains('draggable')) {
+      //       selectedElement = evt.target.parentNode
+      //       firsttap = selectedElement.firstElementChild.id
+      //       startx = xpos
+      //       starty = ypos
+      //     }
+      //   } else {
+      //     if (evt.target.parentNode.classList.contains('draggable')) {
+      //       selectedElement = evt.target.parentNode
+      //       secondtap = selectedElement.firstElementChild.id
+      //       // FIXME: perhaps need start positions here to pass?
+      //       endx = xpos
+      //       endy = ypos
+      //       // console.log(startx, starty, endx, endy)
+      //       ref.startConnect(firsttap, secondtap, startx, starty, endx, endy)
+      //     }
+      //   }
+      // }
 
       function doubleClick(evt) {
         // console.log('inside doubleclick ' + firsttap)
+        ref.$emit('closeEdit')
         if (evt.target.parentNode.classList.contains('draggable')) {
           selectedElement = evt.target.parentNode
           // console.log('double')
-          firsttap = '0000'
+          connkey = false
+          firsttap = null
+          ref.connKey()
           // identify which object was clicked
           // console.log(selectedElement.firstElementChild.id)
           activenoteid = selectedElement.firstElementChild.id

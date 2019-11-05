@@ -15,6 +15,7 @@
         @input="editNote"
         v-model="activeNote.text"
         class="form-control"
+        ref="notetext"
       ></textarea>
 
       <div v-if="activeNote.attachment_name != undefined">
@@ -66,6 +67,7 @@
         hidden
       />
       <button @click="closeEdit()">Finish</button>
+      <p><b>Shortcut :</b> Shift + x to Finish</p>
     </form>
   </div>
 </template>
@@ -74,6 +76,11 @@
 import { mapState } from 'vuex'
 
 export default {
+  mounted() {
+    this.$refs.notetext.focus()
+    // FIXME: not actually selecting current text
+    // this.$refs.notetext.select()
+  },
   methods: {
     // not sure this is best practice to dispatch from here
     editNote(e, t, aname) {
