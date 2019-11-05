@@ -4,8 +4,12 @@
     <h2>Debug Options</h2>
     <h4>LAST UPDATE 5th Nov 2019.</h4>
     <p>You need to know these buttons destroy stuff.</p>
-    <button class="danger" v-on:click="removeLocal">Delete Local Storage</button>
-    <button class="danger" v-on:click="deleteClient">Delete my Contributions (inc. attachments)</button>
+    <button class="danger" v-on:click="removeLocal">
+      Delete Local Storage
+    </button>
+    <button class="danger" v-on:click="deleteClient">
+      Delete my Contributions (inc. attachments)
+    </button>
   </div>
 </template>
 
@@ -20,7 +24,6 @@ export default {
 
     deleteClient() {
       this.$store.dispatch('deleteClient')
-      this.$store.dispatch('deletePos')
     }
   }
 }

@@ -78,7 +78,8 @@ import { mapState } from 'vuex'
 export default {
   mounted() {
     this.$refs.notetext.focus()
-    this.$refs.notetext.select() // FIXME: not selecting current text
+    // FIXME: not actually selecting current text
+    // this.$refs.notetext.select()
   },
   methods: {
     // not sure this is best practice to dispatch from here

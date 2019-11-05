@@ -192,7 +192,8 @@ const store = new Vuex.Store({
                 //     ypos: 0,
                 //     endid: uniqueid,
                 //     endxpos: 0,
-                //     endypos: 0
+                //     endypos: 0,
+                //     connected : true
                 //   }
               ]
             })
@@ -308,7 +309,7 @@ const store = new Vuex.Store({
     MAKE_CONNECT(state, e) {
       // console.log(state.connections[1].connection.id)
       //add the new info connection here
-      // console.log(e)
+      //console.log(e)
       //var first = e.e
       //var second = e.f
 
@@ -319,7 +320,7 @@ const store = new Vuex.Store({
         starty: e.starty,
         endx: e.endx,
         endy: e.endy,
-        connected: true
+        connected: e.connected
       })
       //console.log(state.connections)
       pouchdb
@@ -429,11 +430,14 @@ const store = new Vuex.Store({
         if (localid == state.connections[i].startid) {
           state.connections[i].startx = e.xpos
           state.connections[i].starty = e.ypos
+          state.connections[i].connected = e.connected
           // console.log(state.connections)
         } else if (localid == state.connections[i].endid) {
           state.connections[i].endx = e.xpos
           state.connections[i].endy = e.ypos
+          state.connections[i].connected = e.connected
         } else {
+          // empty
         }
       }
 
@@ -538,7 +542,7 @@ const store = new Vuex.Store({
       pouchdb
         .get(state.myclient)
         .then(function(doc) {
-          console.log(doc)
+          //console.log(doc)
           return pouchdb.remove(doc._id, doc._rev)
           //return pouchdb.remove(doc)
         })
@@ -610,11 +614,14 @@ const store = new Vuex.Store({
     movePos: ({ commit }, { activenoteid, xpos, ypos, isActive }) => {
       commit('MOVE_POS', { activenoteid, xpos, ypos, isActive })
     },
-    startConnect: ({ commit }, { e, f, startx, starty, endx, endy }) => {
-      commit('MAKE_CONNECT', { e, f, startx, starty, endx, endy })
+    startConnect: (
+      { commit },
+      { e, f, startx, starty, endx, endy, connected }
+    ) => {
+      commit('MAKE_CONNECT', { e, f, startx, starty, endx, endy, connected })
     },
-    updateConnect: ({ commit }, { activenoteid, xpos, ypos }) => {
-      commit('UPDATE_CONNECT', { activenoteid, xpos, ypos })
+    updateConnect: ({ commit }, { activenoteid, xpos, ypos, connected }) => {
+      commit('UPDATE_CONNECT', { activenoteid, xpos, ypos, connected })
     },
     updateActive: ({ commit }, { activenoteid, isActive }) => {
       commit('UPDATE_ACTIVE', { activenoteid, isActive })

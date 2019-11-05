@@ -69,7 +69,7 @@ export default {
       this.editing = !this.editing
     },
     closeEdit() {
-      console.log('close edit')
+      // console.log('close edit')
       this.editing = false
     }
   }

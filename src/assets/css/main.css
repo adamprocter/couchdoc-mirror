@@ -184,7 +184,8 @@ b {
   background-color: rgb(116, 255, 82);
 }
 
-.connectionoff {
+.connectionoff,
+.false {
   display: none;
 }
 .connectionon {

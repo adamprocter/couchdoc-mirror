@@ -1,11 +1,9 @@
 <template>
   <div class="spaceview">
     <h2>Spatial view</h2>
-    <p>
-      <b>Press:</b> Shift + c key to turn on/off connection mode
-    </p>
+    <p><b>Press:</b> Shift + c key to turn on/off connection mode</p>
     <p id="modeon" class="connectionoff">
-      <b>connection mode is on</b>
+      <b>connection mode is on + tapping connections will remove them</b>
     </p>
     <!-- tips-->
     <!-- : is short for v-bind -->
@@ -63,6 +61,8 @@
             <g v-for="(connection, index) in connections" :key="index">
               <g
                 v-if="note.id == connection.startid"
+                id="lines"
+                :class="connection.connected"
                 :transform="
                   `translate(${-connection.startx}, ${-connection.starty})`
                 "
@@ -111,6 +111,7 @@ var startx = 0
 var starty = 0
 var endx = 0
 var endy = 0
+var connected = 'false'
 
 var myTimer
 var delay = 500
@@ -182,17 +183,29 @@ export default {
       this.$store.dispatch('noteId', e)
       // this gets the note with said ID now not just the text
       this.$store.dispatch('getNoteText', e)
-
       this.$emit('editMode')
     },
-    startConnect(e, f, startx, starty, endx, endy) {
-      this.$store.dispatch('startConnect', { e, f, startx, starty, endx, endy })
+    startConnect(e, f, startx, starty, endx, endy, connected) {
+      this.$store.dispatch('startConnect', {
+        e,
+        f,
+        startx,
+        starty,
+        endx,
+        endy,
+        connected
+      })
     },
     updatePos(activenoteid, xpos, ypos, isActive) {
       this.$store.dispatch('movePos', { activenoteid, xpos, ypos, isActive })
     },
-    updateConnect(activenoteid, xpos, ypos) {
-      this.$store.dispatch('updateConnect', { activenoteid, xpos, ypos })
+    updateConnect(activenoteid, xpos, ypos, connected) {
+      this.$store.dispatch('updateConnect', {
+        activenoteid,
+        xpos,
+        ypos,
+        connected
+      })
     },
     updateActive(activenoteid, isActive) {
       this.$store.dispatch('updateActive', { activenoteid, isActive })
@@ -290,7 +303,7 @@ export default {
           ref.updatePos(activenoteid, xpos, ypos, isActive)
           //selectedElement.firstElementChild.classList.remove('highlighted')
           // update any endx and ypos for connections connected to this id
-          ref.updateConnect(activenoteid, xpos, ypos)
+          ref.updateConnect(activenoteid, xpos, ypos, connected)
         }
         // }
 
@@ -311,6 +324,22 @@ export default {
 
       function singleClick(evt) {
         var isActive = true
+        // FIXME: Not Connkey maybe another key
+        if (connkey == true) {
+          //console.log(evt.target.parentNode.parentNode.parentNode)
+          selectedElement = evt.target.parentNode.parentNode.parentNode
+          activenoteid = selectedElement.firstElementChild.id
+          // console.log(activenoteid)
+          if (evt.target.parentNode.classList.contains('true')) {
+            connected = 'false'
+            ref.updateConnect(activenoteid, xpos, ypos, connected)
+            connkey = false
+            firsttap = null
+            ref.connKey()
+          } else {
+            //do nothing
+          }
+        }
         if (connkey == true && firsttap == null) {
           if (evt.target.parentNode.classList.contains('draggable')) {
             selectedElement = evt.target.parentNode
@@ -326,8 +355,17 @@ export default {
             // FIXME: perhaps need start positions here to pass?
             endx = xpos
             endy = ypos
+            connected = 'true'
             // console.log(startx, starty, endx, endy)
-            ref.startConnect(firsttap, secondtap, startx, starty, endx, endy)
+            ref.startConnect(
+              firsttap,
+              secondtap,
+              startx,
+              starty,
+              endx,
+              endy,
+              connected
+            )
           }
           connkey = false
           firsttap = null
@@ -367,9 +405,11 @@ export default {
         if (evt.target.parentNode.classList.contains('draggable')) {
           selectedElement = evt.target.parentNode
           // console.log('double')
-          firsttap = '0000'
+          connkey = false
+          firsttap = null
+          ref.connKey()
           // identify which object was clicked
-          console.log(selectedElement.firstElementChild.id)
+          // console.log(selectedElement.firstElementChild.id)
           activenoteid = selectedElement.firstElementChild.id
           ref.openSelected(activenoteid)
         } else {
