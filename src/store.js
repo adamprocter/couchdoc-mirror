@@ -545,6 +545,7 @@ const store = new Vuex.Store({
         .then(function() {
           //REF: handle result - put result in function(result) if you want to use
           localStorage.removeItem('myNNClient')
+          // EDIT: PUT THIS BACK ON (off for testing)
           location.reload()
         })
         .catch(function(err) {
@@ -631,9 +632,7 @@ const store = new Vuex.Store({
     deleteClient: ({ commit }, e) => {
       commit('DELETE_CLIENT', e)
     },
-    deletePos: ({ commit }, { activenoteid, xpos, ypos, isActive }) => {
-      commit('DEL_POS', { activenoteid, xpos, ypos, isActive })
-    },
+
     createInstance: ({ commit }, e) => {
       commit('CREATE_INSTANCE', e)
     },
