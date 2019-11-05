@@ -1,7 +1,12 @@
 <template>
   <div class="spaceview">
     <h2>Spatial view</h2>
-
+    <p>
+      <b>Press:</b> Shift + c key to turn on/off connection mode
+    </p>
+    <p id="modeon" class="connectionoff">
+      <b>connection mode is on</b>
+    </p>
     <!-- tips-->
     <!-- : is short for v-bind -->
     <!-- FIXME: Fixed width of SVG Object here -->
@@ -63,7 +68,7 @@
                 "
               >
                 <!-- <g v-for="connection in connection.connection"> -->
-                <!-- FIXME: HIDE CONNECTIONS FOR NOW -->
+
                 <line
                   :x1="connection.startx"
                   :y1="connection.starty"
@@ -96,8 +101,9 @@
 <script>
 import { mapState } from 'vuex'
 var activenoteid
-var firsttap
+var firsttap = null
 var secondtap
+var connkey = false
 var xpos = 0
 var ypos = 0
 
@@ -135,13 +141,34 @@ export default {
   },
   methods: {
     handleKeyPress(e) {
-      if (e.keyCode == 88 && e.ctrlKey) {
-        // COMMENT: CTRl + x
+      if (e.keyCode == 88 && e.shiftKey) {
+        // COMMENT: Shift + x
         this.$emit('closeEdit')
-      } else if (e.keyCode == 78 && e.ctrlKey) {
+      } else if (e.keyCode == 90 && e.shiftKey) {
+        // shiftKey + z
         this.addDoc()
+      } else if (e.keyCode == 67 && e.shiftKey) {
+        // Pressing shiftKey + c key to turn on connect mode
+        this.$emit('closeEdit')
+        if (connkey == true) {
+          connkey = false
+        } else {
+          connkey = true
+        }
+
+        this.connKey()
       }
     },
+
+    connKey() {
+      if (connkey == true) {
+        document.getElementById('modeon').classList.add('connectionon')
+      } else {
+        document.getElementById('modeon').classList.add('connectionoff')
+        document.getElementById('modeon').classList.remove('connectionon')
+      }
+    },
+
     trimText() {
       //console.log(this.allnotes)
     },
@@ -192,8 +219,11 @@ export default {
       var selectedElement, offset, transform
 
       function dontClick() {
-        firsttap = '0000'
-        //console.log('called if timer over 500 ' + firsttap)
+        connkey = false
+        ref.connKey()
+        // REMOVE: This is old code now
+        // this is called when dragging
+        //firsttap = '0000'
       }
 
       // FIXME: Can I make these ES6 arrow functions??
@@ -281,17 +311,15 @@ export default {
 
       function singleClick(evt) {
         var isActive = true
-
-        if (firsttap == '0000') {
-          firsttap = null
-        } else if (firsttap == null) {
+        if (connkey == true && firsttap == null) {
           if (evt.target.parentNode.classList.contains('draggable')) {
             selectedElement = evt.target.parentNode
             firsttap = selectedElement.firstElementChild.id
+
             startx = xpos
             starty = ypos
           }
-        } else {
+        } else if (connkey == true && firsttap != null) {
           if (evt.target.parentNode.classList.contains('draggable')) {
             selectedElement = evt.target.parentNode
             secondtap = selectedElement.firstElementChild.id
@@ -301,8 +329,37 @@ export default {
             // console.log(startx, starty, endx, endy)
             ref.startConnect(firsttap, secondtap, startx, starty, endx, endy)
           }
+          connkey = false
+          firsttap = null
+          ref.connKey()
         }
       }
+      //REMOVE: this is older code now
+      // function singleClick(evt) {
+      //   var isActive = true
+      //   console.log(firsttap)
+      //   if (firsttap == '0000') {
+      //     firsttap = null
+      //   } else if (firsttap == null) {
+      //     console.log(firsttap)
+      //     if (evt.target.parentNode.classList.contains('draggable')) {
+      //       selectedElement = evt.target.parentNode
+      //       firsttap = selectedElement.firstElementChild.id
+      //       startx = xpos
+      //       starty = ypos
+      //     }
+      //   } else {
+      //     if (evt.target.parentNode.classList.contains('draggable')) {
+      //       selectedElement = evt.target.parentNode
+      //       secondtap = selectedElement.firstElementChild.id
+      //       // FIXME: perhaps need start positions here to pass?
+      //       endx = xpos
+      //       endy = ypos
+      //       // console.log(startx, starty, endx, endy)
+      //       ref.startConnect(firsttap, secondtap, startx, starty, endx, endy)
+      //     }
+      //   }
+      // }
 
       function doubleClick(evt) {
         // console.log('inside doubleclick ' + firsttap)

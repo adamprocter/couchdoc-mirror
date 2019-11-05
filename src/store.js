@@ -213,7 +213,7 @@ const store = new Vuex.Store({
         if (e == undefined) {
           doc.notes.push({
             id: uniqueid,
-            text: 'EDIT TEXT',
+            text: '',
             owner: 'You',
             content_type: 'sheet',
             deleted: false,
@@ -223,7 +223,7 @@ const store = new Vuex.Store({
         } else {
           doc.notes.push({
             id: uniqueid,
-            text: 'EDIT TEXT FOR ATTACHMENT',
+            text: 'ATTACHMENT',
             owner: 'You',
             content_type: 'attachment',
             deleted: false,
@@ -538,7 +538,7 @@ const store = new Vuex.Store({
       pouchdb
         .get(state.myclient)
         .then(function(doc) {
-          //console.log(doc)
+          console.log(doc)
           return pouchdb.remove(doc._id, doc._rev)
           //return pouchdb.remove(doc)
         })
@@ -630,6 +630,9 @@ const store = new Vuex.Store({
     },
     deleteClient: ({ commit }, e) => {
       commit('DELETE_CLIENT', e)
+    },
+    deletePos: ({ commit }, { activenoteid, xpos, ypos, isActive }) => {
+      commit('DEL_POS', { activenoteid, xpos, ypos, isActive })
     },
     createInstance: ({ commit }, e) => {
       commit('CREATE_INSTANCE', e)

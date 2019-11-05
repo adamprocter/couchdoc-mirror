@@ -184,6 +184,13 @@ b {
   background-color: rgb(116, 255, 82);
 }
 
+.connectionoff {
+  display: none;
+}
+.connectionon {
+  display: block;
+}
+
 /* this is to style the input type file using a label */
 label.myFiles {
   cursor: pointer;
