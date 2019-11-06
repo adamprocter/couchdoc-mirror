@@ -210,11 +210,12 @@ const store = new Vuex.Store({
           .toString(36)
           .substring(2, 15)
       localid = uniqueid
+
       pouchdb.get(state.myclient).then(function(doc) {
         if (e == undefined) {
           doc.notes.push({
             id: uniqueid,
-            text: '',
+            text: 'NEXT',
             owner: 'You',
             content_type: 'sheet',
             deleted: false,
@@ -471,6 +472,7 @@ const store = new Vuex.Store({
 
     EDIT_NOTE(state, e) {
       var i
+
       for (i = 0; i < Object.keys(state.notes).length; i++) {
         if (localid == state.notes[i].id) {
           state.notes[i].text = e.text

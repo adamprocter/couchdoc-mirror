@@ -163,12 +163,12 @@ export default {
   methods: {
     // FIXME : There must be a better way to handle these shortcuts
     handleKeyPress(e) {
-      if (e.keyCode == 88 && e.shiftKey) {
-        // COMMENT: Shift + x
-        this.$emit('closeEdit')
-      } else if (e.keyCode == 90 && e.shiftKey) {
+      if (e.keyCode == 90 && e.shiftKey) {
         // shiftKey + z
         this.addDoc()
+      } else if (e.keyCode == 88 && e.shiftKey) {
+        // COMMENT: Shift + x
+        this.$emit('closeEdit')
       } else if (e.keyCode == 67 && e.shiftKey) {
         // Pressing shiftKey + c key to turn on connect mode
         this.$emit('closeEdit')
