@@ -14,7 +14,7 @@
       <em>(and lots of helpers to be listed asap)</em>
     </p>
 
-    <h3>version 0.0.20d</h3>
+    <h3>version 0.0.21d</h3>
     <ul>
       <li>Contribute text and media with other people in realtime.</li>
       <li>
