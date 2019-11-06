@@ -1,7 +1,9 @@
 <template>
   <div class="spaceview">
     <h2>Spatial view</h2>
-    <p><b>Press:</b> Shift + c key to turn on/off connection mode</p>
+    <p>
+      <b>Press:</b> Shift + c key to turn on/off connection mode
+    </p>
     <p id="modeon" class="connectionoff">
       <b>connection mode is on + tapping connections will remove them</b>
     </p>
@@ -156,7 +158,6 @@ export default {
         } else {
           connkey = true
         }
-
         this.connKey()
       }
     },
@@ -324,7 +325,7 @@ export default {
 
       function singleClick(evt) {
         var isActive = true
-        // FIXME: Not Connkey maybe another key
+        // FIXME: Maybe not Connkey maybe another key???
         if (connkey == true) {
           //console.log(evt.target.parentNode.parentNode.parentNode)
           selectedElement = evt.target.parentNode.parentNode.parentNode
@@ -342,6 +343,7 @@ export default {
         }
         if (connkey == true && firsttap == null) {
           if (evt.target.parentNode.classList.contains('draggable')) {
+            console.log('first connection')
             selectedElement = evt.target.parentNode
             firsttap = selectedElement.firstElementChild.id
 
