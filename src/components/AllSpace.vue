@@ -1,12 +1,20 @@
 <template>
   <div class="spaceview">
     <h2>Spatial view</h2>
-    <p>
-      <b>Press:</b> Shift + c key to turn on/off connection mode
-    </p>
+    <p><b>Press:</b> Shift + c key to turn on/off connection mode</p>
+    <p><b>Press:</b> Shift + v key to turn on/off remove connection mode</p>
+    <p><b>Press:</b> Shift + + to zoom in</p>
+    <p><b>Press:</b> Shift + - to zoom out</p>
     <p id="modeon" class="connectionoff">
-      <b>connection mode is on + tapping connections will remove them</b>
+      <b>connection create mode is on</b>
     </p>
+    <p id="modedelon" class="connectionoff">
+      <b>connection delete mode is on</b>
+    </p>
+    <button @click="connButton()">Connection Mode</button>
+    <button @click="removeButton()">Remove Connections</button>
+    <button @click="zoominButton()">Zoom in</button>
+    <button @click="zoomoutButton()">Zoom Out</button>
     <!-- tips-->
     <!-- : is short for v-bind -->
     <!-- FIXME: Fixed width of SVG Object here -->
@@ -14,7 +22,7 @@
       xmlns="http://www.w3.org/2000/svg"
       id="space"
       ref="sheets"
-      viewBox="0 0 1200 1000"
+      :viewBox="`${viewboxo1} ${viewboxo2} ${viewboxy} ${viewboxx}`"
       preserveAspectRatio="xMidYMid meet"
     >
       <rect width="100%" height="100%" fill="#f1f1f1" />
@@ -26,9 +34,9 @@
             v-for="(note, index) in value.doc.notes"
             v-bind:key="index"
           >{{note.id}}</text>
-          <!-- 
+          
           <text x="20" y="35">{{note.doc}}</text>-->
-          -->
+
           <g
             v-for="(position, index) in positions"
             :key="index"
@@ -106,6 +114,7 @@ var activenoteid
 var firsttap = null
 var secondtap
 var connkey = false
+var removekey = false
 var xpos = 0
 var ypos = 0
 
@@ -120,6 +129,15 @@ var delay = 500
 
 export default {
   name: 'AllSpace',
+
+  data() {
+    return {
+      viewboxo1: 0,
+      viewboxo2: 0,
+      viewboxx: 1200,
+      viewboxy: 1000
+    }
+  },
 
   computed: mapState({
     allnotes: state => state.allnotes,
@@ -143,6 +161,7 @@ export default {
     }
   },
   methods: {
+    // FIXME : There must be a better way to handle these shortcuts
     handleKeyPress(e) {
       if (e.keyCode == 88 && e.shiftKey) {
         // COMMENT: Shift + x
@@ -158,8 +177,49 @@ export default {
         } else {
           connkey = true
         }
+        removekey = false
         this.connKey()
+        this.removeKey()
+      } else if (e.keyCode == 86 && e.shiftKey) {
+        // Pressing shiftKey + v key to turn on remove connections mode
+        this.$emit('closeEdit')
+
+        if (removekey == true) {
+          removekey = false
+        } else {
+          removekey = true
+        }
+        connkey = false
+        this.connKey()
+        this.removeKey()
+      } else if (e.keyCode == 61 && e.shiftKey) {
+        this.zoominButton()
+      } else if (e.keyCode == 173 && e.shiftKey) {
+        this.zoomoutButton()
       }
+    },
+    connButton() {
+      this.$emit('closeEdit')
+      if (connkey == true) {
+        connkey = false
+      } else {
+        connkey = true
+      }
+      removekey = false
+      this.connKey()
+      this.removeKey()
+    },
+
+    removeButton() {
+      this.$emit('closeEdit')
+      if (removekey == true) {
+        removekey = false
+      } else {
+        removekey = true
+      }
+      connkey = false
+      this.connKey()
+      this.removeKey()
     },
 
     connKey() {
@@ -171,8 +231,27 @@ export default {
       }
     },
 
+    removeKey() {
+      if (removekey == true) {
+        document.getElementById('modedelon').classList.add('connectionon')
+      } else {
+        document.getElementById('modedelon').classList.add('connectionoff')
+        document.getElementById('modedelon').classList.remove('connectionon')
+      }
+    },
+
     trimText() {
       //console.log(this.allnotes)
+    },
+
+    zoominButton() {
+      this.viewboxx -= 50
+      this.viewboxy -= 50
+    },
+
+    zoomoutButton() {
+      this.viewboxx += 50
+      this.viewboxy += 50
     },
 
     addDoc() {
@@ -234,10 +313,8 @@ export default {
 
       function dontClick() {
         connkey = false
+        // removekey = false
         ref.connKey()
-        // REMOVE: This is old code now
-        // this is called when dragging
-        //firsttap = '0000'
       }
 
       // FIXME: Can I make these ES6 arrow functions??
@@ -324,19 +401,19 @@ export default {
       var selectedElement
 
       function singleClick(evt) {
-        var isActive = true
+        // var isActive = true
         // FIXME: Maybe not Connkey maybe another key???
-        if (connkey == true) {
-          //console.log(evt.target.parentNode.parentNode.parentNode)
+        if (removekey == true) {
+          // console.log(evt.target.parentNode.parentNode.parentNode)
           selectedElement = evt.target.parentNode.parentNode.parentNode
           activenoteid = selectedElement.firstElementChild.id
-          // console.log(activenoteid)
+          //console.log(selectedElement)
           if (evt.target.parentNode.classList.contains('true')) {
             connected = 'false'
             ref.updateConnect(activenoteid, xpos, ypos, connected)
-            connkey = false
+            removekey = false
             firsttap = null
-            ref.connKey()
+            ref.removeKey()
           } else {
             //do nothing
           }
