@@ -19,6 +19,7 @@ var remote =
 //var remote = 'http://127.0.0.1:5984/couchdocs/'
 
 var localid = null
+var connectid = null
 const store = new Vuex.Store({
   state: {
     instance: '',
@@ -44,13 +45,14 @@ const store = new Vuex.Store({
           '_pouch_' + localinstance
         )
 
-        DBDeleteRequest.onerror = function(event) {
+        DBDeleteRequest.onerror = function() {
           console.log('Error deleting database.')
         }
 
-        DBDeleteRequest.onsuccess = function(event) {
+        DBDeleteRequest.onsuccess = function() {
           console.log('Database deleted successfully')
           location.reload()
+          //
           //console.log(event.result) // should be undefined
         }
       })
@@ -146,13 +148,13 @@ const store = new Vuex.Store({
         .catch(function(err) {
           console.log(err)
           if (err.status == 404) {
-            var uniqueid =
-              Math.random()
-                .toString(36)
-                .substring(2, 15) +
-              Math.random()
-                .toString(36)
-                .substring(2, 15)
+            // var uniqueid =
+            //   Math.random()
+            //     .toString(36)
+            //     .substring(2, 15) +
+            //   Math.random()
+            //     .toString(36)
+            //     .substring(2, 15)
             return pouchdb.put({
               _id: state.glo_pos,
               positions: [
@@ -176,13 +178,13 @@ const store = new Vuex.Store({
         .catch(function(err) {
           console.log(err)
           if (err.status == 404) {
-            var uniqueid =
-              Math.random()
-                .toString(36)
-                .substring(2, 15) +
-              Math.random()
-                .toString(36)
-                .substring(2, 15)
+            // var uniqueid =
+            //   Math.random()
+            //     .toString(36)
+            //     .substring(2, 15) +
+            //   Math.random()
+            //     .toString(36)
+            //     .substring(2, 15)
             return pouchdb.put({
               _id: state.glo_con,
               connections: [
@@ -313,8 +315,16 @@ const store = new Vuex.Store({
       //console.log(e)
       //var first = e.e
       //var second = e.f
+      var connectid =
+        Math.random()
+          .toString(36)
+          .substring(2, 15) +
+        Math.random()
+          .toString(36)
+          .substring(2, 15)
 
       state.connections.push({
+        connectid: connectid,
         startid: e.e,
         endid: e.f,
         startx: e.startx,
@@ -418,12 +428,55 @@ const store = new Vuex.Store({
         })
         .catch(function(err) {
           if (err.status == 404) {
+            // catch here
           }
         })
     },
 
+    REMOVE_CONNECT(state, e) {
+      connectid = e.connectid
+      var i
+      for (i = 0; i < Object.keys(state.connections).length; i++) {
+        //
+        // if endid matches update endx and endy else if startid matchs update startx /y
+        if (connectid == state.connections[i].connectid) {
+          state.connections[i].connected = e.connected
+          // console.log(state.connections)
+        } else {
+          //empty
+        }
+      }
+
+      pouchdb
+        .get(state.glo_con)
+        .then(function(doc) {
+          //console.log(doc)
+          // put the store into pouchdb
+          return pouchdb.bulkDocs([
+            {
+              _id: state.glo_con,
+              _rev: doc._rev,
+              connections: state.connections
+            }
+          ])
+        })
+        .then(function() {
+          return pouchdb.get(state.glo_con).then(function(doc) {
+            state.connections = doc.connections
+          })
+        })
+        .catch(function(err) {
+          if (err.status == 404) {
+            // pouchdb.put({  })
+          }
+        })
+      //     }
+      //    }
+      //  }
+    },
     UPDATE_CONNECT(state, e) {
       localid = e.activenoteid
+      connectid = e.connectid
       var i
       for (i = 0; i < Object.keys(state.connections).length; i++) {
         //
@@ -431,14 +484,14 @@ const store = new Vuex.Store({
         if (localid == state.connections[i].startid) {
           state.connections[i].startx = e.xpos
           state.connections[i].starty = e.ypos
-          state.connections[i].connected = e.connected
+          //state.connections[i].connected = e.connected
           // console.log(state.connections)
         } else if (localid == state.connections[i].endid) {
           state.connections[i].endx = e.xpos
           state.connections[i].endy = e.ypos
-          state.connections[i].connected = e.connected
+          //state.connections[i].connected = e.connected
         } else {
-          // empty
+          //empty
         }
       }
 
@@ -618,12 +671,36 @@ const store = new Vuex.Store({
     },
     startConnect: (
       { commit },
-      { e, f, startx, starty, endx, endy, connected }
+      { connectid, e, f, startx, starty, endx, endy, connected }
     ) => {
-      commit('MAKE_CONNECT', { e, f, startx, starty, endx, endy, connected })
+      commit('MAKE_CONNECT', {
+        connectid,
+        e,
+        f,
+        startx,
+        starty,
+        endx,
+        endy,
+        connected
+      })
     },
-    updateConnect: ({ commit }, { activenoteid, xpos, ypos, connected }) => {
-      commit('UPDATE_CONNECT', { activenoteid, xpos, ypos, connected })
+    removeConnect: ({ commit }, { connectid, connected }) => {
+      commit('REMOVE_CONNECT', {
+        connectid,
+        connected
+      })
+    },
+    updateConnect: (
+      { commit },
+      { connectid, activenoteid, xpos, ypos, connected }
+    ) => {
+      commit('UPDATE_CONNECT', {
+        connectid,
+        activenoteid,
+        xpos,
+        ypos,
+        connected
+      })
     },
     updateActive: ({ commit }, { activenoteid, isActive }) => {
       commit('UPDATE_ACTIVE', { activenoteid, isActive })
