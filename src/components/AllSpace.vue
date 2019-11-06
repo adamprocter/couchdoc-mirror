@@ -36,59 +36,59 @@
           >{{note.id}}</text>
           
           <text x="20" y="35">{{note.doc}}</text>-->
+          <g v-for="(position, index) in positions" :key="index">
+            <g
+              v-if="note.id == position.id"
+              :transform="`translate(${position.xpos}, ${position.ypos})`"
+              class="draggable"
+            >
+              <polygon
+                v-if="note.content_type == 'link'"
+                points="9.500000000000002,16.454482671904334 -19,2.326828918379971e-15 9.499999999999986,-16.45448267190434"
+                fill="#989898"
+                :class="[note.content_type, note.isActive ? 'highlighted' : '']"
+                :id="note.id"
+              />
 
-          <g
-            v-for="(position, index) in positions"
-            :key="index"
-            v-if="note.id == position.id"
-            :transform="`translate(${position.xpos}, ${position.ypos})`"
-            class="draggable"
-          >
-            <polygon
-              v-if="note.content_type == 'link'"
-              points="9.500000000000002,16.454482671904334 -19,2.326828918379971e-15 9.499999999999986,-16.45448267190434"
-              fill="#989898"
-              :class="[note.content_type, note.isActive ? 'highlighted' : '']"
-              :id="note.id"
-            />
+              <polygon
+                v-if="note.content_type == 'sheet'"
+                points="13.435028842544403,13.435028842544401 -13.435028842544401,13.435028842544403 -13.435028842544407,-13.435028842544401 13.435028842544401,-13.435028842544407"
+                fill="#989898"
+                :class="[note.content_type, note.isActive ? 'highlighted' : '']"
+                :id="note.id"
+              />
 
-            <polygon
-              v-if="note.content_type == 'sheet'"
-              points="13.435028842544403,13.435028842544401 -13.435028842544401,13.435028842544403 -13.435028842544407,-13.435028842544401 13.435028842544401,-13.435028842544407"
-              fill="#989898"
-              :class="[note.content_type, note.isActive ? 'highlighted' : '']"
-              :id="note.id"
-            />
+              <polygon
+                v-if="note.content_type == 'attachment'"
+                points="14.782072520180588,6.1229349178414365 6.122934917841437,14.782072520180588 -6.122934917841436,14.782072520180588 -14.782072520180588,6.122934917841437 -14.782072520180588,-6.122934917841435 -6.122934917841445,-14.782072520180584 6.12293491784144,-14.782072520180586 14.782072520180584,-6.122934917841446"
+                fill="#989898"
+                :class="[note.content_type, note.isActive ? 'highlighted' : '']"
+                :id="note.id"
+              />
 
-            <polygon
-              v-if="note.content_type == 'attachment'"
-              points="14.782072520180588,6.1229349178414365 6.122934917841437,14.782072520180588 -6.122934917841436,14.782072520180588 -14.782072520180588,6.122934917841437 -14.782072520180588,-6.122934917841435 -6.122934917841445,-14.782072520180584 6.12293491784144,-14.782072520180586 14.782072520180584,-6.122934917841446"
-              fill="#989898"
-              :class="[note.content_type, note.isActive ? 'highlighted' : '']"
-              :id="note.id"
-            />
+              <g v-for="(connection, index) in connections" :key="index">
+                <g
+                  v-if="note.id == connection.startid"
+                  id="lines"
+                  :class="connection.connected"
+                  :transform="
+                    `translate(${-connection.startx}, ${-connection.starty})`
+                  "
+                >
+                  <!-- <g v-for="connection in connection.connection"> -->
 
-            <g v-for="(connection, index) in connections" :key="index">
-              <g
-                v-if="note.id == connection.startid"
-                id="lines"
-                :class="connection.connected"
-                :transform="
-                  `translate(${-connection.startx}, ${-connection.starty})`
-                "
-              >
-                <!-- <g v-for="connection in connection.connection"> -->
-
-                <line
-                  :x1="connection.startx"
-                  :y1="connection.starty"
-                  :x2="connection.endx"
-                  :y2="connection.endy"
-                  style="stroke:rgb(255,0,0);stroke-width:2"
-                />
+                  <line
+                    :id="connection.connectid"
+                    :x1="connection.startx"
+                    :y1="connection.starty"
+                    :x2="connection.endx"
+                    :y2="connection.endy"
+                    style="stroke:rgb(255,0,0);stroke-width:2"
+                  />
+                </g>
               </g>
+              <text>{{ note.text }}</text>
             </g>
-            <text>{{ note.text }}</text>
           </g>
         </g>
       </g>
@@ -111,6 +111,7 @@
 <script>
 import { mapState } from 'vuex'
 var activenoteid
+var connectid
 var firsttap = null
 var secondtap
 var connkey = false
@@ -265,8 +266,9 @@ export default {
       this.$store.dispatch('getNoteText', e)
       this.$emit('editMode')
     },
-    startConnect(e, f, startx, starty, endx, endy, connected) {
+    startConnect(connectid, e, f, startx, starty, endx, endy, connected) {
       this.$store.dispatch('startConnect', {
+        connectid,
         e,
         f,
         startx,
@@ -279,8 +281,15 @@ export default {
     updatePos(activenoteid, xpos, ypos, isActive) {
       this.$store.dispatch('movePos', { activenoteid, xpos, ypos, isActive })
     },
-    updateConnect(activenoteid, xpos, ypos, connected) {
+    removeConnect(connectid, connected) {
+      this.$store.dispatch('removeConnect', {
+        connectid,
+        connected
+      })
+    },
+    updateConnect(connectid, activenoteid, xpos, ypos, connected) {
       this.$store.dispatch('updateConnect', {
+        connectid,
         activenoteid,
         xpos,
         ypos,
@@ -375,13 +384,14 @@ export default {
           var coord = getMousePosition(evt)
           transform.setTranslate(coord.x - offset.x, coord.y - offset.y)
           // send positions back to DB
+          connectid = selectedElement.firstElementChild.id
           activenoteid = selectedElement.firstElementChild.id
           xpos = coord.x - offset.x
           ypos = coord.y - offset.y
           ref.updatePos(activenoteid, xpos, ypos, isActive)
           //selectedElement.firstElementChild.classList.remove('highlighted')
           // update any endx and ypos for connections connected to this id
-          ref.updateConnect(activenoteid, xpos, ypos, connected)
+          ref.updateConnect(connectid, activenoteid, xpos, ypos, connected)
         }
         // }
 
@@ -399,18 +409,19 @@ export default {
       svg.addEventListener('dblclick', doubleClick)
 
       var selectedElement
+      var selectedElementParent
 
       function singleClick(evt) {
         // var isActive = true
         // FIXME: Maybe not Connkey maybe another key???
         if (removekey == true) {
-          // console.log(evt.target.parentNode.parentNode.parentNode)
-          selectedElement = evt.target.parentNode.parentNode.parentNode
-          activenoteid = selectedElement.firstElementChild.id
-          //console.log(selectedElement)
+          selectedElementParent = evt.target.parentNode.parentNode.parentNode
+          activenoteid = selectedElementParent.firstElementChild.id
+          selectedElement = evt.target
+          connectid = selectedElement.id
           if (evt.target.parentNode.classList.contains('true')) {
             connected = 'false'
-            ref.updateConnect(activenoteid, xpos, ypos, connected)
+            ref.removeConnect(connectid, connected)
             removekey = false
             firsttap = null
             ref.removeKey()
@@ -420,7 +431,7 @@ export default {
         }
         if (connkey == true && firsttap == null) {
           if (evt.target.parentNode.classList.contains('draggable')) {
-            console.log('first connection')
+            // console.log('first connection')
             selectedElement = evt.target.parentNode
             firsttap = selectedElement.firstElementChild.id
 
@@ -432,11 +443,13 @@ export default {
             selectedElement = evt.target.parentNode
             secondtap = selectedElement.firstElementChild.id
             // FIXME: perhaps need start positions here to pass?
+            connectid = 1234
             endx = xpos
             endy = ypos
             connected = 'true'
             // console.log(startx, starty, endx, endy)
             ref.startConnect(
+              connectid,
               firsttap,
               secondtap,
               startx,
@@ -451,32 +464,6 @@ export default {
           ref.connKey()
         }
       }
-      //REMOVE: this is older code now
-      // function singleClick(evt) {
-      //   var isActive = true
-      //   console.log(firsttap)
-      //   if (firsttap == '0000') {
-      //     firsttap = null
-      //   } else if (firsttap == null) {
-      //     console.log(firsttap)
-      //     if (evt.target.parentNode.classList.contains('draggable')) {
-      //       selectedElement = evt.target.parentNode
-      //       firsttap = selectedElement.firstElementChild.id
-      //       startx = xpos
-      //       starty = ypos
-      //     }
-      //   } else {
-      //     if (evt.target.parentNode.classList.contains('draggable')) {
-      //       selectedElement = evt.target.parentNode
-      //       secondtap = selectedElement.firstElementChild.id
-      //       // FIXME: perhaps need start positions here to pass?
-      //       endx = xpos
-      //       endy = ypos
-      //       // console.log(startx, starty, endx, endy)
-      //       ref.startConnect(firsttap, secondtap, startx, starty, endx, endy)
-      //     }
-      //   }
-      // }
 
       function doubleClick(evt) {
         // console.log('inside doubleclick ' + firsttap)
