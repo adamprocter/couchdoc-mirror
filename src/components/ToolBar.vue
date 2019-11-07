@@ -40,6 +40,7 @@ export default {
     editMode() {
       this.$emit('editMode')
     },
+
     addFile() {
       this.files = this.$refs.myFiles.files
       // console.log(this.files[0].name)

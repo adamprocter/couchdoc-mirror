@@ -22,6 +22,7 @@ var localid = null
 var connectid = null
 const store = new Vuex.Store({
   state: {
+    setfocus: false,
     instance: '',
     myclient: '',
     glo_pos: 'positions',
@@ -37,6 +38,9 @@ const store = new Vuex.Store({
     otherattachments: {}
   },
   mutations: {
+    SET_FOCUS(state) {
+      state.setfocus = true
+    },
     REMOVE_INSTANCE(state, doc) {
       pouchdb.close().then(function() {
         localinstance = doc
@@ -217,7 +221,7 @@ const store = new Vuex.Store({
         if (e == undefined) {
           doc.notes.push({
             id: uniqueid,
-            text: 'NEXT',
+            text: '',
             owner: 'You',
             content_type: 'sheet',
             deleted: false,

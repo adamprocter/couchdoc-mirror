@@ -33,9 +33,9 @@
 
 import ClientSet from '@/components/ClientSet.vue'
 import AdminPanel from '@/components/AdminPanel.vue'
-import YourData from '@/components/YourData.vue'
-import SpaceView from '@/components/SpaceView.vue'
-import YourAttachments from '@/components/YourAttachments.vue'
+// import YourData from '@/components/YourData.vue'
+// import SpaceView from '@/components/SpaceView.vue'
+// import YourAttachments from '@/components/YourAttachments.vue'
 import AllData from '@/components/AllData.vue'
 import AllSpace from '@/components/AllSpace.vue'
 import ToolBar from '@/components/ToolBar.vue'
@@ -55,9 +55,9 @@ export default {
     ClientSet,
     AdminPanel,
     ToolBar,
-    YourData,
-    SpaceView,
-    YourAttachments,
+    // YourData,
+    // SpaceView,
+    // YourAttachments,
     AllData,
     AllSpace,
     Editor,
@@ -68,13 +68,13 @@ export default {
       this.clientset = !this.clientset
     },
     editMode() {
-      //console.log('heard')
-      // console.log(state)
       this.editing = !this.editing
     },
     closeEdit() {
-      // console.log('close edit')
       this.editing = false
+    },
+    setFocus() {
+      console.log('hello')
     }
   }
 }

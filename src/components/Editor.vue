@@ -74,12 +74,17 @@
 
 <script>
 import { mapState } from 'vuex'
+//var myTimer
+var delay = 100
 
 export default {
   mounted() {
-    // this.$refs.notetext.focus()
+    setTimeout(this.setFocus, delay)
   },
   methods: {
+    setFocus() {
+      this.$refs.notetext.focus()
+    },
     // not sure this is best practice to dispatch from here
     editNote(e, t, aname) {
       t = this.activeNote.content_type
@@ -88,7 +93,6 @@ export default {
       this.$store.dispatch('noteId', this.activeNote.id)
     },
     closeEdit() {
-      //console.log('emitclose')
       this.$emit('closeEdit')
     }
   },
