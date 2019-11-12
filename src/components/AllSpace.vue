@@ -183,6 +183,7 @@ export default {
         this.addDoc()
       } else if (e.keyCode == 88 && e.shiftKey) {
         // COMMENT: Shift + x
+        this.$store.dispatch('editOff')
         this.$emit('closeEdit')
       } else if (e.keyCode == 67 && e.shiftKey) {
         // Pressing shiftKey + c key to turn on connect mode
