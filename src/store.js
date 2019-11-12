@@ -300,42 +300,42 @@ const store = new Vuex.Store({
       }
     },
 
-    READER_TEXT() {
-      // localid = id
-      // var i
-      // var j
-      // // only show if not your own contributions
-      // if (state.myclient != state.updatedclientid) {
-      //   for (i = 0; i < Object.keys(state.allnotes).length; i++) {
-      //     if (state.allnotes[i].doc.notes != undefined) {
-      //       //console.log(state.allnotes[i].doc.notes)
-      //       for (
-      //         j = 0;
-      //         j < Object.keys(state.allnotes[i].doc.notes).length;
-      //         j++
-      //       ) {
-      //         if (localid == state.allnotes[i].doc.notes[j].id) {
-      //           // console.log(state.allnotes[i].doc.notes[j].text)
-      //           const newReader = {
-      //             text: state.allnotes[i].doc.notes[j].text,
-      //             id: state.allnotes[i].doc.notes[j].id,
-      //             content_type: state.allnotes[i].doc.notes[j].content_type,
-      //             attachment_name:
-      //               state.allnotes[i].doc.notes[j].attachment_name
-      //           }
-      //           state.activeNote = newReader
-      //           if (state.activeNote.attachment_name != undefined) {
-      //             //FIXME: get and render the attachment with same name as attachment_name here please
-      //             this.commit(
-      //               'GET_MY_ATTACHMENT',
-      //               state.activeNote.attachment_name
-      //             )
-      //           }
-      //         }
-      //       }
-      //     }
-      //   }
-      // }
+    READER_TEXT(state, id) {
+      localid = id
+      var i
+      var j
+      // only show if not your own contributions
+      if (state.myclient != state.updatedclientid) {
+        for (i = 0; i < Object.keys(state.allnotes).length; i++) {
+          if (state.allnotes[i].doc.notes != undefined) {
+            //console.log(state.allnotes[i].doc.notes)
+            for (
+              j = 0;
+              j < Object.keys(state.allnotes[i].doc.notes).length;
+              j++
+            ) {
+              if (localid == state.allnotes[i].doc.notes[j].id) {
+                // console.log(state.allnotes[i].doc.notes[j].text)
+                const newReader = {
+                  text: state.allnotes[i].doc.notes[j].text,
+                  id: state.allnotes[i].doc.notes[j].id,
+                  content_type: state.allnotes[i].doc.notes[j].content_type,
+                  attachment_name:
+                    state.allnotes[i].doc.notes[j].attachment_name
+                }
+                state.activeNote = newReader
+                if (state.activeNote.attachment_name != undefined) {
+                  //FIXME: get and render the attachment with same name as attachment_name here please
+                  this.commit(
+                    'GET_MY_ATTACHMENT',
+                    state.activeNote.attachment_name
+                  )
+                }
+              }
+            }
+          }
+        }
+      }
     },
 
     EDITOR_TEXT(state, id) {
