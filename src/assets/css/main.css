@@ -430,8 +430,12 @@ ul {
   }
 
   .toolbar,
-  .editor,
   .notlogged {
+    grid-column: 2 / 6;
+    grid-row: 1;
+  }
+
+  .editor {
     grid-column: 2 / 6;
     grid-row: 1;
   }

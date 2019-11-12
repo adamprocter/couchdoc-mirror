@@ -2,9 +2,9 @@
   <div class="editor">
     <form id="editForm">
       <h2>Edit item</h2>
-      <div v-if="activeNote.attachment_name == undefined">
+      <div v-if="editorNote.attachment_name == undefined">
         <label>Choose Type</label>
-        <select v-model="activeNote.content_type" id="myList">
+        <select v-model="editorNote.content_type" id="myList">
           <option value="sheet">note</option>
           <option value="link">link</option>
           <option value="attachment">attachment</option>
@@ -13,13 +13,13 @@
       <br />
       <textarea
         @input="editNote"
-        v-model="activeNote.text"
+        v-model="editorNote.text"
         class="form-control"
         ref="notetext"
       ></textarea>
 
-      <div v-if="activeNote.attachment_name != undefined">
-        <div v-if="activeNote.attachment_name.endsWith('.jpeg')">
+      <div v-if="editorNote.attachment_name != undefined">
+        <div v-if="editorNote.attachment_name.endsWith('.jpeg')">
           <img
             :src="activeAttachment[0].url"
             alt
@@ -29,7 +29,7 @@
           />
         </div>
 
-        <div v-else-if="activeNote.attachment_name.endsWith('.jpg')">
+        <div v-else-if="editorNote.attachment_name.endsWith('.jpg')">
           <img
             :src="activeAttachment[0].url"
             alt
@@ -38,7 +38,7 @@
             border="0"
           />
         </div>
-        <div v-else-if="activeNote.attachment_name.endsWith('.png')">
+        <div v-else-if="editorNote.attachment_name.endsWith('.png')">
           <img
             :src="activeAttachment[0].url"
             alt
@@ -59,9 +59,9 @@
         </div>
       </div>
 
-      <input :value="activeNote.id" name="id" readonly hidden />
+      <input :value="editorNote.id" name="id" readonly hidden />
       <input
-        :value="activeNote.attachment_name"
+        :value="editorNote.attachment_name"
         name="attachmentname"
         readonly
         hidden
@@ -88,10 +88,10 @@ export default {
     },
     // not sure this is best practice to dispatch from here
     editNote(e, t, aname) {
-      t = this.activeNote.content_type
-      aname = this.activeNote.attachment_name
+      t = this.editorNote.content_type
+      aname = this.editorNote.attachment_name
       this.$store.dispatch('editNote', { e, t, aname })
-      this.$store.dispatch('noteId', this.activeNote.id)
+      this.$store.dispatch('noteId', this.editorNote.id)
     },
     closeEdit() {
       this.$emit('closeEdit')
@@ -100,7 +100,7 @@ export default {
   },
   computed: mapState({
     editon: state => state.editon,
-    activeNote: state => state.activeNote,
+    editorNote: state => state.editorNote,
     activeAttachment: state => state.activeAttachment
   })
 }

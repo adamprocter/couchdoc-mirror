@@ -176,13 +176,14 @@ export default {
     }
   },
   methods: {
-    // FIXME : There must be a better way to handle these shortcuts
+    // FIXME : There must be a better way to handle all these shortcuts
     handleKeyPress(e) {
       if (e.keyCode == 90 && e.shiftKey) {
         // shiftKey + z
         this.addDoc()
       } else if (e.keyCode == 88 && e.shiftKey) {
         // COMMENT: Shift + x
+        this.$store.dispatch('editOff')
         this.$emit('closeEdit')
       } else if (e.keyCode == 67 && e.shiftKey) {
         // Pressing shiftKey + c key to turn on connect mode
@@ -275,11 +276,8 @@ export default {
     },
     openSelected(e) {
       this.$store.dispatch('clientId', e)
-      // this.$store.dispatch('noteId', e)
-      // this gets the note with said ID now not just the text
-      // this.$store.dispatch('getNoteText', e)
-      //this.$emit('editMode')
     },
+
     readerSelected(e) {
       this.$store.dispatch('noteId', e)
       this.$store.dispatch('getReaderText', e)
@@ -498,7 +496,7 @@ export default {
           activenoteid = selectedElement.firstElementChild.id
           activeclientid = selectedElement.firstElementChild.classList[2]
           ref.openSelected(activeclientid)
-          ref.readerSelected(activenoteid)
+          ref.readerSelected(activenoteid, activeclientid)
         } else {
           ref.addDoc()
         }

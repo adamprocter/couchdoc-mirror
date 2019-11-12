@@ -16,7 +16,13 @@
       </div>
 
       <div v-else>
-        <img src="../assets/img/icon-mac.jpg" alt width="20%" height border="0" />
+        <img
+          src="../assets/img/icon-mac.jpg"
+          alt
+          width="20%"
+          height
+          border="0"
+        />
       </div>
     </div>
   </div>

@@ -58,7 +58,6 @@ export default {
 
   watch: {
     editon(newValue) {
-      //console.log(newValue)
       if (newValue == true) {
         this.editing = !this.editing
       }

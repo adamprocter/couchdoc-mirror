@@ -22,6 +22,7 @@ var localid = null
 var connectid = null
 const store = new Vuex.Store({
   state: {
+    updatedclientid: '',
     editon: false,
     instance: '',
     myclient: '',
@@ -31,6 +32,7 @@ const store = new Vuex.Store({
     positions: [],
     connections: [],
     allnotes: {},
+    editorNote: {},
     activeNote: {},
     activeAttachment: {},
     myattachments: [],
@@ -213,7 +215,7 @@ const store = new Vuex.Store({
           .toString(36)
           .substring(2, 15)
       localid = uniqueid
-
+      console.log(e)
       pouchdb.get(state.myclient).then(function(doc) {
         if (e == undefined) {
           doc.notes.push({
@@ -280,6 +282,7 @@ const store = new Vuex.Store({
           })
       })
     },
+
     NOTE_ID(state, id) {
       localid = id
     },
@@ -289,6 +292,7 @@ const store = new Vuex.Store({
     },
 
     CLIENT_ID(state, clientid) {
+      state.updatedclientid = clientid
       if (state.myclient == clientid) {
         state.editon = true
       } else {
@@ -296,64 +300,67 @@ const store = new Vuex.Store({
       }
     },
 
-    READER_TEXT(state, id) {
+    READER_TEXT() {
+      // localid = id
+      // var i
+      // var j
+      // // only show if not your own contributions
+      // if (state.myclient != state.updatedclientid) {
+      //   for (i = 0; i < Object.keys(state.allnotes).length; i++) {
+      //     if (state.allnotes[i].doc.notes != undefined) {
+      //       //console.log(state.allnotes[i].doc.notes)
+      //       for (
+      //         j = 0;
+      //         j < Object.keys(state.allnotes[i].doc.notes).length;
+      //         j++
+      //       ) {
+      //         if (localid == state.allnotes[i].doc.notes[j].id) {
+      //           // console.log(state.allnotes[i].doc.notes[j].text)
+      //           const newReader = {
+      //             text: state.allnotes[i].doc.notes[j].text,
+      //             id: state.allnotes[i].doc.notes[j].id,
+      //             content_type: state.allnotes[i].doc.notes[j].content_type,
+      //             attachment_name:
+      //               state.allnotes[i].doc.notes[j].attachment_name
+      //           }
+      //           state.activeNote = newReader
+      //           if (state.activeNote.attachment_name != undefined) {
+      //             //FIXME: get and render the attachment with same name as attachment_name here please
+      //             this.commit(
+      //               'GET_MY_ATTACHMENT',
+      //               state.activeNote.attachment_name
+      //             )
+      //           }
+      //         }
+      //       }
+      //     }
+      //   }
+      // }
+    },
+
+    EDITOR_TEXT(state, id) {
       localid = id
       var i
-      var j
-
-      for (i = 0; i < Object.keys(state.allnotes).length; i++) {
-        if (state.allnotes[i].doc.notes != undefined) {
-          //console.log(state.allnotes[i].doc.notes)
-          for (
-            j = 0;
-            j < Object.keys(state.allnotes[i].doc.notes).length;
-            j++
-          ) {
-            if (localid == state.allnotes[i].doc.notes[j].id) {
-              // console.log(state.allnotes[i].doc.notes[j].text)
-              const newReader = {
-                text: state.allnotes[i].doc.notes[j].text,
-                id: state.allnotes[i].doc.notes[j].id,
-                content_type: state.allnotes[i].doc.notes[j].content_type,
-                attachment_name: state.allnotes[i].doc.notes[j].attachment_name
-              }
-              state.activeNote = newReader
-              if (state.activeNote.attachment_name != undefined) {
-                //FIXME: get and render the attachment with same name as attachment_name here please
-                this.commit(
-                  'GET_MY_ATTACHMENT',
-                  state.activeNote.attachment_name
-                )
-              }
-            }
+      // within your notes only
+      for (i = 0; i < Object.keys(state.notes).length; i++) {
+        if (localid == state.notes[i].id) {
+          const editorNote = {
+            text: state.notes[i].text,
+            id: state.notes[i].id,
+            content_type: state.notes[i].content_type,
+            attachment_name: state.notes[i].attachment_name
           }
+          state.editorNote = editorNote
+          //
+          if (state.editorNote.attachment_name != undefined) {
+            //FIXME: get and render the attachment with same name as attachment_name here please
+            this.commit('GET_MY_ATTACHMENT', state.editorNote.attachment_name)
+          }
+          //console.log(newNote)
+          // state.activeNote.text = state.notes[i].text
         }
       }
     },
-
-    // GET_TEXT(state, id) {
-    //   localid = id
-    //   var i
-    //   // within your notes only
-    //   for (i = 0; i < Object.keys(state.notes).length; i++) {
-    //     if (localid == state.notes[i].id) {
-    //       const newNote = {
-    //         text: state.notes[i].text,
-    //         id: state.notes[i].id,
-    //         content_type: state.notes[i].content_type,
-    //         attachment_name: state.notes[i].attachment_name
-    //       }
-    //       state.activeNote = newNote
-    //       //
-    //       if (state.activeNote.attachment_name != undefined) {
-    //         //FIXME: get and render the attachment with same name as attachment_name here please
-    //         this.commit('GET_MY_ATTACHMENT', state.activeNote.attachment_name)
-    //       }
-    //       //console.log(newNote)
-    //       // state.activeNote.text = state.notes[i].text
-    //     }
-    //   }
-    // },
 
     MAKE_CONNECT(state, e) {
       // console.log(state.connections[1].connection.id)
@@ -713,7 +720,7 @@ const store = new Vuex.Store({
       commit('NOTE_ID', e)
     },
     getReaderText: ({ commit }, e) => {
-      commit('READER_TEXT', e)
+      commit('READER_TEXT', e), commit('EDITOR_TEXT', e)
     },
     clientId: ({ commit }, e) => {
       commit('CLIENT_ID', e)
@@ -770,7 +777,6 @@ const store = new Vuex.Store({
     deleteClient: ({ commit }, e) => {
       commit('DELETE_CLIENT', e)
     },
-
     createInstance: ({ commit }, e) => {
       commit('CREATE_INSTANCE', e)
     },
