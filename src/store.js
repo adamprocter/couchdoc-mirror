@@ -22,7 +22,7 @@ var localid = null
 var connectid = null
 const store = new Vuex.Store({
   state: {
-    setfocus: false,
+    editon: false,
     instance: '',
     myclient: '',
     glo_pos: 'positions',
@@ -38,9 +38,6 @@ const store = new Vuex.Store({
     otherattachments: {}
   },
   mutations: {
-    SET_FOCUS(state) {
-      state.setfocus = true
-    },
     REMOVE_INSTANCE(state, doc) {
       pouchdb.close().then(function() {
         localinstance = doc
@@ -222,7 +219,7 @@ const store = new Vuex.Store({
           doc.notes.push({
             id: uniqueid,
             text: '',
-            owner: 'You',
+            owner: state.myclient,
             content_type: 'sheet',
             deleted: false,
             isActive: false,
@@ -232,7 +229,7 @@ const store = new Vuex.Store({
           doc.notes.push({
             id: uniqueid,
             text: 'ATTACHMENT',
-            owner: 'You',
+            owner: state.myclient,
             content_type: 'attachment',
             deleted: false,
             isActive: false,
@@ -287,31 +284,76 @@ const store = new Vuex.Store({
       localid = id
     },
 
-    GET_TEXT(state, id) {
+    EDIT_OFF(state) {
+      state.editon = false
+    },
+
+    CLIENT_ID(state, clientid) {
+      if (state.myclient == clientid) {
+        state.editon = true
+      } else {
+        state.editon = false
+      }
+    },
+
+    READER_TEXT(state, id) {
       localid = id
       var i
-      for (i = 0; i < Object.keys(state.notes).length; i++) {
-        if (localid == state.notes[i].id) {
-          // console.log(state.notes[i].text)
-          // console.log(state.activeNote)
-          // this now needs to dispatch EDIT NOTE ????
-          const newNote = {
-            text: state.notes[i].text,
-            id: state.notes[i].id,
-            content_type: state.notes[i].content_type,
-            attachment_name: state.notes[i].attachment_name
+      var j
+
+      for (i = 0; i < Object.keys(state.allnotes).length; i++) {
+        if (state.allnotes[i].doc.notes != undefined) {
+          //console.log(state.allnotes[i].doc.notes)
+          for (
+            j = 0;
+            j < Object.keys(state.allnotes[i].doc.notes).length;
+            j++
+          ) {
+            if (localid == state.allnotes[i].doc.notes[j].id) {
+              // console.log(state.allnotes[i].doc.notes[j].text)
+              const newReader = {
+                text: state.allnotes[i].doc.notes[j].text,
+                id: state.allnotes[i].doc.notes[j].id,
+                content_type: state.allnotes[i].doc.notes[j].content_type,
+                attachment_name: state.allnotes[i].doc.notes[j].attachment_name
+              }
+              state.activeNote = newReader
+              if (state.activeNote.attachment_name != undefined) {
+                //FIXME: get and render the attachment with same name as attachment_name here please
+                this.commit(
+                  'GET_MY_ATTACHMENT',
+                  state.activeNote.attachment_name
+                )
+              }
+            }
           }
-          state.activeNote = newNote
-          //
-          if (state.activeNote.attachment_name != undefined) {
-            //FIXME: get and render the attachment with same name as attachment_name here please
-            this.commit('GET_MY_ATTACHMENT', state.activeNote.attachment_name)
-          }
-          //console.log(newNote)
-          // state.activeNote.text = state.notes[i].text
         }
       }
     },
+
+    // GET_TEXT(state, id) {
+    //   localid = id
+    //   var i
+    //   // within your notes only
+    //   for (i = 0; i < Object.keys(state.notes).length; i++) {
+    //     if (localid == state.notes[i].id) {
+    //       const newNote = {
+    //         text: state.notes[i].text,
+    //         id: state.notes[i].id,
+    //         content_type: state.notes[i].content_type,
+    //         attachment_name: state.notes[i].attachment_name
+    //       }
+    //       state.activeNote = newNote
+    //       //
+    //       if (state.activeNote.attachment_name != undefined) {
+    //         //FIXME: get and render the attachment with same name as attachment_name here please
+    //         this.commit('GET_MY_ATTACHMENT', state.activeNote.attachment_name)
+    //       }
+    //       //console.log(newNote)
+    //       // state.activeNote.text = state.notes[i].text
+    //     }
+    //   }
+    // },
 
     MAKE_CONNECT(state, e) {
       // console.log(state.connections[1].connection.id)
@@ -529,7 +571,7 @@ const store = new Vuex.Store({
 
     EDIT_NOTE(state, e) {
       var i
-
+      state.editon = false
       for (i = 0; i < Object.keys(state.notes).length; i++) {
         if (localid == state.notes[i].id) {
           state.notes[i].text = e.text
@@ -660,15 +702,21 @@ const store = new Vuex.Store({
           })
       })
     },
-    //FIXME: I think number of these commit specifically with editing the note could / should probably be combined
+    //FIXME: I think number of these commit specifically with editing the note could be combined
     addDoc: ({ commit }, e) => {
       commit('ADD_DOC', e)
+    },
+    editOff: ({ commit }, e) => {
+      commit('EDIT_OFF', e)
     },
     noteId: ({ commit }, e) => {
       commit('NOTE_ID', e)
     },
-    getNoteText: ({ commit }, e) => {
-      commit('GET_TEXT', e)
+    getReaderText: ({ commit }, e) => {
+      commit('READER_TEXT', e)
+    },
+    clientId: ({ commit }, e) => {
+      commit('CLIENT_ID', e)
     },
     movePos: ({ commit }, { activenoteid, xpos, ypos, isActive }) => {
       commit('MOVE_POS', { activenoteid, xpos, ypos, isActive })

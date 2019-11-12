@@ -436,6 +436,11 @@ ul {
     grid-row: 1;
   }
 
+  .reader {
+    grid-column: 3 / 6;
+    grid-row: 1;
+  }
+
   .spaceview {
     grid-column: 2 / 6;
     grid-row: 2;

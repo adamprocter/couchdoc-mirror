@@ -5,10 +5,12 @@
       Press
       <em>Create</em> to add a note or link.
     </p>
+
     <p>
       Press
       <em>Add</em> to add an attachments.
     </p>
+
     <button
       @click="
         addDoc()
@@ -17,11 +19,12 @@
     >
       Create
     </button>
-    <p><b>Shortcut :</b> Shift + z to create</p>
+
     <form>
       <label class="myFiles" for="myFiles">Add</label>
       <input type="file" @change="addFile()" ref="myFiles" id="myFiles" />
     </form>
+
     <hr />
   </div>
 </template>
