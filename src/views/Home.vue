@@ -12,7 +12,7 @@
     <ReaderView v-if="clientset" />
     <ShortCuts v-if="clientset" />
     <!-- <AllData v-if="clientset" /> -->
-    <AllSpace v-if="clientset" @closeEdit="closeEdit()" />
+    <AllSpace v-if="clientset" @closeEdit="closeEdit()" @editMode="editMode()" />
     <ClientSet v-else @clientAdded="clientAdded()" />
     <AdminPanel />
 
@@ -58,7 +58,6 @@ export default {
 
   watch: {
     editon(newValue) {
-      //console.log(newValue)
       if (newValue == true) {
         this.editing = !this.editing
       }
