@@ -568,12 +568,12 @@ const store = new Vuex.Store({
     },
 
     ADD_FILE(state, files) {
-      var tempdoc = null
+      //var tempdoc = null
       // console.log(state.myclient)
       pouchdb
         .get(state.myclient)
         .then(function(doc) {
-          tempdoc = doc
+          //tempdoc = doc
           return pouchdb.putAttachment(
             state.myclient,
             files.name,

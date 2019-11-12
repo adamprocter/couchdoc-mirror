@@ -16,7 +16,9 @@
       <br />
       <button @click="createInstance()">Create/ Join Instance</button>
 
-      <button class="danger" @click="removeIndex()">Delete Local Instance</button>
+      <button class="danger" @click="removeIndex()">
+        Delete Local Instance
+      </button>
     </form>
   </div>
 </template>
