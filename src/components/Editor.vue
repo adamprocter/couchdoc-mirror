@@ -66,8 +66,9 @@
         readonly
         hidden
       />
-      <button @click="closeEdit()">Finish</button>
-      <p><b>Shortcut :</b> Shift + x to Finish</p>
+      <div>
+        <button @click="closeEdit()">Finish</button>
+      </div>
     </form>
   </div>
 </template>
@@ -94,9 +95,11 @@ export default {
     },
     closeEdit() {
       this.$emit('closeEdit')
+      this.$store.dispatch('editOff')
     }
   },
   computed: mapState({
+    editon: state => state.editon,
     activeNote: state => state.activeNote,
     activeAttachment: state => state.activeAttachment
   })

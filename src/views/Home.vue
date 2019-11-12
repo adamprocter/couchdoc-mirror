@@ -4,22 +4,15 @@
       <img src="../assets/img/icon.png" width="50px" />
       nodenoggin
     </h1>
-
     <!-- tips -->
     <!--  @ is short for v-on: -->
     <!-- : is short for v-bind -->
     <Editor v-if="editing" @closeEdit="closeEdit()" />
     <ToolBar v-else-if="clientset" @editMode="editMode()" />
-    <!-- <YourData v-if="clientset" /> -->
-    <!-- <SpaceView v-if="clientset" @editMode="editMode()" />-->
-
-    <AllData v-if="clientset" />
-    <AllSpace
-      v-if="clientset"
-      @editMode="editMode()"
-      @closeEdit="closeEdit()"
-    />
-    <!-- <YourAttachments v-if="clientset" /> -->
+    <ReaderView v-if="clientset" />
+    <ShortCuts v-if="clientset" />
+    <!-- <AllData v-if="clientset" /> -->
+    <AllSpace v-if="clientset" @closeEdit="closeEdit()" />
     <ClientSet v-else @clientAdded="clientAdded()" />
     <AdminPanel />
 
@@ -30,16 +23,15 @@
 <script>
 // tips
 // @ is an alias to /src
+import { mapState } from 'vuex'
 
 import ClientSet from '@/components/ClientSet.vue'
 import AdminPanel from '@/components/AdminPanel.vue'
-// import YourData from '@/components/YourData.vue'
-// import SpaceView from '@/components/SpaceView.vue'
-// import YourAttachments from '@/components/YourAttachments.vue'
-import AllData from '@/components/AllData.vue'
+import ShortCuts from '@/components/ShortCuts.vue'
 import AllSpace from '@/components/AllSpace.vue'
 import ToolBar from '@/components/ToolBar.vue'
 import Editor from '@/components/Editor.vue'
+import ReaderView from '@/components/ReaderView.vue'
 import DeBug from '@/components/DeBug.vue'
 
 export default {
@@ -55,14 +47,24 @@ export default {
     ClientSet,
     AdminPanel,
     ToolBar,
-    // YourData,
-    // SpaceView,
-    // YourAttachments,
-    AllData,
+    ShortCuts,
     AllSpace,
     Editor,
+    ReaderView,
     DeBug
   },
+
+  computed: mapState(['editon']),
+
+  watch: {
+    editon(newValue) {
+      //console.log(newValue)
+      if (newValue == true) {
+        this.editing = !this.editing
+      }
+    }
+  },
+
   methods: {
     clientAdded() {
       this.clientset = !this.clientset
@@ -70,11 +72,9 @@ export default {
     editMode() {
       this.editing = !this.editing
     },
+
     closeEdit() {
       this.editing = false
-    },
-    setFocus() {
-      console.log('hello')
     }
   }
 }

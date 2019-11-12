@@ -1,10 +1,7 @@
 <template>
   <div class="spaceview">
     <h2>Spatial view</h2>
-    <p><b>Press:</b> Shift + c key to turn on/off connection mode</p>
-    <p><b>Press:</b> Shift + v key to turn on/off remove connection mode</p>
-    <p><b>Press:</b> Shift + + to zoom in</p>
-    <p><b>Press:</b> Shift + - to zoom out</p>
+
     <p id="modeon" class="connectionoff">
       <b>connection create mode is on</b>
     </p>
@@ -46,7 +43,11 @@
                 v-if="note.content_type == 'link'"
                 points="9.500000000000002,16.454482671904334 -19,2.326828918379971e-15 9.499999999999986,-16.45448267190434"
                 fill="#989898"
-                :class="[note.content_type, note.isActive ? 'highlighted' : '']"
+                :class="[
+                  note.content_type,
+                  note.isActive ? 'highlighted' : '',
+                  note.owner
+                ]"
                 :id="note.id"
               />
 
@@ -54,7 +55,11 @@
                 v-if="note.content_type == 'sheet'"
                 points="13.435028842544403,13.435028842544401 -13.435028842544401,13.435028842544403 -13.435028842544407,-13.435028842544401 13.435028842544401,-13.435028842544407"
                 fill="#989898"
-                :class="[note.content_type, note.isActive ? 'highlighted' : '']"
+                :class="[
+                  note.content_type,
+                  note.isActive ? 'highlighted' : '',
+                  note.owner
+                ]"
                 :id="note.id"
               />
 
@@ -62,7 +67,11 @@
                 v-if="note.content_type == 'attachment'"
                 points="14.782072520180588,6.1229349178414365 6.122934917841437,14.782072520180588 -6.122934917841436,14.782072520180588 -14.782072520180588,6.122934917841437 -14.782072520180588,-6.122934917841435 -6.122934917841445,-14.782072520180584 6.12293491784144,-14.782072520180586 14.782072520180584,-6.122934917841446"
                 fill="#989898"
-                :class="[note.content_type, note.isActive ? 'highlighted' : '']"
+                :class="[
+                  note.content_type,
+                  note.isActive ? 'highlighted' : '',
+                  note.owner
+                ]"
                 :id="note.id"
               />
 
@@ -111,6 +120,7 @@
 <script>
 import { mapState } from 'vuex'
 var activenoteid
+var activeclientid
 var connectid
 var firsttap = null
 var secondtap
@@ -145,6 +155,10 @@ export default {
     connections: state => state.connections,
     positions: state => state.positions
   }),
+
+  watch: {
+    //empty
+  },
 
   mounted() {
     this.makeDraggable()
@@ -260,12 +274,17 @@ export default {
       this.$emit('editMode')
     },
     openSelected(e) {
-      // e = id
-      this.$store.dispatch('noteId', e)
+      this.$store.dispatch('clientId', e)
+      // this.$store.dispatch('noteId', e)
       // this gets the note with said ID now not just the text
-      this.$store.dispatch('getNoteText', e)
-      this.$emit('editMode')
+      // this.$store.dispatch('getNoteText', e)
+      //this.$emit('editMode')
     },
+    readerSelected(e) {
+      this.$store.dispatch('noteId', e)
+      this.$store.dispatch('getReaderText', e)
+    },
+
     startConnect(connectid, e, f, startx, starty, endx, endy, connected) {
       this.$store.dispatch('startConnect', {
         connectid,
@@ -475,9 +494,11 @@ export default {
           firsttap = null
           ref.connKey()
           // identify which object was clicked
-          // console.log(selectedElement.firstElementChild.id)
+          //console.log(selectedElement.firstElementChild.id)
           activenoteid = selectedElement.firstElementChild.id
-          ref.openSelected(activenoteid)
+          activeclientid = selectedElement.firstElementChild.classList[2]
+          ref.openSelected(activeclientid)
+          ref.readerSelected(activenoteid)
         } else {
           ref.addDoc()
         }
