@@ -19,7 +19,6 @@
     >
       Create
     </button>
-
     <form>
       <label class="myFiles" for="myFiles">Add</label>
       <input type="file" @change="addFile()" ref="myFiles" id="myFiles" />
