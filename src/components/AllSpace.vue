@@ -258,6 +258,7 @@ export default {
 
     trimText() {
       //console.log(this.allnotes)
+      // this will hide text in spatial view
     },
 
     zoominButton() {
