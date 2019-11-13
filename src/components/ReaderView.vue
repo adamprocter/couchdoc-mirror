@@ -33,6 +33,7 @@ import { mapState } from 'vuex'
 
 export default {
   name: 'ReaderView',
+  methods: {},
   computed: mapState({
     activeNote: state => state.activeNote,
     activeAttachment: state => state.activeAttachment
