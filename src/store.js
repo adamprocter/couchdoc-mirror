@@ -5,7 +5,7 @@ import accounts from '../src/assets/settings.json'
 
 Vue.use(Vuex)
 // Objects
-var localinstance = 'alpha'
+var localinstance = 'working'
 var pouchdb = new PouchDB(localinstance)
 var remote =
   'https://' +

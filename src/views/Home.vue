@@ -26,13 +26,13 @@
 import { mapState } from 'vuex'
 
 import ClientSet from '@/components/ClientSet.vue'
-import AdminPanel from '@/components/AdminPanel.vue'
+// import AdminPanel from '@/components/AdminPanel.vue'
 import ShortCuts from '@/components/ShortCuts.vue'
 import AllSpace from '@/components/AllSpace.vue'
 import ToolBar from '@/components/ToolBar.vue'
 import Editor from '@/components/Editor.vue'
 import ReaderView from '@/components/ReaderView.vue'
-import DeBug from '@/components/DeBug.vue'
+// import DeBug from '@/components/DeBug.vue'
 
 export default {
   name: 'home',
@@ -45,13 +45,13 @@ export default {
 
   components: {
     ClientSet,
-    AdminPanel,
+    // AdminPanel,
     ToolBar,
     ShortCuts,
     AllSpace,
     Editor,
-    ReaderView,
-    DeBug
+    ReaderView
+    // DeBug
   },
 
   computed: mapState(['editon']),
