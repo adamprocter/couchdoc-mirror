@@ -11,18 +11,14 @@
       <em>Add</em> to add an attachments.
     </p>
 
-    <button
-      @click="
+    <button @click="
         addDoc()
         editMode()
-      "
-    >
-      Create
-    </button>
-    <form>
+      ">Create</button>
+    <!-- <form>
       <label class="myFiles" for="myFiles">Add</label>
       <input type="file" @change="addFile()" ref="myFiles" id="myFiles" />
-    </form>
+    </form>-->
 
     <hr />
   </div>
