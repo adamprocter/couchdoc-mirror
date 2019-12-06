@@ -178,14 +178,14 @@ export default {
   methods: {
     // FIXME : There must be a better way to handle these shortcuts
     handleKeyPress(e) {
-      if (e.keyCode == 90 && e.shiftKey) {
+      if (e.keyCode == 49 && e.ctrlKey) {
         // shiftKey + z
         this.addDoc()
-      } else if (e.keyCode == 88 && e.shiftKey) {
+      } else if (e.keyCode == 50 && e.ctrlKey) {
         // COMMENT: Shift + x
         this.$store.dispatch('editOff')
         this.$emit('closeEdit')
-      } else if (e.keyCode == 67 && e.shiftKey) {
+      } else if (e.keyCode == 52 && e.ctrlKey) {
         // Pressing shiftKey + c key to turn on connect mode
         this.$emit('closeEdit')
         if (connkey == true) {
@@ -196,7 +196,7 @@ export default {
         removekey = false
         this.connKey()
         this.removeKey()
-      } else if (e.keyCode == 86 && e.shiftKey) {
+      } else if (e.keyCode == 53 && e.ctrlKey) {
         // Pressing shiftKey + v key to turn on remove connections mode
         this.$emit('closeEdit')
 
@@ -208,9 +208,9 @@ export default {
         connkey = false
         this.connKey()
         this.removeKey()
-      } else if (e.keyCode == 61 && e.shiftKey) {
+      } else if (e.keyCode == 61 && e.ctrlKey) {
         this.zoominButton()
-      } else if (e.keyCode == 173 && e.shiftKey) {
+      } else if (e.keyCode == 173 && e.ctrlKey) {
         this.zoomoutButton()
       }
     },
