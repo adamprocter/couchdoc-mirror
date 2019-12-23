@@ -137,6 +137,7 @@ var connected = 'false'
 
 var myTimer
 var delay = 500
+var inEdit = false
 
 export default {
   name: 'AllSpace',
@@ -177,41 +178,56 @@ export default {
   },
   methods: {
     // FIXME : There must be a better way to handle these shortcuts
+
     handleKeyPress(e) {
-      if (e.keyCode == 90 && e.altKey) {
-        // Option + z
-        this.addDoc()
-      } else if (e.keyCode == 88 && e.altKey) {
-        // COMMENT: Option + x
+      if (e.keyCode == 13 && e.altKey) {
+        // option enter = close editor
         this.$store.dispatch('editOff')
         this.$emit('closeEdit')
-      } else if (e.keyCode == 67 && e.altKey) {
-        // Pressing Option + c key to turn on connect mode
-        this.$emit('closeEdit')
-        if (connkey == true) {
-          connkey = false
-        } else {
-          connkey = true
-        }
-        removekey = false
-        this.connKey()
-        this.removeKey()
-      } else if (e.keyCode == 86 && e.altKey) {
-        // Pressing option + v key to turn on remove connections mode
-        this.$emit('closeEdit')
+        inEdit = false
+      }
 
-        if (removekey == true) {
+      if (inEdit == false) {
+        if (e.keyCode == 78) {
+          // n for new
+          inEdit = true
+          this.addDoc()
+        } else if (e.keyCode == 65) {
+          // a for attachement
+          // FIXME: Currently cant call this way as need to open the file picker ?
+          this.addAttachment()
+        } else if (e.keyCode == 13 && e.altKey) {
+          // option enter = close editor
+          this.$store.dispatch('editOff')
+          this.$emit('closeEdit')
+        } else if (e.keyCode == 67) {
+          // c = turn on connect mode
+          this.$emit('closeEdit')
+          if (connkey == true) {
+            connkey = false
+          } else {
+            connkey = true
+          }
           removekey = false
-        } else {
-          removekey = true
+          this.connKey()
+          this.removeKey()
+        } else if (e.keyCode == 68) {
+          // d = delete connections mode
+          this.$emit('closeEdit')
+
+          if (removekey == true) {
+            removekey = false
+          } else {
+            removekey = true
+          }
+          connkey = false
+          this.connKey()
+          this.removeKey()
+        } else if (e.keyCode == 61 && e.altKey) {
+          this.zoominButton()
+        } else if (e.keyCode == 173 && e.altKey) {
+          this.zoomoutButton()
         }
-        connkey = false
-        this.connKey()
-        this.removeKey()
-      } else if (e.keyCode == 61 && e.altKey) {
-        this.zoominButton()
-      } else if (e.keyCode == 173 && e.altKey) {
-        this.zoomoutButton()
       }
     },
     connButton() {
@@ -274,6 +290,10 @@ export default {
     addDoc() {
       this.$store.dispatch('addDoc')
       this.$emit('editMode')
+    },
+    addAttachment() {
+      //this.$store.dispatch('addFile')
+      // this.$emit('addFile')
     },
     openSelected(e) {
       this.$store.dispatch('clientId', e)
