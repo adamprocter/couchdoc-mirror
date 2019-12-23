@@ -23,6 +23,7 @@ var connectid = null
 const store = new Vuex.Store({
   state: {
     editon: false,
+    shortcutsstate: false,
     instance: '',
     myclient: '',
     glo_pos: 'positions',
@@ -283,6 +284,11 @@ const store = new Vuex.Store({
     },
     NOTE_ID(state, id) {
       localid = id
+    },
+
+    SHORTCUTS_STATE(state, e) {
+      //console.log(e)
+      state.shortcutsstate = e
     },
 
     EDIT_OFF(state) {
@@ -709,6 +715,9 @@ const store = new Vuex.Store({
     },
     editOff: ({ commit }, e) => {
       commit('EDIT_OFF', e)
+    },
+    shortcutsState: ({ commit }, e) => {
+      commit('SHORTCUTS_STATE', e)
     },
     noteId: ({ commit }, e) => {
       commit('NOTE_ID', e)

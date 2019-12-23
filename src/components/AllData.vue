@@ -12,11 +12,11 @@
 
 <script>
 import { mapState } from 'vuex'
-var inEdit = false
 
 export default {
   name: 'AllData',
   computed: mapState({
+    shortcutsstate: state => state.shortcutsstate,
     allnotes: state => state.allnotes
   }),
 
@@ -39,13 +39,13 @@ export default {
         // option enter = close editor
         this.$store.dispatch('editOff')
         this.$emit('closeEdit')
-        inEdit = false
+        this.$store.dispatch('shortcutsState', false)
       }
 
-      if (inEdit == false) {
+      if (this.shortcutsstate == false) {
         if (e.keyCode == 78) {
           // n for new
-          inEdit = true
+          this.$store.dispatch('shortcutsState', true)
           this.addDoc()
         }
       }

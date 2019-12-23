@@ -137,7 +137,6 @@ var connected = 'false'
 
 var myTimer
 var delay = 500
-var inEdit = false
 
 export default {
   name: 'AllSpace',
@@ -152,6 +151,7 @@ export default {
   },
 
   computed: mapState({
+    shortcutsstate: state => state.shortcutsstate,
     allnotes: state => state.allnotes,
     connections: state => state.connections,
     positions: state => state.positions
@@ -184,20 +184,21 @@ export default {
         // option enter = close editor
         this.$store.dispatch('editOff')
         this.$emit('closeEdit')
-        inEdit = false
+        this.$store.dispatch('shortcutsState', false)
       }
 
-      if (inEdit == false) {
+      if (this.shortcutsstate == false) {
         if (e.keyCode == 78) {
           // n for new
-          inEdit = true
           this.addDoc()
+          this.$store.dispatch('shortcutsState', true)
         } else if (e.keyCode == 65) {
           // a for attachement
           // FIXME: Currently cant call this way as need to open the file picker ?
           this.addAttachment()
         } else if (e.keyCode == 13 && e.altKey) {
           // option enter = close editor
+          this.$store.dispatch('shortcutsState', false)
           this.$store.dispatch('editOff')
           this.$emit('closeEdit')
         } else if (e.keyCode == 67) {
@@ -289,6 +290,7 @@ export default {
 
     addDoc() {
       this.$store.dispatch('addDoc')
+
       this.$emit('editMode')
     },
     addAttachment() {
@@ -512,7 +514,7 @@ export default {
         if (evt.target.parentNode.classList.contains('draggable')) {
           selectedElement = evt.target.parentNode
           // console.log('double')
-          inEdit = true
+          ref.$store.dispatch('shortcutsState', false)
           connkey = false
           firsttap = null
           ref.connKey()

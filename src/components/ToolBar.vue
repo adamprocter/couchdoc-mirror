@@ -35,6 +35,7 @@ export default {
   methods: {
     addDoc() {
       this.$store.dispatch('addDoc')
+      this.$store.dispatch('shortcutsState', true)
     },
     editMode() {
       this.$emit('editMode')

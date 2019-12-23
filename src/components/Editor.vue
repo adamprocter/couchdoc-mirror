@@ -34,6 +34,7 @@
       <input :value="activeNote.attachment_name" name="attachmentname" readonly hidden />
       <div>
         <button @click="closeEdit()">Finish</button>
+        <button class="danger">Delete</button>
       </div>
     </form>
   </div>
@@ -62,10 +63,11 @@ export default {
     closeEdit() {
       this.$emit('closeEdit')
       this.$store.dispatch('editOff')
+      this.$store.dispatch('shortcutsState', false)
     }
   },
   computed: mapState({
-    editon: state => state.editon,
+    //editon: state => state.editon,
     activeNote: state => state.activeNote,
     activeAttachment: state => state.activeAttachment
   })
