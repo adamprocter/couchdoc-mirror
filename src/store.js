@@ -133,7 +133,8 @@ const store = new Vuex.Store({
               notes: [
                 {
                   id: uniqueid,
-                  text: 'Device ' + state.myclient
+                  text: 'Device ' + state.myclient,
+                  content_type: 'device'
                 }
               ]
             })

@@ -11,20 +11,17 @@
       <em>Add</em> to add an attachments.
     </p>
 
-    <button
-      @click="
+    <button @click="
         addDoc()
         editMode()
-      "
-    >
-      Create
-    </button>
+      ">Create</button>
     <form>
       <label class="myFiles" for="myFiles">Add</label>
       <input type="file" @change="addFile()" ref="myFiles" id="myFiles" />
     </form>
 
     <hr />
+    <button @click="togView()">Switch View</button>
   </div>
 </template>
 
@@ -41,6 +38,10 @@ export default {
     },
     editMode() {
       this.$emit('editMode')
+    },
+
+    togView() {
+      this.$emit('togView')
     },
 
     addFile() {

@@ -8,11 +8,11 @@
     <!--  @ is short for v-on: -->
     <!-- : is short for v-bind -->
     <Editor v-if="editing" @closeEdit="closeEdit()" />
-    <ToolBar v-else-if="clientset" @editMode="editMode()" />
+    <ToolBar v-else-if="clientset" @editMode="editMode()" @togView="togView()" />
     <ReaderView v-if="clientset" />
     <ShortCuts v-if="clientset" />
-    <!-- <AllData v-if="clientset" /> -->
-    <AllSpace v-if="clientset" @closeEdit="closeEdit()" @editMode="editMode()" />
+    <AllData v-if="clientset && spaceview" />
+    <AllSpace v-else-if="clientset" @closeEdit="closeEdit()" @editMode="editMode()" />
     <ClientSet v-else @clientAdded="clientAdded()" />
     <AdminPanel />
 
@@ -29,6 +29,7 @@ import ClientSet from '@/components/ClientSet.vue'
 import AdminPanel from '@/components/AdminPanel.vue'
 import ShortCuts from '@/components/ShortCuts.vue'
 import AllSpace from '@/components/AllSpace.vue'
+import AllData from '@/components/AllData.vue'
 import ToolBar from '@/components/ToolBar.vue'
 import Editor from '@/components/Editor.vue'
 import ReaderView from '@/components/ReaderView.vue'
@@ -39,6 +40,7 @@ export default {
   data: function() {
     return {
       editing: false,
+      spaceview: false,
       clientset: false
     }
   },
@@ -49,6 +51,7 @@ export default {
     ToolBar,
     ShortCuts,
     AllSpace,
+    AllData,
     Editor,
     ReaderView,
     DeBug
@@ -62,6 +65,12 @@ export default {
         this.editing = !this.editing
       }
     }
+    // },
+    // spaceon(newValue) {
+    //   if (newValue == true) {
+    //     this.spaceview = !this.spaceview
+    //   }
+    // }
   },
 
   methods: {
@@ -70,6 +79,14 @@ export default {
     },
     editMode() {
       this.editing = !this.editing
+    },
+
+    togView() {
+      if (this.spaceview == false) {
+        this.spaceview = true
+      } else {
+        this.spaceview = false
+      }
     },
 
     closeEdit() {
