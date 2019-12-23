@@ -11,7 +11,7 @@
     <ToolBar v-else-if="clientset" @editMode="editMode()" @togView="togView()" />
     <ReaderView v-if="clientset" />
     <ShortCuts v-if="clientset" />
-    <AllData v-if="clientset && spaceview" />
+    <AllData v-if="clientset && spaceview" @editMode="editMode()" @closeEdit="closeEdit()" />
     <AllSpace v-else-if="clientset" @closeEdit="closeEdit()" @editMode="editMode()" />
     <ClientSet v-else @clientAdded="clientAdded()" />
     <AdminPanel />

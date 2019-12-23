@@ -12,12 +12,50 @@
 
 <script>
 import { mapState } from 'vuex'
+var inEdit = false
 
 export default {
   name: 'AllData',
   computed: mapState({
     allnotes: state => state.allnotes
-  })
+  }),
+
+  created() {
+    if (typeof window !== 'undefined') {
+      document.addEventListener('keydown', this.handleKeyPress)
+    }
+  },
+  beforeDestroy() {
+    if (typeof window !== 'undefined') {
+      document.removeEventListener('keydown', this.handleKeyPress)
+    }
+  },
+
+  methods: {
+    // FIXME : There must be a better way to handle these shortcuts
+
+    handleKeyPress(e) {
+      if (e.keyCode == 13 && e.altKey) {
+        // option enter = close editor
+        this.$store.dispatch('editOff')
+        this.$emit('closeEdit')
+        inEdit = false
+      }
+
+      if (inEdit == false) {
+        if (e.keyCode == 78) {
+          // n for new
+          inEdit = true
+          this.addDoc()
+        }
+      }
+    },
+
+    addDoc() {
+      this.$store.dispatch('addDoc')
+      this.$emit('editMode')
+    }
+  }
 }
 </script>
 
