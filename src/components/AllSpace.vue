@@ -512,6 +512,7 @@ export default {
         if (evt.target.parentNode.classList.contains('draggable')) {
           selectedElement = evt.target.parentNode
           // console.log('double')
+          inEdit = true
           connkey = false
           firsttap = null
           ref.connKey()

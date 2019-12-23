@@ -1,5 +1,5 @@
 <template>
-  <div class="toolbar">
+  <div class="bucketmode">
     <h2>Create / Attach</h2>
     <p>
       Press
@@ -21,7 +21,6 @@
     </form>
 
     <hr />
-    <button @click="togView()">Switch View</button>
   </div>
 </template>
 
@@ -38,10 +37,6 @@ export default {
     },
     editMode() {
       this.$emit('editMode')
-    },
-
-    togView() {
-      this.$emit('togView')
     },
 
     addFile() {

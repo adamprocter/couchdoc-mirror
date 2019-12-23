@@ -1,9 +1,10 @@
 <template>
   <div class="alldata">
-    <h2>All contributions (in realtime)</h2>
+    <h2>Bucket view</h2>
     <ul class="data" v-for="(value, index) in allnotes" v-bind:key="index">
       <li v-for="(note, index) in value.doc.notes" v-bind:key="index">
-        <p>{{ note.text }}</p>
+        <!-- v-if hides device name -->
+        <p v-if="note.content_type != 'device'">{{ note.text }}</p>
       </li>
     </ul>
   </div>
