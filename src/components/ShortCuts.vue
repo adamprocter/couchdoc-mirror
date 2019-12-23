@@ -2,19 +2,19 @@
   <div class="shortcuts">
     <h2>Shortcuts</h2>
     <p>
-      <b>Shortcut :</b> Option/Alt + z to Create
+      <b>Shortcut :</b> n to Create
     </p>
     <p>
-      <b>Shortcut :</b> Option/Alt + x to Finish
+      <b>Shortcut :</b> Option/Alt + Enter
     </p>
     <!-- <p>
       <b>Shortcut :</b> Ctrl + 3 to Add
     </p>-->
     <p>
-      <b>Shortcut :</b> Option/Alt + c key to turn on/off Connection mode
+      <b>Shortcut :</b> c key to turn on/off Connection mode
     </p>
     <p>
-      <b>Shortcut :</b> Option/Alt + v key to turn on/off remove Connection mode
+      <b>Shortcut :</b> d key to turn on/off remove Connection mode
     </p>
     <p>
       <b>Shortcut :</b> Option/Alt + + to Zoom in
