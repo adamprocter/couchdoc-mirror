@@ -5,16 +5,16 @@
       <b>Shortcut :</b> n to Create
     </p>
     <p>
-      <b>Shortcut :</b> Option/Alt + Enter
+      <b>Shortcut :</b> Option/Alt + Enter to Close
     </p>
     <!-- <p>
       <b>Shortcut :</b> Ctrl + 3 to Add
     </p>-->
     <p>
-      <b>Shortcut :</b> c key to turn on/off Connection mode
+      <b>Shortcut :</b> c to turn on/off create Connection mode
     </p>
     <p>
-      <b>Shortcut :</b> d key to turn on/off remove Connection mode
+      <b>Shortcut :</b> d to turn on/off delete Connection mode
     </p>
     <p>
       <b>Shortcut :</b> Option/Alt + + to Zoom in
