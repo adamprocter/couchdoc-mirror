@@ -469,7 +469,7 @@ export default {
             firsttap = null
             ref.removeKey()
           } else {
-            //do nothing
+            // do nothing
           }
         }
         if (connkey == true && firsttap == null) {
@@ -519,7 +519,7 @@ export default {
           firsttap = null
           ref.connKey()
           // identify which object was clicked
-          //console.log(selectedElement.firstElementChild.id)
+          // console.log(selectedElement.firstElementChild.id)
           activenoteid = selectedElement.firstElementChild.id
           activeclientid = selectedElement.firstElementChild.classList[2]
           ref.openSelected(activeclientid)
