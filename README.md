@@ -36,4 +36,5 @@ Plus the following required dependencies all added via vue ui
 
 ## Visuals
 
-![](src/assets/img/visual1.png)
+![](src/assets/files/visual2.png)
+![](src/assets/files/visual1.png)
