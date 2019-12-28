@@ -177,8 +177,6 @@ export default {
     }
   },
   methods: {
-    // FIXME : There must be a better way to handle these shortcuts
-
     handleKeyPress(e) {
       if (e.keyCode == 13 && e.altKey) {
         // option enter = close editor
@@ -233,6 +231,7 @@ export default {
     },
     connButton() {
       this.$emit('closeEdit')
+      this.$store.dispatch('shortcutsState', false)
       if (connkey == true) {
         connkey = false
       } else {
@@ -245,6 +244,7 @@ export default {
 
     removeButton() {
       this.$emit('closeEdit')
+      this.$store.dispatch('shortcutsState', false)
       if (removekey == true) {
         removekey = false
       } else {

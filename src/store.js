@@ -287,7 +287,7 @@ const store = new Vuex.Store({
     },
 
     SHORTCUTS_STATE(state, e) {
-      //console.log(e)
+      console.log(e)
       state.shortcutsstate = e
     },
 
