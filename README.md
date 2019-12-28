@@ -28,10 +28,11 @@ vue ui
 
 - [Vue.js](https://vuejs.org/)
 
-Plus the following required dependencies all added via vue ui
+Plus the following required dependencies which should be all added via vue ui
 
 - vuex
 - vue-router
+- file-loader
 - [PouchDB](https://pouchdb.com/) connecting to an instance of [CouchDB](http://couchdb.apache.org/)
 
 ## Visuals
