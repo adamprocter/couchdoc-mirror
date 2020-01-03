@@ -24,7 +24,13 @@
       <h2>1</h2>
       <h3>instance</h3>
       <p>create or join an instance. an instance is a sharable digital space that can be shared privately between a group of individuals. all content / data you contribute is stored locally on your device and then shared privately to others on the same instance. you can remove your contributions at any time, they belong to you.</p>
-      <input type="text" v-model="localinstance" placeholder="instance name" />
+      <input
+        type="text"
+        v-model="localinstance"
+        placeholder="instance name"
+        autocorrect="off"
+        autocapitalize="none"
+      />
       <button @click="createInstance()">+</button>
     </form>
 
@@ -32,7 +38,13 @@
       <h2>2</h2>
       <h3>name</h3>
       <p>give yourself a unique name, this ties this device to your own content / data. this name is anonymous and stored privately.</p>
-      <input type="text" v-model="clientid" placeholder="device name" />
+      <input
+        type="text"
+        v-model="clientid"
+        placeholder="device name"
+        autocorrect="off"
+        autocapitalize="none"
+      />
       <button @click="setClient()">+</button>
     </form>
 
@@ -51,7 +63,7 @@ export default {
   data: function() {
     return {
       clientid: '',
-      localinstance: '',
+      localinstance: 'alpha',
       partb: false,
       partc: false
     }
