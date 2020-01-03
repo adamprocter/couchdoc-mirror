@@ -8,7 +8,9 @@
       nodenoggin is a
       <span>work in progress</span> collaborative co-creation research and
       design thinking tool, read more details and links in the
-      <a href="/#/about">about</a> section.
+      <a
+        href="/#/about"
+      >about</a> section.
     </p>
     <p>
       You don't need a log in but you do however need to name your device (only

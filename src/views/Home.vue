@@ -1,9 +1,9 @@
 <template>
   <div class="home">
-    <h1>
+    <!-- <h1>
       <img src="../assets/img/icon.png" width="50px" />
       nodenoggin
-    </h1>
+    </h1>-->
     <!-- tips -->
     <!--  @ is short for v-on: -->
     <!-- : is short for v-bind -->
@@ -13,8 +13,8 @@
     <ShortCuts v-if="clientset" />
     <AllData v-if="clientset && spaceview" @editMode="editMode()" @closeEdit="closeEdit()" />
     <AllSpace v-else-if="clientset" @closeEdit="closeEdit()" @editMode="editMode()" />
-    <ClientSet v-else @clientAdded="clientAdded()" />
-    <AdminPanel />
+    <OnBoard v-else @clientAdded="clientAdded()" />
+    <!-- <AdminPanel /> -->
 
     <DeBug />
   </div>
@@ -25,8 +25,8 @@
 // @ is an alias to /src
 import { mapState } from 'vuex'
 
-import ClientSet from '@/components/ClientSet.vue'
-import AdminPanel from '@/components/AdminPanel.vue'
+import OnBoard from '@/components/OnBoard.vue'
+//import AdminPanel from '@/components/AdminPanel.vue'
 import ShortCuts from '@/components/ShortCuts.vue'
 import AllSpace from '@/components/AllSpace.vue'
 import AllData from '@/components/AllData.vue'
@@ -46,8 +46,8 @@ export default {
   },
 
   components: {
-    ClientSet,
-    AdminPanel,
+    OnBoard,
+    // AdminPanel,
     ToolBar,
     ShortCuts,
     AllSpace,
