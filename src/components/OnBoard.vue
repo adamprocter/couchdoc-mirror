@@ -66,6 +66,7 @@ export default {
     if (localStorage.myNNClient) {
       this.clientid = localStorage.myNNClient
       this.setClient()
+      //this.letsGo()
     }
   },
 
@@ -157,15 +158,17 @@ input {
 }
 
 button {
-  font-size: 2em;
+  font-size: 1.8em;
   color: black;
   border-style: solid;
   border-width: 5px;
   border-color: black;
-  border-radius: 5em;
+  border-radius: 50%;
   background-color: white;
-  box-shadow: 0px 0px 0px #000000;
-  padding: 10px 18px;
+  box-shadow: none;
+  height: 1.5em;
+  width: 1.5em;
+  padding: 0px;
 }
 
 button:active {
