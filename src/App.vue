@@ -4,14 +4,14 @@
       <router-link to="/">Home</router-link>|
       <router-link to="/about">About</router-link>|
       <a href="http://discourse.adamprocter.co.uk">Feedback</a>
-      <p>
+      <!-- <p>
         Connected to instance :
         <b>{{ instance }}</b>
       </p>
       <p>
         This device is :
         <b>{{ clientid }}</b>
-      </p>
+      </p>-->
     </div>
     <router-view />
   </div>
