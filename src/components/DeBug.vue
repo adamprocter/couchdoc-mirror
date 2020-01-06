@@ -2,7 +2,7 @@
   <div class="debug">
     <hr />
     <h2>Debug Options</h2>
-    <h4>LAST UPDATE 3rd Jan 2020.</h4>
+    <h4>LAST UPDATE 6th Jan 2020.</h4>
     <p>You need to know these buttons destroy stuff.</p>
     <button class="danger" v-on:click="removeLocal">
       Join another instance
