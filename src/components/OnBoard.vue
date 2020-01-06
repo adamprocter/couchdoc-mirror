@@ -4,9 +4,7 @@
       nodenoggin is a
       <span>work in progress</span> collaborative co-creation research and
       design thinking tool, read more details and links in the
-      <a
-        href="/#/about"
-      >about</a> section.
+      <a href="/#/about">about</a> section.
     </p>
 
     <ul>
@@ -23,7 +21,13 @@
     <form>
       <h2>1</h2>
       <h3>instance</h3>
-      <p>create or join an instance. an instance is a sharable digital space that can be shared privately between a group of individuals. all content / data you contribute is stored locally on your device and then shared privately to others on the same instance. you can remove your contributions at any time, they belong to you.</p>
+      <p>
+        create or join an instance. an instance is a sharable digital space that
+        can be shared privately between a group of individuals. all content /
+        data you contribute is stored locally on your device and then shared
+        privately to others on the same instance. you can remove your
+        contributions at any time, they belong to you.
+      </p>
       <input
         type="text"
         v-model="localinstance"
@@ -37,7 +41,10 @@
     <form v-show="partb">
       <h2>2</h2>
       <h3>name</h3>
-      <p>give yourself a unique name, this ties this device to your own content / data. this name is anonymous and stored privately.</p>
+      <p>
+        give yourself a unique name, this ties this device to your own content /
+        data. this name is anonymous and stored privately.
+      </p>
       <input
         type="text"
         v-model="clientid"
@@ -78,7 +85,8 @@ export default {
     if (localStorage.myNNClient) {
       this.clientid = localStorage.myNNClient
       this.setClient()
-      //this.letsGo()
+      // console.log(localStorage.myNNClient)
+      this.letsGo()
     }
   },
 
