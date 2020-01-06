@@ -510,11 +510,12 @@ export default {
 
       function doubleClick(evt) {
         // console.log('inside doubleclick ' + firsttap)
+        ref.$store.dispatch('shortcutsState', true)
         ref.$emit('closeEdit')
         if (evt.target.parentNode.classList.contains('draggable')) {
           selectedElement = evt.target.parentNode
           // console.log('double')
-          ref.$store.dispatch('shortcutsState', false)
+
           connkey = false
           firsttap = null
           ref.connKey()
