@@ -18,8 +18,9 @@ export default {
   methods: {
     removeLocal: function() {
       localStorage.removeItem('myNNClient')
-      location.reload()
-      //console.log('remove')
+      //location.reload()
+      // Hardcoded in case URL has been adapted
+      location.assign('https://alpha.nodenogg.in')
     },
 
     deleteClient() {

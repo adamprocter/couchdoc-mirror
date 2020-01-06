@@ -18,7 +18,7 @@
       </li>
     </ul>
 
-    <form>
+    <form v-show="parta">
       <h2>1</h2>
       <h3>instance</h3>
       <p>
@@ -70,7 +70,8 @@ export default {
   data: function() {
     return {
       clientid: '',
-      localinstance: 'alpha',
+      localinstance: '',
+      parta: true,
       partb: false,
       partc: false
     }
@@ -82,10 +83,23 @@ export default {
   }),
 
   mounted() {
+    var parameters = this.$route.query
+    var urlparam = this.$route.query.instance
+    var urlparam2 = this.$route.query.device
+
+    if (urlparam != undefined && urlparam2 != undefined) {
+      this.localinstance = urlparam
+      this.clientid = urlparam2
+      this.parta = false
+
+      this.createInstance()
+      this.setClient()
+      this.letsGo()
+    }
+
     if (localStorage.myNNClient) {
       this.clientid = localStorage.myNNClient
       this.setClient()
-      // console.log(localStorage.myNNClient)
       this.letsGo()
     }
   },

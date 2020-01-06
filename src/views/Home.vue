@@ -8,11 +8,23 @@
     <!--  @ is short for v-on: -->
     <!-- : is short for v-bind -->
     <Editor v-if="editing" @closeEdit="closeEdit()" />
-    <ToolBar v-else-if="clientset" @editMode="editMode()" @togView="togView()" />
+    <ToolBar
+      v-else-if="clientset"
+      @editMode="editMode()"
+      @togView="togView()"
+    />
     <ReaderView v-if="clientset" />
     <ShortCuts v-if="clientset" />
-    <AllData v-if="clientset && spaceview" @editMode="editMode()" @closeEdit="closeEdit()" />
-    <AllSpace v-else-if="clientset" @closeEdit="closeEdit()" @editMode="editMode()" />
+    <AllData
+      v-if="clientset && spaceview"
+      @editMode="editMode()"
+      @closeEdit="closeEdit()"
+    />
+    <AllSpace
+      v-else-if="clientset"
+      @closeEdit="closeEdit()"
+      @editMode="editMode()"
+    />
     <OnBoard v-else @clientAdded="clientAdded()" />
     <!-- <AdminPanel /> -->
 
