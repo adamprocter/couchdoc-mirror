@@ -4,8 +4,12 @@
     <h2>Debug Options</h2>
     <h4>LAST UPDATE 3rd Jan 2020.</h4>
     <p>You need to know these buttons destroy stuff.</p>
-    <button class="danger" v-on:click="removeLocal">Delete Local Storage</button>
-    <button class="danger" v-on:click="deleteClient">Delete my Contributions (inc. attachments)</button>
+    <button class="danger" v-on:click="removeLocal">
+      Join another instance
+    </button>
+    <button class="danger" v-on:click="deleteClient">
+      Delete my Contributions (inc. attachments)
+    </button>
   </div>
 </template>
 

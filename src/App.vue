@@ -27,7 +27,8 @@ export default {
   data: function() {
     return {
       urlinstance: '',
-      clientid: ''
+      clientid: '',
+      device: ''
     }
   },
 
@@ -36,12 +37,18 @@ export default {
   mounted: function() {
     var parameters = this.$route.query
     var urlparam = this.$route.query.instance
+    var urlparam2 = this.$route.query.device
+
+    if (urlparam2 != undefined) {
+      this.device = urlparam2
+      localStorage.myNNClient = this.device
+    }
 
     if (urlparam != undefined) {
       this.urlinstance = urlparam
       this.$store.dispatch('createInstance', this.urlinstance)
     }
-
+    // console.log(localStorage.myNNClient)
     // FIXME: Doest update initially should not be mounted but next step?
     if (localStorage.myNNClient) {
       this.clientid = localStorage.myNNClient
