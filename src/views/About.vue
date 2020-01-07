@@ -14,7 +14,7 @@
       <em>(and lots of helpers to be listed asap)</em>
     </p>
 
-    <h3>version 0.0.31d</h3>
+    <h3>version 0.0.32d</h3>
     <ul>
       <li>Contribute text and media with other people in realtime.</li>
       <li>
@@ -25,9 +25,18 @@
     <h4>issues</h4>
     <ul>
       <li>
-        Touch device are very buggy as they use touch cancel to save positions
+        Mobile iOS devices seem to have a bug when you first try to create or
+        join an instance, on second attempt it will work allowing device name.
       </li>
-      <li>Minimal layout or style.</li>
+      <li>
+        When moving nodes on touch devices to confirm new location you must tap
+        with a second finger.
+      </li>
+      <li>
+        Please consider all data as not backed up, data structures and data will
+        ocasssionaly be deleted or changed remotely which may effect and break
+        your local data.
+      </li>
     </ul>
     <h2>Design-led ethical Edutech</h2>
     <h3>MORE:</h3>

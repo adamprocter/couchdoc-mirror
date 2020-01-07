@@ -4,7 +4,9 @@
       nodenoggin is a
       <span>work in progress</span> collaborative co-creation research and
       design thinking tool, read more details and links in the
-      <a href="/#/about">about</a> section.
+      <a
+        href="/#/about"
+      >about</a> section.
     </p>
 
     <ul>
@@ -106,16 +108,16 @@ export default {
 
   methods: {
     setClient() {
-      this.$store.dispatch('setClient', this.clientid),
-        localStorage.setItem('myNNClient', this.clientid),
-        (this.partc = true)
+      ;(this.partc = true),
+        this.$store.dispatch('setClient', this.clientid),
+        localStorage.setItem('myNNClient', this.clientid)
     },
     letsGo() {
       this.$emit('clientAdded')
     },
     createInstance() {
-      this.$store.dispatch('createInstance', this.localinstance),
-        (this.partb = true)
+      ;(this.partb = true),
+        this.$store.dispatch('createInstance', this.localinstance)
     },
     removeIndex() {
       this.$store.dispatch('removeInstance', this.localinstance)
