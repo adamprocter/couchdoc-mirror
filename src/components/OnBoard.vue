@@ -4,9 +4,7 @@
       nodenoggin is a
       <span>work in progress</span> collaborative co-creation research and
       design thinking tool, read more details and links in the
-      <a
-        href="/#/about"
-      >about</a> section.
+      <a href="/#/about">about</a> section.
     </p>
 
     <ul>
@@ -85,23 +83,25 @@ export default {
   }),
 
   mounted() {
-    var parameters = this.$route.query
-    var urlparam = this.$route.query.instance
-    var urlparam2 = this.$route.query.device
+    // var parameters = this.$route.query
+    // var urlparam = this.$route.query.instance
+    // var urlparam2 = this.$route.query.device
 
-    if (urlparam != undefined && urlparam2 != undefined) {
-      this.localinstance = urlparam
-      this.clientid = urlparam2
-      this.parta = false
+    // if (urlparam != undefined && urlparam2 != undefined) {
+    //   this.localinstance = urlparam
+    //   this.clientid = urlparam2
+    //   this.parta = false
 
-      this.createInstance()
-      this.setClient()
-      this.letsGo()
-    }
+    //   this.createInstance()
+    //   this.setClient()
+    //   this.letsGo()
+    // }
 
     if (localStorage.myNNClient) {
       this.clientid = localStorage.myNNClient
+      this.localinstance = localStorage.mylastInstance
       this.setClient()
+      this.createInstance()
       this.letsGo()
     }
   },
@@ -114,10 +114,12 @@ export default {
     },
     letsGo() {
       this.$emit('clientAdded')
+      //this.$emit('lastinstanceAdded')
     },
     createInstance() {
       ;(this.partb = true),
         this.$store.dispatch('createInstance', this.localinstance)
+      localStorage.setItem('mylastInstance', this.localinstance)
     },
     removeIndex() {
       this.$store.dispatch('removeInstance', this.localinstance)
