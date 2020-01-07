@@ -23,12 +23,13 @@ export default {
     },
     removeLocal: function() {
       localStorage.removeItem('myNNClient')
+      localStorage.removeItem('mylastInstance')
       //location.reload()
       // Hardcoded in case URL has parameters the reload fails
       // Public site link
-      location.assign('https://alpha.nodenogg.in/')
+      //location.assign('https://alpha.nodenogg.in/')
       // local testing link
-      //location.assign('http://localhost:8080/')
+      location.assign('http://localhost:8080/')
     },
 
     deleteClient() {

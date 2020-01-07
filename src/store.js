@@ -5,8 +5,13 @@ import accounts from '../src/assets/settings.json'
 
 Vue.use(Vuex)
 // Objects
+//var localinstance = localStorage.getItem('mylastInstance')
+if (localStorage.getItem('mylastInstance') == null) {
+  var localinstance = 'firstvisit'
+} else {
+  localinstance = localStorage.getItem('mylastInstance')
+}
 
-var localinstance = 'alpha'
 var pouchdb = new PouchDB(localinstance)
 var remote =
   'https://' +
@@ -76,6 +81,10 @@ const store = new Vuex.Store({
           '/'
         store.dispatch('syncDB')
       })
+    },
+
+    SET_INSTANCE(state, doc) {
+      localinstance = doc
     },
     SET_CLIENT(state, doc) {
       state.myclient = doc
@@ -803,6 +812,10 @@ const store = new Vuex.Store({
     },
     deleteClient: ({ commit }, e) => {
       commit('DELETE_CLIENT', e)
+    },
+
+    setInstance: ({ commit }, e) => {
+      commit('SET_INSTANCE', e)
     },
 
     createInstance: ({ commit }, e) => {
