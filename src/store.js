@@ -5,6 +5,7 @@ import accounts from '../src/assets/settings.json'
 
 Vue.use(Vuex)
 // Objects
+
 var localinstance = 'alpha'
 var pouchdb = new PouchDB(localinstance)
 var remote =
@@ -28,9 +29,11 @@ const store = new Vuex.Store({
     myclient: '',
     glo_pos: 'positions',
     glo_con: 'connections',
+    glo_emoji: 'emojis',
     notes: [],
     positions: [],
     connections: [],
+    emojis: [],
     allnotes: {},
     activeNote: {},
     activeAttachment: {},
@@ -79,6 +82,7 @@ const store = new Vuex.Store({
       store.commit('GET_MY_DOC')
       store.commit('GET_POSITIONS')
       store.commit('GET_CONNECTIONS')
+      store.commit('GET_EMOJIS')
     },
 
     GET_ALL_DOCS(state) {
@@ -151,22 +155,9 @@ const store = new Vuex.Store({
         .catch(function(err) {
           console.log(err)
           if (err.status == 404) {
-            // var uniqueid =
-            //   Math.random()
-            //     .toString(36)
-            //     .substring(2, 15) +
-            //   Math.random()
-            //     .toString(36)
-            //     .substring(2, 15)
             return pouchdb.put({
               _id: state.glo_pos,
-              positions: [
-                //   {
-                //     id: uniqueid,
-                //     xpos: 0,
-                //     ypos: 0
-                //   }
-              ]
+              positions: []
             })
           }
         })
@@ -181,29 +172,54 @@ const store = new Vuex.Store({
         .catch(function(err) {
           console.log(err)
           if (err.status == 404) {
-            // var uniqueid =
-            //   Math.random()
-            //     .toString(36)
-            //     .substring(2, 15) +
-            //   Math.random()
-            //     .toString(36)
-            //     .substring(2, 15)
             return pouchdb.put({
               _id: state.glo_con,
-              connections: [
-                //   {
-                //     startid: uniqueid,
-                //     xpos: 0,
-                //     ypos: 0,
-                //     endid: uniqueid,
-                //     endxpos: 0,
-                //     endypos: 0,
-                //     connected : true
-                //   }
-              ]
+              connections: []
             })
           }
         })
+    },
+
+    GET_EMOJIS(state) {
+      pouchdb
+        .get(state.glo_emoji)
+        .then(function(doc) {
+          state.emojis = doc.emojis
+        })
+        .catch(function(err) {
+          console.log(err)
+          if (err.status == 404) {
+            return pouchdb.put({
+              _id: state.glo_emoji,
+              emojis: []
+            })
+          }
+        })
+    },
+    ADD_EMOJI(state, e) {
+      var uniqueid =
+        Math.random()
+          .toString(36)
+          .substring(2, 15) +
+        Math.random()
+          .toString(36)
+          .substring(2, 15)
+      pouchdb.get(state.glo_emoji).then(function(doc) {
+        doc.emojis.push({
+          id: uniqueid,
+          docid: e.docid,
+          emojitext: e.emojitext
+        })
+        return pouchdb
+          .put({
+            _id: state.glo_emoji,
+            _rev: doc._rev,
+            emojis: doc.emojis
+          })
+          .catch(function(err) {
+            console.log(err)
+          })
+      })
     },
 
     ADD_DOC(state, e) {
@@ -287,7 +303,7 @@ const store = new Vuex.Store({
     },
 
     SHORTCUTS_STATE(state, e) {
-      console.log(e)
+      //console.log(e)
       state.shortcutsstate = e
     },
 
@@ -674,6 +690,7 @@ const store = new Vuex.Store({
         store.commit('GET_ALL_DOCS')
         store.commit('GET_POSITIONS')
         store.commit('GET_CONNECTIONS')
+        store.commit('GET_EMOJIS')
         //store.commit('GET_ALL_DOCS')
         //  store.commit('GET_MY_ATTACHMENTS')
         // turn on two-way, continuous, retriable sync
@@ -686,6 +703,7 @@ const store = new Vuex.Store({
             store.commit('GET_ALL_DOCS')
             store.commit('GET_POSITIONS')
             store.commit('GET_CONNECTIONS')
+            store.commit('GET_EMOJIS')
             // store.commit('GET_ALL_DOCS')
             //  store.commit('GET_MY_ATTACHMENTS')
           })
@@ -744,6 +762,12 @@ const store = new Vuex.Store({
         endx,
         endy,
         connected
+      })
+    },
+    addEmoji: ({ commit }, { docid, emojitext }) => {
+      commit('ADD_EMOJI', {
+        docid,
+        emojitext
       })
     },
     removeConnect: ({ commit }, { connectid, connected }) => {
