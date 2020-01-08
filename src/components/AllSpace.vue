@@ -9,7 +9,7 @@
       <b>connection delete mode is on</b>
     </p>
     <button @click="connButton()">Connection Mode</button>
-    <button @click="removeButton()">Remove Connections</button>
+    <button @click="removeButton()">Delete Connections</button>
     <button @click="zoominButton()">Zoom in</button>
     <button @click="zoomoutButton()">Zoom Out</button>
     <!-- tips-->
@@ -181,14 +181,15 @@ export default {
     connButton() {
       this.$emit('closeEdit')
       this.$store.dispatch('shortcutsState', false)
+
       if (connkey == true) {
         connkey = false
       } else {
         connkey = true
       }
       removekey = false
-      this.connKey()
-      this.removeKey()
+      this.connShow()
+      this.removeShow()
     },
 
     removeButton() {
@@ -200,8 +201,26 @@ export default {
         removekey = true
       }
       connkey = false
-      this.connKey()
-      this.removeKey()
+      this.connShow()
+      this.removeShow()
+    },
+
+    connShow() {
+      if (connkey == true) {
+        document.getElementById('modeon').classList.add('connectionon')
+      } else {
+        document.getElementById('modeon').classList.add('connectionoff')
+        document.getElementById('modeon').classList.remove('connectionon')
+      }
+    },
+
+    removeShow() {
+      if (removekey == true) {
+        document.getElementById('modedelon').classList.add('connectionon')
+      } else {
+        document.getElementById('modedelon').classList.add('connectionoff')
+        document.getElementById('modedelon').classList.remove('connectionon')
+      }
     },
 
     trimText() {
@@ -433,7 +452,7 @@ export default {
 
       function doubleClick(evt) {
         // console.log('inside doubleclick ' + firsttap)
-        ref.$store.dispatch('shortcutsState', false)
+        ref.$store.dispatch('shortcutsState', true)
         ref.$emit('closeEdit')
         if (evt.target.parentNode.classList.contains('draggable')) {
           selectedElement = evt.target.parentNode

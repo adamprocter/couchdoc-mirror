@@ -29,6 +29,7 @@ export const shortcuts = {
         } else if (e.keyCode == 67) {
           // c = turn on connect mode
           this.$emit('closeEdit')
+
           if (connkey == true) {
             connkey = false
           } else {
