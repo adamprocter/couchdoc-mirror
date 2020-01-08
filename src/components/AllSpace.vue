@@ -448,7 +448,7 @@ export default {
             )
           }
           ref.connkey = false
-          console.log(ref.connkey)
+          //console.log(ref.connkey)
           firsttap = null
           ref.connKey()
         }

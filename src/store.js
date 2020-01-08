@@ -366,7 +366,6 @@ const store = new Vuex.Store({
                     state.activeNoteR.attachment_name
                   )
                 }
-                c
               }
             }
           }
