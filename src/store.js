@@ -350,7 +350,6 @@ const store = new Vuex.Store({
             j++
           ) {
             if (localid == state.allnotes[i].doc.notes[j].id) {
-              console.log(state.allnotes[i].doc.notes[j].owner)
               if (state.myclient != state.allnotes[i].doc.notes[j].owner) {
                 const newReader = {
                   text: state.allnotes[i].doc.notes[j].text,
