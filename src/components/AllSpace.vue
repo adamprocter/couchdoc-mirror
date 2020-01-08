@@ -217,6 +217,7 @@ export default {
 
     openSelected(e) {
       this.$store.dispatch('clientId', e)
+
       // this.$store.dispatch('noteId', e)
       // this gets the note with said ID now not just the text
       // this.$store.dispatch('getNoteText', e)

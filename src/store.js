@@ -322,13 +322,15 @@ const store = new Vuex.Store({
         var i = 0
         for (i = 0; i < Object.keys(state.notes).length; i++) {
           if (localid == state.notes[i].id) {
-            state.notes[i].text = e.text
-            state.notes[i].content_type = e.t
-            state.notes[i].attachment_name = e.aname
+            const newWriter = {
+              text: state.notes[i].text,
+              id: state.notes[i].id,
+              content_type: state.notes[i].content_type,
+              attachment_name: state.notes[i].attachment_name
+            }
+            state.activeNote = newWriter
           }
         }
-
-        state.activeNote = newReader
       } else {
         state.editon = false
       }
@@ -348,19 +350,23 @@ const store = new Vuex.Store({
             j++
           ) {
             if (localid == state.allnotes[i].doc.notes[j].id) {
-              const newReader = {
-                text: state.allnotes[i].doc.notes[j].text,
-                id: state.allnotes[i].doc.notes[j].id,
-                content_type: state.allnotes[i].doc.notes[j].content_type,
-                attachment_name: state.allnotes[i].doc.notes[j].attachment_name
-              }
-              state.activeNoteR = newReader
-              if (state.activeNote.attachment_name != undefined) {
-                //FIXME: get and render the attachment with same name as attachment_name here please
-                this.commit(
-                  'GET_MY_ATTACHMENT',
-                  state.activeNote.attachment_name
-                )
+              console.log(state.allnotes[i].doc.notes[j].owner)
+              if (state.myclient != state.allnotes[i].doc.notes[j].owner) {
+                const newReader = {
+                  text: state.allnotes[i].doc.notes[j].text,
+                  id: state.allnotes[i].doc.notes[j].id,
+                  content_type: state.allnotes[i].doc.notes[j].content_type,
+                  attachment_name:
+                    state.allnotes[i].doc.notes[j].attachment_name
+                }
+                state.activeNoteR = newReader
+                if (state.activeNoteR.attachment_name != undefined) {
+                  //FIXME: get and render the attachment with same name as attachment_name here please
+                  this.commit(
+                    'GET_MY_ATTACHMENT',
+                    state.activeNoteR.attachment_name
+                  )
+                }
               }
             }
           }
