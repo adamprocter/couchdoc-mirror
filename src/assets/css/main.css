@@ -229,6 +229,7 @@ label:active.myFiles {
 /* label hack ends here */
 
 button {
+  touch-action: manipulation;
   color: white;
   border: none;
   outline: none;

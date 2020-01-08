@@ -15,18 +15,18 @@
 
       <div v-if="activeNote.attachment_name != undefined">
         <div v-if="activeNote.attachment_name.endsWith('.jpeg')">
-          <img :src="activeAttachment[0].url" alt width="20%" height border="0" />
+          <img :src="activeAttachment[0].url" alt width="40%" height border="0" />
         </div>
 
         <div v-else-if="activeNote.attachment_name.endsWith('.jpg')">
-          <img :src="activeAttachment[0].url" alt width="20%" height border="0" />
+          <img :src="activeAttachment[0].url" alt width="40%" height border="0" />
         </div>
         <div v-else-if="activeNote.attachment_name.endsWith('.png')">
-          <img :src="activeAttachment[0].url" alt width="20%" height border="0" />
+          <img :src="activeAttachment[0].url" alt width="40%" height border="0" />
         </div>
 
         <div v-else>
-          <img src="../assets/img/icon-mac.jpg" alt width="20%" height border="0" />
+          <img src="../assets/img/icon-mac.jpg" alt width="40%" height border="0" />
         </div>
       </div>
 

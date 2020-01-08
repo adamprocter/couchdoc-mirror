@@ -41,7 +41,8 @@ const store = new Vuex.Store({
     emojis: [],
     allnotes: {},
     activeNote: {},
-    activeAttachment: {},
+    activeNoteR: {},
+    activeAttachment: [],
     myattachments: [],
     myattachmentnames: [],
     otherattachments: {}
@@ -50,7 +51,7 @@ const store = new Vuex.Store({
     REMOVE_INSTANCE(state, doc) {
       pouchdb.close().then(function() {
         localinstance = doc
-        console.log(localinstance)
+        //  console.log(localinstance)
         var DBDeleteRequest = window.indexedDB.deleteDatabase(
           '_pouch_' + localinstance
         )
@@ -107,8 +108,6 @@ const store = new Vuex.Store({
     },
 
     GET_MY_ATTACHMENT(state, e) {
-      state.activeAttachment = []
-
       pouchdb
         .getAttachment(state.myclient, e)
         .then(function(blob) {
@@ -320,6 +319,16 @@ const store = new Vuex.Store({
     CLIENT_ID(state, clientid) {
       if (state.myclient == clientid) {
         state.editon = true
+        var i = 0
+        for (i = 0; i < Object.keys(state.notes).length; i++) {
+          if (localid == state.notes[i].id) {
+            state.notes[i].text = e.text
+            state.notes[i].content_type = e.t
+            state.notes[i].attachment_name = e.aname
+          }
+        }
+
+        state.activeNote = newReader
       } else {
         state.editon = false
       }
@@ -339,14 +348,13 @@ const store = new Vuex.Store({
             j++
           ) {
             if (localid == state.allnotes[i].doc.notes[j].id) {
-              // console.log(state.allnotes[i].doc.notes[j].text)
               const newReader = {
                 text: state.allnotes[i].doc.notes[j].text,
                 id: state.allnotes[i].doc.notes[j].id,
                 content_type: state.allnotes[i].doc.notes[j].content_type,
                 attachment_name: state.allnotes[i].doc.notes[j].attachment_name
               }
-              state.activeNote = newReader
+              state.activeNoteR = newReader
               if (state.activeNote.attachment_name != undefined) {
                 //FIXME: get and render the attachment with same name as attachment_name here please
                 this.commit(
