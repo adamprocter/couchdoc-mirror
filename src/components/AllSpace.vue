@@ -125,8 +125,7 @@ var activeclientid
 var connectid
 var firsttap = null
 var secondtap
-var connkey = false
-var removekey = false
+
 var xpos = 0
 var ypos = 0
 
@@ -147,7 +146,9 @@ export default {
       viewboxo1: 0,
       viewboxo2: 0,
       viewboxx: 1200,
-      viewboxy: 1000
+      viewboxy: 1000,
+      connkey: false,
+      removekey: false
     }
   },
 
@@ -182,12 +183,12 @@ export default {
       this.$emit('closeEdit')
       this.$store.dispatch('shortcutsState', false)
 
-      if (connkey == true) {
-        connkey = false
+      if (this.connkey == true) {
+        this.connkey = false
       } else {
-        connkey = true
+        this.connkey = true
       }
-      removekey = false
+      this.removekey = false
       this.connShow()
       this.removeShow()
     },
@@ -195,18 +196,19 @@ export default {
     removeButton() {
       this.$emit('closeEdit')
       this.$store.dispatch('shortcutsState', false)
-      if (removekey == true) {
-        removekey = false
+      if (this.removekey == true) {
+        this.removekey = false
       } else {
-        removekey = true
+        this.removekey = true
       }
-      connkey = false
+      this.connkey = false
       this.connShow()
       this.removeShow()
     },
 
     connShow() {
-      if (connkey == true) {
+      //console.log(this.connkey)
+      if (this.connkey == true) {
         document.getElementById('modeon').classList.add('connectionon')
       } else {
         document.getElementById('modeon').classList.add('connectionoff')
@@ -215,7 +217,7 @@ export default {
     },
 
     removeShow() {
-      if (removekey == true) {
+      if (this.removekey == true) {
         document.getElementById('modedelon').classList.add('connectionon')
       } else {
         document.getElementById('modedelon').classList.add('connectionoff')
@@ -303,7 +305,7 @@ export default {
       var selectedElement, offset, transform
 
       function dontClick() {
-        connkey = false
+        this.connkey = false
         // removekey = false
         ref.connKey()
       }
@@ -397,9 +399,10 @@ export default {
         ref.$emit('closeEdit')
         ref.$store.dispatch('editOff')
         ref.$store.dispatch('shortcutsState', false)
+
         // var isActive = true
         // FIXME: Maybe not Connkey maybe another key???
-        if (removekey == true) {
+        if (ref.removekey == true) {
           selectedElementParent = evt.target.parentNode.parentNode.parentNode
           activenoteid = selectedElementParent.firstElementChild.id
           selectedElement = evt.target
@@ -407,14 +410,14 @@ export default {
           if (evt.target.parentNode.classList.contains('true')) {
             connected = 'false'
             ref.removeConnect(connectid, connected)
-            removekey = false
+            ref.removekey = false
             firsttap = null
             ref.removeKey()
           } else {
             // do nothing
           }
         }
-        if (connkey == true && firsttap == null) {
+        if (ref.connkey == true && firsttap == null) {
           if (evt.target.parentNode.classList.contains('draggable')) {
             // console.log('first connection')
             selectedElement = evt.target.parentNode
@@ -423,7 +426,7 @@ export default {
             startx = xpos
             starty = ypos
           }
-        } else if (connkey == true && firsttap != null) {
+        } else if (ref.connkey == true && firsttap != null) {
           if (evt.target.parentNode.classList.contains('draggable')) {
             selectedElement = evt.target.parentNode
             secondtap = selectedElement.firstElementChild.id
@@ -444,7 +447,8 @@ export default {
               connected
             )
           }
-          connkey = false
+          ref.connkey = false
+          console.log(ref.connkey)
           firsttap = null
           ref.connKey()
         }
@@ -458,7 +462,7 @@ export default {
           selectedElement = evt.target.parentNode
           // console.log('double')
 
-          connkey = false
+          ref.connkey = false
           firsttap = null
           ref.connKey()
           // identify which object was clicked

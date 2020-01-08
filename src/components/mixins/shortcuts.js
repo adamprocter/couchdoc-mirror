@@ -1,6 +1,10 @@
-var connkey = false
-var removekey = false
 export const shortcuts = {
+  data() {
+    return {
+      connkey: false,
+      removekey: false
+    }
+  },
   methods: {
     handleKeyPress(e) {
       if (e.keyCode == 13 && e.altKey) {
@@ -30,24 +34,24 @@ export const shortcuts = {
           // c = turn on connect mode
           this.$emit('closeEdit')
 
-          if (connkey == true) {
-            connkey = false
+          if (this.connkey == true) {
+            this.connkey = false
           } else {
-            connkey = true
+            this.connkey = true
           }
-          removekey = false
+          this.removekey = false
           this.connKey()
           this.removeKey()
         } else if (e.keyCode == 68) {
           // d = delete connections mode
           this.$emit('closeEdit')
 
-          if (removekey == true) {
-            removekey = false
+          if (this.removekey == true) {
+            this.removekey = false
           } else {
-            removekey = true
+            this.removekey = true
           }
-          connkey = false
+          this.connkey = false
           this.connKey()
           this.removeKey()
         } else if (e.keyCode == 61 && e.altKey) {
@@ -59,7 +63,7 @@ export const shortcuts = {
     },
     connKey() {
       if (document.getElementById('modeon') != null) {
-        if (connkey == true) {
+        if (this.connkey == true) {
           document.getElementById('modeon').classList.add('connectionon')
         } else {
           document.getElementById('modeon').classList.add('connectionoff')
@@ -70,7 +74,7 @@ export const shortcuts = {
 
     removeKey() {
       if (document.getElementById('modeon') != null) {
-        if (removekey == true) {
+        if (this.removekey == true) {
           document.getElementById('modedelon').classList.add('connectionon')
         } else {
           document.getElementById('modedelon').classList.add('connectionoff')
