@@ -4,7 +4,9 @@
       nodenoggin is a
       <span>work in progress</span> collaborative co-creation research and
       design thinking tool, read more details and links in the
-      <a href="/#/about">about</a> section.
+      <a
+        href="/#/about"
+      >about</a> section.
     </p>
 
     <ul>
@@ -114,6 +116,7 @@ export default {
     },
     letsGo() {
       this.$emit('clientAdded')
+      this.$emit('readyMode')
       //this.$emit('lastinstanceAdded')
     },
     createInstance() {
@@ -217,7 +220,7 @@ button:active {
   /* Style adjustments for viewports that meet the condition */
 
   .notlogged {
-    grid-column: 2 / 5;
+    grid-column: 1 / 3;
     grid-row: 1;
   }
 }

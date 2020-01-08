@@ -11,61 +11,27 @@
         </select>
       </div>
       <br />
-      <textarea
-        @input="editNote"
-        v-model="activeNote.text"
-        class="form-control"
-        ref="notetext"
-      ></textarea>
+      <textarea @input="editNote" v-model="activeNote.text" class="form-control" ref="notetext"></textarea>
 
       <div v-if="activeNote.attachment_name != undefined">
         <div v-if="activeNote.attachment_name.endsWith('.jpeg')">
-          <img
-            :src="activeAttachment[0].url"
-            alt
-            width="20%"
-            height
-            border="0"
-          />
+          <img :src="activeAttachment[0].url" alt width="20%" height border="0" />
         </div>
 
         <div v-else-if="activeNote.attachment_name.endsWith('.jpg')">
-          <img
-            :src="activeAttachment[0].url"
-            alt
-            width="20%"
-            height
-            border="0"
-          />
+          <img :src="activeAttachment[0].url" alt width="20%" height border="0" />
         </div>
         <div v-else-if="activeNote.attachment_name.endsWith('.png')">
-          <img
-            :src="activeAttachment[0].url"
-            alt
-            width="20%"
-            height
-            border="0"
-          />
+          <img :src="activeAttachment[0].url" alt width="20%" height border="0" />
         </div>
 
         <div v-else>
-          <img
-            src="../assets/img/icon-mac.jpg"
-            alt
-            width="20%"
-            height
-            border="0"
-          />
+          <img src="../assets/img/icon-mac.jpg" alt width="20%" height border="0" />
         </div>
       </div>
 
       <input :value="activeNote.id" name="id" readonly hidden />
-      <input
-        :value="activeNote.attachment_name"
-        name="attachmentname"
-        readonly
-        hidden
-      />
+      <input :value="activeNote.attachment_name" name="attachmentname" readonly hidden />
       <div>
         <button @click="closeEdit()">Finish</button>
         <button class="danger">Delete</button>
@@ -109,4 +75,45 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>
+<style scoped>
+@import url('https://rsms.me/inter/inter.css');
+html {
+  font-family: 'Inter', sans-serif;
+}
+@supports (font-variation-settings: normal) {
+  html {
+    font-family: 'Inter var', sans-serif;
+  }
+}
+ul {
+  font-family: 'Pica 10 Pitch W01';
+  font-size: 16px;
+  line-height: 20px;
+}
+
+li:before {
+  content: '';
+}
+
+b {
+  background-color: yellow;
+  padding-right: 2em;
+}
+
+h1,
+h2,
+h3,
+p {
+  font-family: 'Inter var', sans-serif;
+  color: black;
+  margin: 0px;
+}
+
+p {
+  font-family: chaparral-pro, serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16px;
+  margin-top: 2em;
+}
+</style>

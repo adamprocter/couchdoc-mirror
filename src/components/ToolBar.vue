@@ -1,6 +1,6 @@
 <template>
   <div class="toolbar">
-    <h2>Create / Attach</h2>
+    <h2>Create</h2>
     <p>
       Press
       <em>Create</em> to add a note or link.
@@ -20,7 +20,6 @@
       <input type="file" @change="addFile()" ref="myFiles" id="myFiles" />
     </form>
 
-    <hr />
     <button @click="togView()">Switch View</button>
   </div>
 </template>
@@ -54,4 +53,30 @@ export default {
 }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>
+<style scoped>
+@import url('https://rsms.me/inter/inter.css');
+html {
+  font-family: 'Inter', sans-serif;
+}
+@supports (font-variation-settings: normal) {
+  html {
+    font-family: 'Inter var', sans-serif;
+  }
+}
+
+h1,
+h2,
+h3,
+p {
+  font-family: 'Inter var', sans-serif;
+  color: black;
+  margin: 0px;
+}
+
+p {
+  font-family: chaparral-pro, serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16px;
+}
+</style>

@@ -1,6 +1,6 @@
 <template>
   <div class="alldata">
-    <h2>Bucket view</h2>
+    <h2>List</h2>
     <ul class="data" v-for="(value, index) in allnotes" v-bind:key="index">
       <li v-for="(note, index) in value.doc.notes" v-bind:key="index">
         <!-- v-if hides device name -->
@@ -59,4 +59,31 @@ export default {
 }
 </script>
 
-<style lang="css" scoped></style>
+<style lang="css" scoped>
+@import url('https://rsms.me/inter/inter.css');
+html {
+  font-family: 'Inter', sans-serif;
+}
+@supports (font-variation-settings: normal) {
+  html {
+    font-family: 'Inter var', sans-serif;
+  }
+}
+
+h1,
+h2,
+h3,
+p {
+  font-family: 'Inter var', sans-serif;
+  color: black;
+  margin: 0px;
+}
+
+p,
+li {
+  font-family: chaparral-pro, serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16px;
+}
+</style>

@@ -1,6 +1,6 @@
 <template>
   <div class="spaceview">
-    <h2>Spatial view</h2>
+    <h2>Spatial</h2>
 
     <p id="modeon" class="connectionoff">
       <b>connection create mode is on</b>
@@ -194,6 +194,8 @@ export default {
           // a for attachement
           // FIXME: Currently cant call this way as need to open the file picker ?
           this.addAttachment()
+        } else if (e.keyCode == 84) {
+          this.$emit('togView')
         } else if (e.keyCode == 13 && e.altKey) {
           // option enter = close editor
           this.$store.dispatch('shortcutsState', false)
@@ -534,4 +536,45 @@ export default {
 }
 </script>
 
-<style lang="css" scoped></style>
+<style lang="css" scoped>
+@import url('https://rsms.me/inter/inter.css');
+html {
+  font-family: 'Inter', sans-serif;
+}
+@supports (font-variation-settings: normal) {
+  html {
+    font-family: 'Inter var', sans-serif;
+  }
+}
+ul {
+  font-family: 'Pica 10 Pitch W01';
+  font-size: 16px;
+  line-height: 20px;
+}
+
+li:before {
+  content: '';
+}
+
+b {
+  background-color: yellow;
+  padding-right: 2em;
+}
+
+h1,
+h2,
+h3,
+p {
+  font-family: 'Inter var', sans-serif;
+  color: black;
+  margin: 0px;
+}
+
+p {
+  font-family: chaparral-pro, serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 16px;
+  margin-top: 2em;
+}
+</style>
