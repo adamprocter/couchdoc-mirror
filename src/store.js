@@ -83,9 +83,6 @@ const store = new Vuex.Store({
       })
     },
 
-    SET_INSTANCE(state, doc) {
-      localinstance = doc
-    },
     SET_CLIENT(state, doc) {
       state.myclient = doc
       store.commit('GET_MY_DOC')
@@ -812,10 +809,6 @@ const store = new Vuex.Store({
     },
     deleteClient: ({ commit }, e) => {
       commit('DELETE_CLIENT', e)
-    },
-
-    setInstance: ({ commit }, e) => {
-      commit('SET_INSTANCE', e)
     },
 
     createInstance: ({ commit }, e) => {

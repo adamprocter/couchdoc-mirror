@@ -117,7 +117,6 @@ export default {
     letsGo() {
       this.$emit('clientAdded')
       this.$emit('readyMode')
-      //this.$emit('lastinstanceAdded')
     },
     createInstance() {
       ;(this.partb = true),
