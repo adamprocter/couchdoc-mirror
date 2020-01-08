@@ -119,6 +119,7 @@
 
 <script>
 import { mapState } from 'vuex'
+import { shortcuts } from './mixins/shortcuts.js'
 var activenoteid
 var activeclientid
 var connectid
@@ -140,7 +141,7 @@ var delay = 500
 
 export default {
   name: 'AllSpace',
-
+  mixins: [shortcuts],
   data() {
     return {
       viewboxo1: 0,
@@ -177,60 +178,6 @@ export default {
     }
   },
   methods: {
-    handleKeyPress(e) {
-      if (e.keyCode == 13 && e.altKey) {
-        // option enter = close editor
-        this.$store.dispatch('editOff')
-        this.$emit('closeEdit')
-        this.$store.dispatch('shortcutsState', false)
-      }
-
-      if (this.shortcutsstate == false) {
-        if (e.keyCode == 78) {
-          // n for new
-          this.addDoc()
-          this.$store.dispatch('shortcutsState', true)
-        } else if (e.keyCode == 65) {
-          // a for attachement
-          // FIXME: Currently cant call this way as need to open the file picker ?
-          this.addAttachment()
-        } else if (e.keyCode == 84) {
-          this.$emit('togView')
-        } else if (e.keyCode == 13 && e.altKey) {
-          // option enter = close editor
-          this.$store.dispatch('shortcutsState', false)
-          this.$store.dispatch('editOff')
-          this.$emit('closeEdit')
-        } else if (e.keyCode == 67) {
-          // c = turn on connect mode
-          this.$emit('closeEdit')
-          if (connkey == true) {
-            connkey = false
-          } else {
-            connkey = true
-          }
-          removekey = false
-          this.connKey()
-          this.removeKey()
-        } else if (e.keyCode == 68) {
-          // d = delete connections mode
-          this.$emit('closeEdit')
-
-          if (removekey == true) {
-            removekey = false
-          } else {
-            removekey = true
-          }
-          connkey = false
-          this.connKey()
-          this.removeKey()
-        } else if (e.keyCode == 61 && e.altKey) {
-          this.zoominButton()
-        } else if (e.keyCode == 173 && e.altKey) {
-          this.zoomoutButton()
-        }
-      }
-    },
     connButton() {
       this.$emit('closeEdit')
       this.$store.dispatch('shortcutsState', false)
@@ -257,37 +204,9 @@ export default {
       this.removeKey()
     },
 
-    connKey() {
-      if (connkey == true) {
-        document.getElementById('modeon').classList.add('connectionon')
-      } else {
-        document.getElementById('modeon').classList.add('connectionoff')
-        document.getElementById('modeon').classList.remove('connectionon')
-      }
-    },
-
-    removeKey() {
-      if (removekey == true) {
-        document.getElementById('modedelon').classList.add('connectionon')
-      } else {
-        document.getElementById('modedelon').classList.add('connectionoff')
-        document.getElementById('modedelon').classList.remove('connectionon')
-      }
-    },
-
     trimText() {
       //console.log(this.allnotes)
       // this will hide text in spatial view
-    },
-
-    zoominButton() {
-      this.viewboxx -= 50
-      this.viewboxy -= 50
-    },
-
-    zoomoutButton() {
-      this.viewboxx += 50
-      this.viewboxy += 50
     },
 
     addDoc() {
@@ -295,10 +214,7 @@ export default {
 
       this.$emit('editMode')
     },
-    addAttachment() {
-      //this.$store.dispatch('addFile')
-      // this.$emit('addFile')
-    },
+
     openSelected(e) {
       this.$store.dispatch('clientId', e)
       // this.$store.dispatch('noteId', e)
@@ -308,6 +224,7 @@ export default {
     },
     readerSelected(e) {
       this.$store.dispatch('noteId', e)
+      //
       this.$store.dispatch('getReaderText', e)
     },
 
@@ -457,6 +374,9 @@ export default {
       var selectedElementParent
 
       function singleClick(evt) {
+        ref.$emit('closeEdit')
+        ref.$store.dispatch('editOff')
+        ref.$store.dispatch('shortcutsState', false)
         // var isActive = true
         // FIXME: Maybe not Connkey maybe another key???
         if (removekey == true) {
@@ -512,7 +432,7 @@ export default {
 
       function doubleClick(evt) {
         // console.log('inside doubleclick ' + firsttap)
-        ref.$store.dispatch('shortcutsState', true)
+        ref.$store.dispatch('shortcutsState', false)
         ref.$emit('closeEdit')
         if (evt.target.parentNode.classList.contains('draggable')) {
           selectedElement = evt.target.parentNode

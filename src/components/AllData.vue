@@ -12,9 +12,11 @@
 
 <script>
 import { mapState } from 'vuex'
+import { shortcuts } from './mixins/shortcuts.js'
 
 export default {
   name: 'AllData',
+  mixins: [shortcuts],
   computed: mapState({
     shortcutsstate: state => state.shortcutsstate,
     allnotes: state => state.allnotes
@@ -32,25 +34,6 @@ export default {
   },
 
   methods: {
-    // FIXME : There must be a better way to handle these shortcuts
-
-    handleKeyPress(e) {
-      if (e.keyCode == 13 && e.altKey) {
-        // option enter = close editor
-        this.$store.dispatch('editOff')
-        this.$emit('closeEdit')
-        this.$store.dispatch('shortcutsState', false)
-      }
-
-      if (this.shortcutsstate == false) {
-        if (e.keyCode == 78) {
-          // n for new
-          this.$store.dispatch('shortcutsState', true)
-          this.addDoc()
-        }
-      }
-    },
-
     addDoc() {
       this.$store.dispatch('addDoc')
       this.$emit('editMode')
@@ -79,6 +62,14 @@ p {
   margin: 0px;
 }
 
+ul {
+  /* FIXME : grid in a grid for these I think */
+}
+
+li:last-child {
+  padding-bottom: 1t3px;
+  border-bottom: #cab6ff solid 3px;
+}
 p,
 li {
   font-family: chaparral-pro, serif;

@@ -2,32 +2,34 @@
   <div class="reader">
     <h2>Read</h2>
 
-    <p>{{ activeNote.text }}</p>
-    <h3>Reactions</h3>
-    <div v-for="(emojis, index) in emojis" :key="index">
-      <p class="allemoji" v-if="activeNote.id == emojis.docid">{{ emojis.emojitext }}</p>
-    </div>
+    <p>{{ activeNoteR.text }}</p>
 
-    <div v-if="activeNote.attachment_name != undefined">
-      <div v-if="activeNote.attachment_name.endsWith('.jpeg')">
-        <img :src="activeAttachment[0].url" alt width="20%" height border="0" />
+    <div v-if="activeNoteR.attachment_name != undefined">
+      <div v-if="activeNoteR.attachment_name.endsWith('.jpeg')">
+        <img :src="activeAttachment[0].url" alt width="100%" height border="0" />
       </div>
 
-      <div v-else-if="activeNote.attachment_name.endsWith('.jpg')">
-        <img :src="activeAttachment[0].url" alt width="20%" height border="0" />
+      <div v-else-if="activeNoteR.attachment_name.endsWith('.jpg')">
+        <img :src="activeAttachment[0].url" alt width="100%" height border="0" />
       </div>
-      <div v-else-if="activeNote.attachment_name.endsWith('.png')">
-        <img :src="activeAttachment[0].url" alt width="20%" height border="0" />
+      <div v-else-if="activeNoteR.attachment_name.endsWith('.png')">
+        <img :src="activeAttachment[0].url" alt width="100%" height border="0" />
       </div>
 
       <div v-else>
-        <img src="../assets/img/icon-mac.jpg" alt width="20%" height border="0" />
+        <img src="../assets/img/icon-mac.jpg" alt width="100%" height border="0" />
       </div>
     </div>
+
+    <h3>Reactions</h3>
+    <div v-for="(emojis, index) in emojis" :key="index">
+      <p class="allemoji" v-if="activeNoteR.id == emojis.docid">{{ emojis.emojitext }}</p>
+    </div>
+
     <h2>React</h2>
     <div class="eeee">
-      <input :value="activeNote.id" name="id" readonly hidden />
-      <input id="emojifield" class="regular-input" v-model="input" />
+      <input :value="activeNoteR.id" name="id" readonly hidden />
+      <input id="emojifield" class="regular-input" v-model="input" readonly />
 
       <emoji-picker @emoji="append" :search="search">
         <div
@@ -72,23 +74,26 @@
 <script>
 import { mapState } from 'vuex'
 import EmojiPicker from 'vue-emoji-picker'
+import { shortcuts } from './mixins/shortcuts.js'
+
 var docid
 var emojitext
 
 export default {
   name: 'ReaderView',
+  mixins: [shortcuts],
   components: {
     EmojiPicker
   },
   data() {
     return {
       input: '',
-      search: '',
-      emojitext: ''
+      search: ''
     }
   },
+
   computed: mapState({
-    activeNote: state => state.activeNote,
+    activeNoteR: state => state.activeNoteR,
     activeAttachment: state => state.activeAttachment,
     emojis: state => state.emojis
   }),
@@ -99,11 +104,13 @@ export default {
     },
     sentReact(docid, emojitext) {
       emojitext = this.input
-      docid = this.activeNote.id
+      docid = this.activeNoteR.id
       this.$store.dispatch('addEmoji', {
         docid,
         emojitext
       })
+
+      this.input = ''
     }
   },
 
