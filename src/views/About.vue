@@ -14,7 +14,7 @@
       <em>(and lots of helpers to be listed asap)</em>
     </p>
 
-    <h3>version 0.0.35d</h3>
+    <h3>version 0.0.36d</h3>
     <ul>
       <li>
         Co-create and contribute ideas, with text, links and attachments with
@@ -27,6 +27,7 @@
     </ul>
     <h3>known issues</h3>
     <ul>
+      <li>Attachment viewing is broken.</li>
       <li>
         Mobile iOS devices seem to have a bug when you first try to create or
         join an instance, on second attempt it will work allowing device name.
