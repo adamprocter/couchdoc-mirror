@@ -7,11 +7,11 @@
       <!-- <ul v-if="ready"> -->
       <ul>
         <li>
-          instance name :
+          microcosm :
           <b>{{ instance }}</b>
         </li>
         <li>
-          device name :
+          object name :
           <b>{{ clientid }}</b>
         </li>
       </ul>

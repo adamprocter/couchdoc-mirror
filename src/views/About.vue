@@ -14,7 +14,7 @@
       <em>(and lots of helpers to be listed asap)</em>
     </p>
 
-    <h3>version 0.0.36d</h3>
+    <h3>version 0.0.37d</h3>
     <ul>
       <li>
         Co-create and contribute ideas, with text, links and attachments with
@@ -27,6 +27,8 @@
     </ul>
     <h3>known issues</h3>
     <ul>
+      <li>Delete does not do anything visually</li>
+      <li>Export is not turned on yet</li>
       <li>Attachment viewing is broken.</li>
       <li>
         Mobile iOS devices seem to have a bug when you first try to create or

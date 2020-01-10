@@ -1,5 +1,6 @@
 <template>
   <div class="notlogged">
+    <h1>nodenogg.in</h1>
     <p>
       nodenoggin is a
       <span>work in progress</span> collaborative co-creation research and
@@ -8,23 +9,23 @@
         href="/#/about"
       >about</a> section.
     </p>
-
+    <!-- 
     <ul>
       <li>
-        instance name :
+        microcosm name :
         <b>{{ localinstance }}</b>
       </li>
       <li>
-        device name :
+        object name :
         <b>{{ clientid }}</b>
       </li>
-    </ul>
+    </ul>-->
 
     <form v-show="parta">
       <h2>1</h2>
-      <h3>instance</h3>
+      <h3>microcosm</h3>
       <p>
-        create or join an instance. an instance is a sharable digital space that
+        create or join a microcosm. a microcosm is a sharable digital space that
         can be shared privately between a group of individuals. all content /
         data you contribute is stored locally on your device and then shared
         privately to others on the same instance. you can remove your
@@ -33,7 +34,7 @@
       <input
         type="text"
         v-model="localinstance"
-        placeholder="instance name"
+        placeholder="microcosm name"
         autocorrect="off"
         autocapitalize="none"
       />
@@ -42,15 +43,15 @@
 
     <form v-show="partb">
       <h2>2</h2>
-      <h3>name</h3>
+      <h3>object</h3>
       <p>
-        give yourself a unique name, this ties this device to your own content /
-        data. this name is anonymous and stored privately.
+        give yourself an object name, this connects to your own content /
+        data. this object name is anonymous and stored privately.
       </p>
       <input
         type="text"
         v-model="clientid"
-        placeholder="device name"
+        placeholder="object name"
         autocorrect="off"
         autocapitalize="none"
       />
