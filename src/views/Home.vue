@@ -50,7 +50,7 @@ export default {
   data: function() {
     return {
       editing: false,
-      spaceview: false,
+      spaceview: true,
       clientset: false
     }
   },

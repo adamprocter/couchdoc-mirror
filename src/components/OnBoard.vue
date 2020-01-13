@@ -33,12 +33,13 @@
       </p>
       <input
         type="text"
-        v-model="localinstance"
+        v-model.trim="localinstance"
         placeholder="microcosm name"
         autocorrect="off"
         autocapitalize="none"
+        autofocus
       />
-      <button @click="createInstance()">+</button>
+      <button @click="createInstance(), setFocus()">+</button>
     </form>
 
     <form v-show="partb">
@@ -50,10 +51,11 @@
       </p>
       <input
         type="text"
-        v-model="clientid"
+        v-model.trim="clientid"
         placeholder="object name"
         autocorrect="off"
         autocapitalize="none"
+        ref="objectname"
       />
       <button @click="setClient()">+</button>
     </form>
@@ -67,6 +69,7 @@
 </template>
 
 <script>
+var delay = 100
 import { mapState } from 'vuex'
 
 export default {
@@ -126,6 +129,14 @@ export default {
     },
     removeIndex() {
       this.$store.dispatch('removeInstance', this.localinstance)
+    },
+    setFocus() {
+      console.log('setfocus')
+      setTimeout(this.readyFocus, delay)
+    },
+    readyFocus() {
+      console.log('readyfocus')
+      this.$refs.objectname.focus()
     }
   }
 }
