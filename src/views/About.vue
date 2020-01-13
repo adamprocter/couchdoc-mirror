@@ -27,10 +27,10 @@
     </ul>
     <h3>known issues</h3>
     <ul>
-      <li>Data is not yet encrypted.</li>
-      <li>Delete does not do anything visually.</li>
-      <li>Export is not turned on yet.</li>
-      <li>Attachment viewing is broken.</li>
+      <li>&nbsp;Data is not yet encrypted.</li>
+      <li>&nbsp;Delete does not do anything visually.</li>
+      <li>&nbsp;Export is not turned on yet.</li>
+      <li>&nbsp;Attachment viewing is broken.</li>
       <li>
         Mobile iOS devices seem to have a bug when you first try to create or
         join an instance, on second attempt it will work allowing device name.
