@@ -33,7 +33,7 @@
       </p>
       <input
         type="text"
-        v-model="localinstance"
+        v-model.trim="localinstance"
         placeholder="microcosm name"
         autocorrect="off"
         autocapitalize="none"
@@ -51,7 +51,7 @@
       </p>
       <input
         type="text"
-        v-model="clientid"
+        v-model.trim="clientid"
         placeholder="object name"
         autocorrect="off"
         autocapitalize="none"
