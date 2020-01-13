@@ -3,7 +3,8 @@
     <div id="nav">
       <router-link to="/">Home</router-link>&nbsp;|
       <router-link to="/about">About</router-link>&nbsp;|
-      <a href="http://discourse.adamprocter.co.uk">Feedback</a>
+      <a href="http://discourse.adamprocter.co.uk">Feedback</a>&nbsp;|
+      <a href="https://www.patreon.com/procterbot">Support</a>
       <!-- <ul v-if="ready"> -->
       <ul>
         <li>
