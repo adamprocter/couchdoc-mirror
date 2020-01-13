@@ -27,8 +27,9 @@
     </ul>
     <h3>known issues</h3>
     <ul>
-      <li>Delete does not do anything visually</li>
-      <li>Export is not turned on yet</li>
+      <li>Data is not yet encrypted.</li>
+      <li>Delete does not do anything visually.</li>
+      <li>Export is not turned on yet.</li>
       <li>Attachment viewing is broken.</li>
       <li>
         Mobile iOS devices seem to have a bug when you first try to create or

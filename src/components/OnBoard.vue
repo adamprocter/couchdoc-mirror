@@ -2,7 +2,7 @@
   <div class="notlogged">
     <h1>nodenogg.in</h1>
     <p>
-      nodenoggin is a
+      nodenogg.in is a
       <span>work in progress</span> collaborative co-creation research and
       design thinking tool, read more details and links in the
       <a
@@ -28,7 +28,7 @@
         create or join a microcosm. a microcosm is a sharable digital space that
         can be shared privately between a group of individuals. all content /
         data you contribute is stored locally on your device and then shared
-        privately to others on the same instance. you can remove your
+        privately to others on the same microcosm. you can remove your
         contributions at any time, they belong to you.
       </p>
       <input
@@ -45,7 +45,7 @@
       <h2>2</h2>
       <h3>object</h3>
       <p>
-        give yourself an object name, this connects to your own content /
+        give yourself an object name, this is what connects you to your content /
         data. this object name is anonymous and stored privately.
       </p>
       <input
@@ -154,6 +154,10 @@ li:before {
 b {
   background-color: yellow;
   padding-right: 2em;
+}
+
+h1 {
+  font-size: 3em;
 }
 
 h1,
