@@ -139,7 +139,7 @@ p {
 }
 
 .allemoji {
-  font-size: 2tem;
+  font-size: 2em;
   padding: 0px;
   margin: 0px;
 }
