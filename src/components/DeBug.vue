@@ -4,12 +4,13 @@
     <h2>Debug Options</h2>
     <h4>LAST UPDATE 14th Jan 2020.</h4>
     <p>You need to know these buttons destroy stuff.</p>
-    <button class="danger" v-on:click="removeLocal">Join another microcosm</button>
+    <button class="danger" v-on:click="removeLocal">
+      Join another microcosm
+    </button>
     <button v-on:click="exportStorage">Export my contributions</button>
-    <button
-      class="danger"
-      v-on:click="deleteClient"
-    >Delete my contributions (inc. attachments) permanently</button>
+    <button class="danger" v-on:click="deleteClient">
+      Delete my contributions (inc. attachments) permanently
+    </button>
   </div>
 </template>
 
@@ -26,9 +27,9 @@ export default {
       //location.reload()
       // Hardcoded in case URL has parameters the reload fails
       // Public site link
-      location.assign('https://alpha.nodenogg.in/')
+      //location.assign('https://alpha.nodenogg.in/')
       // local testing link
-      //location.assign('http://localhost:8080/')
+      location.assign('http://localhost:8080/')
     },
 
     deleteClient() {
