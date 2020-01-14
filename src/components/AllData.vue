@@ -1,5 +1,5 @@
 <template>
-  <div class="alldata">
+  <div class="alldata" name="anchorName">
     <h2>List</h2>
     <ul class="data" v-for="(value, index) in allnotes" v-bind:key="index">
       <li v-for="(note, index) in value.doc.notes" v-bind:key="index">
@@ -43,38 +43,18 @@ export default {
 </script>
 
 <style lang="css" scoped>
-@import url('https://rsms.me/inter/inter.css');
-html {
-  font-family: 'Inter', sans-serif;
-}
-@supports (font-variation-settings: normal) {
-  html {
-    font-family: 'Inter var', sans-serif;
-  }
-}
-
-h1,
-h2,
-h3,
-p {
-  font-family: 'Inter var', sans-serif;
-  color: black;
-  margin: 0px;
-}
-
 ul {
   /* FIXME : grid in a grid for these I think */
 }
 
 li:last-child {
-  padding-bottom: 1t3px;
+  padding-bottom: 13px;
   border-bottom: #cab6ff solid 3px;
 }
-p,
+
 li {
-  font-family: chaparral-pro, serif;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 16px;
+  margin-bottom: 1em;
+  font-size: 18px;
+  line-height: 1.4em;
 }
 </style>

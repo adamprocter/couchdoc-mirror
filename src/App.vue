@@ -45,33 +45,4 @@ export default {
 <style src="./assets/css/main.css"></style>
 
 <style scoped>
-@import url('https://rsms.me/inter/inter.css');
-html {
-  font-family: 'Inter', sans-serif;
-}
-@supports (font-variation-settings: normal) {
-  html {
-    font-family: 'Inter var', sans-serif;
-  }
-}
-
-a {
-  font-family: 'Inter var', sans-serif;
-  color: black;
-  margin: 0px;
-}
-
-li:before {
-  content: '';
-}
-
-ul {
-  font-family: 'Pica 10 Pitch W01';
-  font-size: 16px;
-  line-height: 20px;
-}
-
-li:before {
-  content: '';
-}
 </style>

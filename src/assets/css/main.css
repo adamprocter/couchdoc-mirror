@@ -29,13 +29,8 @@ html {
  * Customize the background color to match your design.
  */
 
-::-moz-selection {
-  background: #b3d4fc;
-  text-shadow: none;
-}
-
 ::selection {
-  background: #b3d4fc;
+  background: yellow;
   text-shadow: none;
 }
 
@@ -112,52 +107,39 @@ textarea {
 
 /* FONTS */
 
-@import url('https://fast.fonts.net/t/1.css?apiType=css&projectid=4ffe0acf-445b-4225-972b-c24821ab851d');
-@font-face {
-  font-family: 'BasicCommercialW01-Ligh';
-  src: url('../fonts/9dcb4e2d-058e-4612-a332-2daafe0479e7.eot?#iefix');
-  src: url('../fonts/9dcb4e2d-058e-4612-a332-2daafe0479e7.eot?#iefix')
-      format('eot'),
-    url('../fonts/c8ea4955-f5ed-486e-8fe1-c93b8cbd2566.woff2') format('woff2'),
-    url('../fonts/820a8f20-1c96-461f-af29-c4d7c8501607.woff') format('woff'),
-    url('../fonts/ed0450c0-0a6c-4f1b-b53c-648861a95de8.ttf') format('truetype');
+@import url('https://rsms.me/inter/inter.css');
+html {
+  font-family: 'Inter', sans-serif;
 }
-@font-face {
-  font-family: 'BasicCommercialW01-Roma';
-  src: url('../fonts/b79b3f0d-337c-493e-9dba-346560fd6d7f.eot?#iefix');
-  src: url('../fonts/b79b3f0d-337c-493e-9dba-346560fd6d7f.eot?#iefix')
-      format('eot'),
-    url('../fonts/5689664f-5706-4ecb-a6b5-18882ba249e3.woff2') format('woff2'),
-    url('../fonts/a96530dd-c9a4-4cd4-89c1-843e8965eba1.woff') format('woff'),
-    url('../fonts/8a8c36d9-a5cc-4614-b098-5e57c6e09ca7.ttf') format('truetype');
+@supports (font-variation-settings: normal) {
+  html {
+    font-family: 'Inter var', sans-serif;
+  }
 }
-@font-face {
-  font-family: 'Basic Commercial W01 It';
-  src: url('../fonts/24cd9a2c-861c-4939-b1e7-192d0048c2da.eot?#iefix');
-  src: url('../fonts/24cd9a2c-861c-4939-b1e7-192d0048c2da.eot?#iefix')
-      format('eot'),
-    url('../fonts/5f052fc9-d9fb-4553-a377-cc609e0e80a2.woff2') format('woff2'),
-    url('../fonts/a57b1d4c-74ae-4bd3-a710-7b65f94f3d39.woff') format('woff'),
-    url('../fonts/c2e8b545-3566-4eb6-bcd4-4335fd5f1b6f.ttf') format('truetype');
-}
-@font-face {
-  font-family: 'BasicCommercialW01-Bold';
-  src: url('../fonts/1398268c-cf49-4567-ba48-8ff7d12bbbe5.eot?#iefix');
-  src: url('../fonts/1398268c-cf49-4567-ba48-8ff7d12bbbe5.eot?#iefix')
-      format('eot'),
-    url('../fonts/259b2e27-d686-457d-bee9-027466b3b679.woff2') format('woff2'),
-    url('../fonts/fb411e31-380f-4a7f-a4c3-daaacd9aa217.woff') format('woff'),
-    url('../fonts/bdcaa507-aa33-4a68-af05-eefb168255fc.ttf') format('truetype');
+
+h1,
+h2,
+h3,
+p {
+  font-family: 'Inter var', sans-serif;
+  color: black;
+  margin: 0px;
 }
 
 /* LOOK */
 
 body {
-  font: 18px 'BasicCommercialW01-Roma', Helvetica Neue, Arial, Helvetica, Geneva,
-    sans-serif;
+  font-size: 18px;
   line-height: 22px;
   padding: 1em;
   background-color: rgb(247, 247, 247);
+}
+
+svg {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
 }
 
 svg text {
@@ -180,6 +162,7 @@ h4 {
 
 h2 {
   padding-top: 1em;
+  padding-bottom: 0.5em;
   line-height: 1.2em;
 }
 em {
@@ -251,10 +234,14 @@ button:active {
 }
 
 input {
-  border: 0.5px solid rgb(143, 142, 142);
+  border: 0.5px solid #cab6ff;
   border-radius: 3px;
   margin: 3px;
   padding: 3px;
+}
+
+*:focus {
+  outline: none;
 }
 
 input[type='file'] {
@@ -264,12 +251,12 @@ input[type='file'] {
 }
 
 textarea {
-  border: 0.5px solid rgb(143, 142, 142);
+  border: 0.5px solid #cab6ff;
   border-radius: 3px;
-  margin: 3px;
-  padding: 3px;
-  width: 250px;
-  height: 95px;
+
+  padding: 10px;
+  width: 95%;
+  height: 195px;
 }
 
 hr {
@@ -303,24 +290,28 @@ a:active {
 }
 
 ul {
+  padding: 0;
   list-style: none;
+  font-family: 'Pica 10 Pitch W01';
+  font-size: 18px;
+  line-height: 22px;
 }
 
 li:before {
-  content: '\02733';
+  content: '';
 }
 
-/* .data li:first-child {
-  background-color: rgb(255, 251, 0);
-} */
-
-ul {
-  padding: 0;
+li:before {
+  content: '';
 }
 
 .data li:before {
   content: '';
 }
+
+/* .data li:first-child {
+  background-color: rgb(255, 251, 0);
+} */
 
 /* ==========================================================================
    Helper classes
@@ -429,26 +420,29 @@ ul {
    Modify as content requires.
    ========================================================================== */
 
-@media only screen and (min-width: 640px) {
+@media only screen and (min-width: 880px) {
   /* Style adjustments for viewports that meet the condition */
 
   .home {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-gap: 10px;
-    grid-auto-rows: minmax(100px, auto);
+    grid-gap: 20px;
+    /* grid-auto-rows: minmax(100px, auto); */
   }
 
   .toolbar,
   .editor {
-    grid-column: 1 / 3;
+    grid-column: 1 /2;
     grid-row: 1;
+    padding: 0em 1em 1em 1em;
+    border: 10px solid #cab6ff;
   }
 
   .reader {
-    grid-column: 2 / 4;
+    padding: 0em 1em 1em 1em;
+    border: 10px solid #cab6ff;
+    grid-column: 2 / 3;
     grid-row: 1;
-    max-width: 250px;
   }
 
   .spaceview,
@@ -458,6 +452,8 @@ ul {
   }
 
   .shortcuts {
+    padding: 0em 1em 1em 1em;
+    border: 10px solid #cab6ff;
     grid-column: 3 / 4;
     grid-row: 1;
   }

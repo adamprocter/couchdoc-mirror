@@ -11,10 +11,10 @@
     </p>
     <p>
       Made by Adam Procter
-      <em>(and lots of helpers to be listed asap)</em>
+      <em>(+ helpers &amp; supporters)</em>
     </p>
 
-    <h3>version 0.0.38d</h3>
+    <h3>version 0.0.39d</h3>
     <ul>
       <li>
         Co-create and contribute ideas, with text, links and attachments with
@@ -32,8 +32,8 @@
       <li>&nbsp;Export is not turned on yet.</li>
       <li>&nbsp;Attachment viewing is broken.</li>
       <li>
-        Mobile iOS devices seem to have a bug when you first try to create or
-        join an instance, on second attempt it will work allowing device name.
+        Some devices seem to have a bug when you first try to create or
+        join an microcosm, on second attempt it will work allowing device name.
       </li>
       <li>
         When moving nodes on touch devices to confirm new location you must tap
@@ -97,30 +97,6 @@ export default {
 </script>
 
 <style lang="css" scoped>
-@import url('https://rsms.me/inter/inter.css');
-html {
-  font-family: 'Inter', sans-serif;
-}
-@supports (font-variation-settings: normal) {
-  html {
-    font-family: 'Inter var', sans-serif;
-  }
-}
-ul {
-  font-family: 'Pica 10 Pitch W01';
-  font-size: 16px;
-  line-height: 20px;
-}
-
-h1,
-h2,
-h3,
-p {
-  font-family: 'Inter var', sans-serif;
-  color: black;
-  margin: 0px;
-}
-
 h1,
 h2,
 h3 {
@@ -132,10 +108,7 @@ h3 {
   color: #cab6ff;
 }
 
-p {
-  font-family: chaparral-pro, serif;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 16px;
+li:before {
+  content: '\02733';
 }
 </style>

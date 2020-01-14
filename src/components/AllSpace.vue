@@ -1,5 +1,5 @@
 <template>
-  <div class="spaceview">
+  <div class="spaceview" name="anchorName">
     <h2>Spatial</h2>
 
     <p id="modeon" class="connectionoff">
@@ -23,6 +23,7 @@
       preserveAspectRatio="xMidYMid meet"
     >
       <rect width="100%" height="100%" fill="#f1f1f1" />
+
       <g v-for="(value, index) in allnotes" v-bind:key="index">
         <g v-for="(note, index) in value.doc.notes" v-bind:key="index">
           <!-- <text
@@ -35,14 +36,16 @@
           <text x="20" y="35">{{note.doc}}</text>-->
           <g v-for="(position, index) in positions" :key="index">
             <g
+              class="draggable"
               v-if="note.id == position.id"
               :transform="`translate(${position.xpos}, ${position.ypos})`"
-              class="draggable"
             >
               <polygon
                 v-if="note.content_type == 'link'"
                 points="9.500000000000002,16.454482671904334 -19,2.326828918379971e-15 9.499999999999986,-16.45448267190434"
-                fill="#989898"
+                fill="#f1f1f1"
+                stroke="#000"
+                stroke-width="3px"
                 :class="[
                   note.content_type,
                   note.isActive ? 'highlighted' : '',
@@ -50,11 +53,16 @@
                 ]"
                 :id="note.id"
               />
+              <!-- 
+                <rect class="b" width="110" height="110" />
+              <rect class="c" x="4" y="4" width="102" height="102" />-->
 
               <polygon
                 v-if="note.content_type == 'sheet'"
                 points="13.435028842544403,13.435028842544401 -13.435028842544401,13.435028842544403 -13.435028842544407,-13.435028842544401 13.435028842544401,-13.435028842544407"
-                fill="#989898"
+                fill="#f1f1f1"
+                stroke="#000"
+                stroke-width="3px"
                 :class="[
                   note.content_type,
                   note.isActive ? 'highlighted' : '',
@@ -66,7 +74,9 @@
               <polygon
                 v-if="note.content_type == 'attachment'"
                 points="14.782072520180588,6.1229349178414365 6.122934917841437,14.782072520180588 -6.122934917841436,14.782072520180588 -14.782072520180588,6.122934917841437 -14.782072520180588,-6.122934917841435 -6.122934917841445,-14.782072520180584 6.12293491784144,-14.782072520180586 14.782072520180584,-6.122934917841446"
-                fill="#989898"
+                fill="#f1f1f1"
+                stroke="#000"
+                stroke-width="3px"
                 :class="[
                   note.content_type,
                   note.isActive ? 'highlighted' : '',
@@ -87,20 +97,22 @@
                   <!-- <g v-for="connection in connection.connection"> -->
 
                   <line
+                    class="lines"
                     :id="connection.connectid"
                     :x1="connection.startx"
                     :y1="connection.starty"
                     :x2="connection.endx"
                     :y2="connection.endy"
-                    style="stroke:rgb(255,0,0);stroke-width:2"
                   />
                 </g>
               </g>
-              <text>{{ note.text }}</text>
+
+              <text class="inlinetext" dx="20px">{{ note.text | truncate(20)}}</text>
             </g>
           </g>
         </g>
       </g>
+
       <!-- REMOVE: cannot render attachments this way-->
       <!-- <g
         v-for="(myattachment, index) in myattachments"
@@ -112,6 +124,9 @@
       <circle cx="16" cy="16" r="16" fill="#989898" :id="myattachment.name" />
       </g> 
 
+    <clipPath id="textclip">
+        <rect x="0" y="0" width="50" height="50" />
+      </clipPath>
       -->
     </svg>
   </div>
@@ -145,7 +160,7 @@ export default {
     return {
       viewboxo1: 0,
       viewboxo2: 0,
-      viewboxx: 1200,
+      viewboxx: 600,
       viewboxy: 1000,
       connkey: false,
       removekey: false
@@ -158,6 +173,16 @@ export default {
     connections: state => state.connections,
     positions: state => state.positions
   }),
+
+  filters: {
+    truncate(value, limit) {
+      if (value.length > limit) {
+        value = value.substring(0, limit - 3) + '...'
+      }
+
+      return value
+    }
+  },
 
   watch: {
     //empty
@@ -456,6 +481,7 @@ export default {
 
       function doubleClick(evt) {
         // console.log('inside doubleclick ' + firsttap)
+        scroll(0, 0)
         ref.$store.dispatch('shortcutsState', true)
         ref.$emit('closeEdit')
         if (evt.target.parentNode.classList.contains('draggable')) {
@@ -508,17 +534,32 @@ b {
 h1,
 h2,
 h3,
-p {
+p,
+.inlinetext {
   font-family: 'Inter var', sans-serif;
   color: black;
   margin: 0px;
 }
+.inlinetext {
+  font-size: 0.8em;
+  fill: black;
+}
+
+.lines {
+  stroke: #cab6ff;
+  stroke-width: 3px;
+}
 
 p {
-  font-family: chaparral-pro, serif;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 16px;
   margin-top: 2em;
 }
+
+/* .a {
+  fill: #f1f1f1;
+  stroke: #000;
+  stroke-width: 3px;
+} */
+/* .b {
+  stroke: none;
+} */
 </style>
