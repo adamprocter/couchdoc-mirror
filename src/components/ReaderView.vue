@@ -130,39 +130,16 @@ export default {
 </script>
 
 <style lang="css" scoped>
-@import url('https://rsms.me/inter/inter.css');
-html {
-  font-family: 'Inter', sans-serif;
-}
-@supports (font-variation-settings: normal) {
-  html {
-    font-family: 'Inter var', sans-serif;
-  }
-}
-
-h1,
-h2,
-h3,
-p {
-  font-family: 'Inter var', sans-serif;
-  color: black;
-  margin: 0px;
-}
-
-p {
-  font-family: chaparral-pro, serif;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 16px;
-  margin-top: 2em;
-}
-
 h3 {
   margin-top: 1em;
   margin-bottom: 1em;
 }
+p {
+  line-height: 1.5em;
+}
 
 .allemoji {
+  font-size: 2tem;
   padding: 0px;
   margin: 0px;
 }
@@ -172,19 +149,16 @@ h3 {
 }
 .regular-input {
   border-style: solid;
+  border-radius: 13px;
   border-width: 1px;
   border-color: #cab6ff;
   padding: 0.5em;
-  margin-top: 1.2em;
-}
-
-.regular-input:focus {
-  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.5);
+  /* margin-top: 1.2em; */
 }
 
 .emoji-invoker {
   position: absolute;
-  top: 0.6rem;
+  top: -0.5rem;
   right: 0.5rem;
   width: 1.5rem;
   height: 1.5rem;

@@ -17,6 +17,7 @@ export const shortcuts = {
       if (this.shortcutsstate == false) {
         if (e.keyCode == 78) {
           // n for new
+          scroll(0, 0)
           this.addDoc()
           this.$store.dispatch('shortcutsState', true)
         } else if (e.keyCode == 65) {
@@ -25,6 +26,8 @@ export const shortcuts = {
           this.addAttachment()
         } else if (e.keyCode == 84) {
           this.$emit('togView')
+          // Scroll to anchor name in AllSpace and Reader
+          scroll(0, 0)
         } else if (e.keyCode == 13 && e.altKey) {
           // option enter = close editor
           this.$store.dispatch('shortcutsState', false)

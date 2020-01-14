@@ -181,10 +181,6 @@ p {
 }
 
 p {
-  font-family: chaparral-pro, serif;
-  font-weight: 400;
-  font-style: normal;
-  font-size: 16px;
   margin-top: 2em;
 }
 
