@@ -140,14 +140,15 @@ export default {
   computed: mapState({
     activeNoteR: state => state.activeNoteR,
     activeAttachment: state => state.activeAttachment,
-    emojis: state => state.emojis,
-
-    compiledMarkdown: function() {
-      return marked(this.activeNoteR.text)
-    }
+    emojis: state => state.emojis
   }),
 
   methods: {
+    // Call this on double click only
+    compiledMarkdown() {
+      return marked(this.activeNoteR.text)
+    },
+
     append(emoji) {
       this.input += emoji
     },
@@ -157,9 +158,8 @@ export default {
       this.$store.dispatch('addEmoji', {
         docid,
         emojitext
-      })
-
-      this.input = ''
+      }),
+        (this.input = '')
     }
   },
 
