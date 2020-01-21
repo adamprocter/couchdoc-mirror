@@ -2,7 +2,7 @@
   <div class="reader">
     <h2>Read</h2>
 
-    <p>{{ activeNoteR.text | marked }}</p>
+    <div v-dompurify-html="compiledMarkdown"></div>
 
     <div v-if="activeNoteR.attachment_name != undefined">
       <div v-if="activeNoteR.attachment_name.endsWith('.jpeg')">
@@ -112,6 +112,7 @@ import { mapState } from 'vuex'
 import EmojiPicker from 'vue-emoji-picker'
 import { shortcuts } from './mixins/shortcuts.js'
 import marked from 'marked'
+import VueDOMPurifyHTML from 'vue-dompurify-html'
 
 var docid
 var emojitext
@@ -142,7 +143,7 @@ export default {
     emojis: state => state.emojis,
 
     compiledMarkdown: function() {
-      return marked(this.activeNoteR.text, { sanitize: true })
+      return marked(this.activeNoteR.text)
     }
   }),
 

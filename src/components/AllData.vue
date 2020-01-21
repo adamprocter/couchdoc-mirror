@@ -4,6 +4,7 @@
     <ul class="data" v-for="(value, index) in allnotes" v-bind:key="index">
       <li v-for="(note, index) in value.doc.notes" v-bind:key="index">
         <!-- v-if hides device name -->
+        <!-- <p v-if="note.content_type != 'device'">{{ note.text | marked }}</p> -->
         <p v-if="note.content_type != 'device'">{{ note.text }}</p>
       </li>
     </ul>
@@ -13,10 +14,15 @@
 <script>
 import { mapState } from 'vuex'
 import { shortcuts } from './mixins/shortcuts.js'
+import marked from 'marked'
+import VueDOMPurifyHTML from 'vue-dompurify-html'
 
 export default {
   name: 'AllData',
   mixins: [shortcuts],
+  filters: {
+    marked: marked
+  },
   computed: mapState({
     shortcutsstate: state => state.shortcutsstate,
     allnotes: state => state.allnotes
