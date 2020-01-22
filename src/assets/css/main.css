@@ -423,7 +423,8 @@ li:before {
 @media only screen and (min-width: 880px) {
   /* Style adjustments for viewports that meet the condition */
 
-  .home {
+  .online,
+  .offline {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-gap: 20px;
@@ -438,7 +439,8 @@ li:before {
     border: 10px solid #cab6ff;
   }
 
-  .reader {
+  .reader,
+  .yourdata {
     padding: 0em 1em 1em 1em;
     border: 10px solid #cab6ff;
     grid-column: 2 / 3;

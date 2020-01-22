@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import PouchDB from 'pouchdb'
 import accounts from '../src/assets/settings.json'
-
+//PouchDB.debug.enable('*')
 Vue.use(Vuex)
 // Objects
 //var localinstance = localStorage.getItem('mylastInstance')
@@ -710,6 +710,7 @@ const store = new Vuex.Store({
         store.commit('GET_POSITIONS')
         store.commit('GET_CONNECTIONS')
         store.commit('GET_EMOJIS')
+
         //store.commit('GET_ALL_DOCS')
         //  store.commit('GET_MY_ATTACHMENTS')
         // turn on two-way, continuous, retriable sync

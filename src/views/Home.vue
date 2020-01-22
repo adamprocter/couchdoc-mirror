@@ -7,26 +7,36 @@
     <!-- tips -->
     <!--  @ is short for v-on: -->
     <!-- : is short for v-bind -->
-    <Editor v-if="editing" @closeEdit="closeEdit()" />
-    <ToolBar v-else-if="clientset" @editMode="editMode()" @togView="togView()" />
-    <ReaderView v-if="clientset" />
-    <ShortCuts v-if="clientset" />
-    <AllData
-      v-if="clientset && spaceview"
-      @editMode="editMode()"
-      @closeEdit="closeEdit()"
-      @togView="togView()"
-    />
-    <AllSpace
-      v-else-if="clientset"
-      @closeEdit="closeEdit()"
-      @editMode="editMode()"
-      @togView="togView()"
-    />
-    <OnBoard v-else @clientAdded="clientAdded()" />
-    <!-- <AdminPanel /> -->
+    <div class="offline" v-if="clientset && offline">
+      <Editor v-if="editing" @closeEdit="closeEdit()" />
+      <ToolBar v-else-if="clientset" @editMode="editMode()" @togView="togView()" />
+      <ShortCuts v-if="clientset" />
+      <YourData @editMode="editMode()" @closeEdit="closeEdit()" />
+      <DeBug @offlineTriggered="offlineTriggered()" />
+    </div>
 
-    <DeBug />
+    <div class="online" v-else>
+      <Editor v-if="editing" @closeEdit="closeEdit()" />
+      <ToolBar v-else-if="clientset" @editMode="editMode()" @togView="togView()" />
+      <ReaderView v-if="clientset" />
+      <ShortCuts v-if="clientset" />
+      <AllData
+        v-if="clientset && spaceview"
+        @editMode="editMode()"
+        @closeEdit="closeEdit()"
+        @togView="togView()"
+      />
+      <AllSpace
+        v-else-if="clientset"
+        @closeEdit="closeEdit()"
+        @editMode="editMode()"
+        @togView="togView()"
+      />
+      <OnBoard v-else @clientAdded="clientAdded()" />
+      <!-- <AdminPanel /> -->
+
+      <DeBug @offlineTriggered="offlineTriggered()" @onlineTriggered="onlineTriggered()" />
+    </div>
   </div>
 </template>
 
@@ -39,6 +49,7 @@ import OnBoard from '@/components/OnBoard.vue'
 //import AdminPanel from '@/components/AdminPanel.vue'
 import ShortCuts from '@/components/ShortCuts.vue'
 import AllSpace from '@/components/AllSpace.vue'
+import YourData from '@/components/YourData.vue'
 import AllData from '@/components/AllData.vue'
 import ToolBar from '@/components/ToolBar.vue'
 import Editor from '@/components/Editor.vue'
@@ -51,7 +62,8 @@ export default {
     return {
       editing: false,
       spaceview: true,
-      clientset: false
+      clientset: false,
+      offline: false
     }
   },
 
@@ -62,6 +74,7 @@ export default {
     ShortCuts,
     AllSpace,
     AllData,
+    YourData,
     Editor,
     ReaderView,
     DeBug
@@ -101,6 +114,14 @@ export default {
 
     closeEdit() {
       this.editing = false
+    },
+
+    offlineTriggered() {
+      this.offline = true
+    },
+    onlineTriggered() {
+      console.log('back!')
+      this.offline = false
     }
   }
 }
