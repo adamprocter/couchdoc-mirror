@@ -14,7 +14,7 @@
       <em>(+ helpers &amp; supporters)</em>
     </p>
 
-    <h3>version 0.0.39d</h3>
+    <h3>version 0.0.40d</h3>
     <ul>
       <li>
         Co-create and contribute ideas, with text, links and attachments with
