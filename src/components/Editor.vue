@@ -32,6 +32,10 @@
 
       <input :value="activeNote.id" name="id" readonly hidden />
       <input :value="activeNote.attachment_name" name="attachmentname" readonly hidden />
+      <p class="words">
+        Word count:
+        <span id="wordCount">0</span>
+      </p>
       <h3>Reactions</h3>
       <div v-for="(emojis, index) in emojis" :key="index">
         <p class="allemoji" v-if="activeNote.id == emojis.docid">{{ emojis.emojitext }}</p>
@@ -48,10 +52,28 @@
 import { mapState } from 'vuex'
 //var myTimer
 var delay = 100
-
+var input
 export default {
   mounted() {
     setTimeout(this.setFocus, delay)
+    input = this.$refs.notetext
+
+    this.$refs.notetext.addEventListener('keyup', function() {
+      //keeping the console clean to make only the latest data visible
+      // console.clear()
+
+      // word count using \w metacharacter - replacing this with .* to match anything between word boundaries since it was not taking 'a' as a word.
+      // this is a masterstroke - to count words with any number of hyphens as one word
+      // [-?(\w+)?]+ looks for hyphen and a word (we make both optional with ?). + at the end makes it a repeated pattern
+      // \b is word boundary metacharacter
+      var words = input.value.match(/\b[-?(\w+)?]+\b/gi)
+      // console.log(words);
+      if (words) {
+        wordCount.innerHTML = words.length
+      } else {
+        wordCount.innerHTML = 0
+      }
+    })
   },
   methods: {
     setFocus() {
@@ -89,6 +111,10 @@ ul {
 
 li:before {
   content: '';
+}
+
+p.words {
+  margin-top: 0.5em;
 }
 
 b {
