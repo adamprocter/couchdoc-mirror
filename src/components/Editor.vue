@@ -32,6 +32,10 @@
 
       <input :value="activeNote.id" name="id" readonly hidden />
       <input :value="activeNote.attachment_name" name="attachmentname" readonly hidden />
+      <h3>Reactions</h3>
+      <div v-for="(emojis, index) in emojis" :key="index">
+        <p class="allemoji" v-if="activeNote.id == emojis.docid">{{ emojis.emojitext }}</p>
+      </div>
       <div>
         <button @click="closeEdit()">Finish</button>
         <button class="danger">Delete</button>
@@ -69,7 +73,8 @@ export default {
   computed: mapState({
     //editon: state => state.editon,
     activeNote: state => state.activeNote,
-    activeAttachment: state => state.activeAttachment
+    activeAttachment: state => state.activeAttachment,
+    emojis: state => state.emojis
   })
 }
 </script>
@@ -93,5 +98,12 @@ b {
 
 p {
   margin-top: 2em;
+}
+
+h3 {
+  margin-top: 1em;
+}
+p.allemoji {
+  margin-top: 0em;
 }
 </style>
