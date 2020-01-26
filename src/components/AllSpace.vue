@@ -41,7 +41,7 @@
               :transform="`translate(${position.xpos}, ${position.ypos})`"
             >
               <polygon
-                v-if="note.content_type == 'link'"
+                v-if="note.content_type == 'link' && note.deleted == false"
                 points="9.500000000000002,16.454482671904334 -19,2.326828918379971e-15 9.499999999999986,-16.45448267190434"
                 fill="#f1f1f1"
                 stroke="#000"
@@ -58,7 +58,7 @@
               <rect class="c" x="4" y="4" width="102" height="102" />-->
 
               <polygon
-                v-if="note.content_type == 'sheet'"
+                v-if="note.content_type == 'sheet' && note.deleted == false"
                 points="13.435028842544403,13.435028842544401 -13.435028842544401,13.435028842544403 -13.435028842544407,-13.435028842544401 13.435028842544401,-13.435028842544407"
                 fill="#f1f1f1"
                 stroke="#000"
@@ -72,7 +72,7 @@
               />
 
               <polygon
-                v-if="note.content_type == 'attachment'"
+                v-if="note.content_type == 'attachment' && note.deleted == false"
                 points="14.782072520180588,6.1229349178414365 6.122934917841437,14.782072520180588 -6.122934917841436,14.782072520180588 -14.782072520180588,6.122934917841437 -14.782072520180588,-6.122934917841435 -6.122934917841445,-14.782072520180584 6.12293491784144,-14.782072520180586 14.782072520180584,-6.122934917841446"
                 fill="#f1f1f1"
                 stroke="#000"
@@ -107,7 +107,11 @@
                 </g>
               </g>
 
-              <text class="inlinetext" dx="20px">{{ note.text | truncate(20)}}</text>
+              <text
+                v-if="note.deleted == false"
+                class="inlinetext"
+                dx="20px"
+              >{{ note.text | truncate(20)}}</text>
             </g>
           </g>
         </g>

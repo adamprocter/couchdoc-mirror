@@ -651,6 +651,39 @@ const store = new Vuex.Store({
         })
     },
 
+    DELETE_FLAG(state) {
+      var i
+      state.editon = false
+      for (i = 0; i < Object.keys(state.notes).length; i++) {
+        if (localid == state.notes[i].id) {
+          state.notes[i].deleted = true
+        }
+      }
+      pouchdb
+        .get(state.myclient)
+        .then(function(doc) {
+          // put the store into pouchdb
+          return pouchdb.bulkDocs([
+            {
+              _id: state.myclient,
+              _rev: doc._rev,
+              _attachments: doc._attachments,
+              notes: state.notes
+            }
+          ])
+        })
+        .then(function() {
+          return pouchdb.get(state.myclient).then(function(doc) {
+            state.notes = doc.notes
+          })
+        })
+        .catch(function(err) {
+          if (err.status == 404) {
+            // pouchdb.put({  })
+          }
+        })
+    },
+
     ADD_FILE(state, files) {
       //var tempdoc = null
       // console.log(state.myclient)
@@ -814,6 +847,10 @@ const store = new Vuex.Store({
     editNote: ({ commit }, { e, t, aname }) => {
       var text = e.target.value
       commit('EDIT_NOTE', { text, t, aname })
+    },
+    deleteFlag: ({ commit }) => {
+      // var text = e.target.value
+      commit('DELETE_FLAG')
     },
     editType: ({ commit }, e) => {
       commit('EDIT_TYPE', e.target.value)
