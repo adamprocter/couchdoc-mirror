@@ -39,7 +39,7 @@
         autocapitalize="none"
         autofocus
       />
-      <button @click="createInstance(), setFocus()">+</button>
+      <button @click="createInstance()">+</button>
     </form>
 
     <form v-show="partb">
@@ -78,7 +78,7 @@ export default {
       clientid: '',
       localinstance: '',
       parta: true,
-      partb: false,
+      partb: true,
       partc: false
     }
   },
@@ -89,30 +89,22 @@ export default {
   }),
 
   mounted() {
-    // var parameters = this.$route.query
-    // var urlparam = this.$route.query.instance
-    // var urlparam2 = this.$route.query.device
-
-    // if (urlparam != undefined && urlparam2 != undefined) {
-    //   this.localinstance = urlparam
-    //   this.clientid = urlparam2
-    //   this.parta = false
-
-    //   this.createInstance()
-    //   this.setClient()
-    //   this.letsGo()
-    // }
-
     if (localStorage.myNNClient) {
       this.clientid = localStorage.myNNClient
       this.localinstance = localStorage.mylastInstance
-      this.setClient()
       this.createInstance()
+      this.setClient()
       this.letsGo()
     }
   },
 
   methods: {
+    createInstance() {
+      console.log('create instance called')
+      ;(this.partb = true),
+        this.$store.dispatch('createInstance', this.localinstance)
+      localStorage.setItem('mylastInstance', this.localinstance)
+    },
     setClient() {
       ;(this.partc = true),
         this.$store.dispatch('setClient', this.clientid),
@@ -122,11 +114,7 @@ export default {
       this.$emit('clientAdded')
       this.$emit('readyMode')
     },
-    createInstance() {
-      ;(this.partb = true),
-        this.$store.dispatch('createInstance', this.localinstance)
-      localStorage.setItem('mylastInstance', this.localinstance)
-    },
+
     removeIndex() {
       this.$store.dispatch('removeInstance', this.localinstance)
     },

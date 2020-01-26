@@ -6,6 +6,7 @@ import accounts from '../src/assets/settings.json'
 Vue.use(Vuex)
 // Objects
 //var localinstance = localStorage.getItem('mylastInstance')
+console.log(localStorage.getItem('mylastInstance'))
 if (localStorage.getItem('mylastInstance') == null) {
   var localinstance = 'firstvisit'
 } else {
