@@ -110,7 +110,7 @@ const store = new Vuex.Store({
     },
 
     GET_OTHER_ATTACHMENT(state, e) {
-      //console.log(activeAttachment)
+      //  console.log(selectedclient)
       // loop through state
 
       pouchdb
