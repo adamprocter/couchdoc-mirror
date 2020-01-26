@@ -26,6 +26,8 @@ var remote =
 
 var localid = null
 var connectid = null
+var selectedclient = null
+
 const store = new Vuex.Store({
   state: {
     editon: false,
@@ -42,10 +44,10 @@ const store = new Vuex.Store({
     allnotes: {},
     activeNote: {},
     activeNoteR: {},
-    activeAttachment: [],
-    myattachments: [],
-    myattachmentnames: [],
-    otherattachments: {}
+    activeAttachment: []
+    //   myattachments: [],
+    // myattachmentnames: [],
+    //  otherattachments: {}
   },
   mutations: {
     REMOVE_INSTANCE(state, doc) {
@@ -107,9 +109,12 @@ const store = new Vuex.Store({
         })
     },
 
-    GET_MY_ATTACHMENT(state, e) {
+    GET_OTHER_ATTACHMENT(state, e) {
+      //console.log(activeAttachment)
+      // loop through state
+
       pouchdb
-        .getAttachment(state.myclient, e)
+        .getAttachment(selectedclient, e)
         .then(function(blob) {
           // put img URL into store to render
           var url = URL.createObjectURL(blob)
@@ -317,6 +322,8 @@ const store = new Vuex.Store({
     },
 
     CLIENT_ID(state, clientid) {
+      selectedclient = clientid
+      //console.log(selectedclient)
       if (state.myclient == clientid) {
         state.editon = true
         var i = 0
@@ -343,7 +350,6 @@ const store = new Vuex.Store({
 
       for (i = 0; i < Object.keys(state.allnotes).length; i++) {
         if (state.allnotes[i].doc.notes != undefined) {
-          //console.log(state.allnotes[i].doc.notes)
           for (
             j = 0;
             j < Object.keys(state.allnotes[i].doc.notes).length;
@@ -359,10 +365,12 @@ const store = new Vuex.Store({
                     state.allnotes[i].doc.notes[j].attachment_name
                 }
                 state.activeNoteR = newReader
+                //console.log(state.activeNoteR)
                 if (state.activeNoteR.attachment_name != undefined) {
+                  // console.log(state.activeNoteR.attachment_name)
                   //FIXME: get and render the attachment with same name as attachment_name here please
                   this.commit(
-                    'GET_MY_ATTACHMENT',
+                    'GET_OTHER_ATTACHMENT',
                     state.activeNoteR.attachment_name
                   )
                 }

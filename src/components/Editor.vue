@@ -13,7 +13,7 @@
       <br />
       <textarea @input="editNote" v-model="activeNote.text" class="form-control" ref="notetext"></textarea>
 
-      <div v-if="activeNote.attachment_name != undefined">
+      <!-- <div v-if="activeNote.attachment_name != undefined">
         <div v-if="activeNote.attachment_name.endsWith('.jpeg')">
           <img :src="activeAttachment[0].url" alt width="40%" height border="0" />
         </div>
@@ -28,7 +28,7 @@
         <div v-else>
           <img src="../assets/img/icon-mac.jpg" alt width="40%" height border="0" />
         </div>
-      </div>
+      </div>-->
 
       <input :value="activeNote.id" name="id" readonly hidden />
       <input :value="activeNote.attachment_name" name="attachmentname" readonly hidden />

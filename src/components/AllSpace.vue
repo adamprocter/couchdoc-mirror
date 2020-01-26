@@ -261,11 +261,11 @@ export default {
 
     addDoc() {
       this.$store.dispatch('addDoc')
-
       this.$emit('editMode')
     },
 
     openSelected(e) {
+      //console.log(e)
       this.$store.dispatch('clientId', e)
 
       // this.$store.dispatch('noteId', e)
@@ -275,7 +275,6 @@ export default {
     },
     readerSelected(e) {
       this.$store.dispatch('noteId', e)
-      //
       this.$store.dispatch('getReaderText', e)
     },
 
@@ -490,7 +489,6 @@ export default {
         ref.$emit('closeEdit')
         if (evt.target.parentNode.classList.contains('draggable')) {
           selectedElement = evt.target.parentNode
-          // console.log('double')
 
           ref.connkey = false
           firsttap = null
