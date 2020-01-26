@@ -94,7 +94,7 @@ export default {
   },
 
   mounted() {
-    console.log(this.activeNoteR.id)
+    //console.log(this.activeNoteR.id)
   },
 
   computed: mapState({

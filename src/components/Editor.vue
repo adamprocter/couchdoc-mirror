@@ -12,8 +12,9 @@
       </div>
       <br />
       <textarea @input="editNote" v-model="activeNote.text" class="form-control" ref="notetext"></textarea>
-
-      <div v-if="activeNote.attachment_name != undefined">
+      <p>{{activeNote.attachment_name}}</p>
+      <!-- <p>{{activeAttachment[0].url}}</p> -->
+      <!-- <div v-if="activeNote.attachment_name != undefined">
         <div v-if="activeNote.attachment_name.endsWith('.jpeg')">
           <img :src="activeAttachment[0].url" alt width="40%" height border="0" />
         </div>
@@ -28,7 +29,7 @@
         <div v-else>
           <img src="../assets/img/icon-mac.jpg" alt width="40%" height border="0" />
         </div>
-      </div>
+      </div>-->
 
       <input :value="activeNote.id" name="id" readonly hidden />
       <input :value="activeNote.attachment_name" name="attachmentname" readonly hidden />
@@ -101,6 +102,7 @@ export default {
   },
   computed: mapState({
     //editon: state => state.editon,
+    activeNoteR: state => state.activeNoteR,
     activeNote: state => state.activeNote,
     activeAttachment: state => state.activeAttachment,
     emojis: state => state.emojis
