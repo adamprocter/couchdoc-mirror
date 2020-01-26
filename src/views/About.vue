@@ -14,7 +14,7 @@
       <em>(+ helpers &amp; supporters)</em>
     </p>
 
-    <h3>version 0.0.40d</h3>
+    <h3>version 0.0.42d</h3>
     <ul>
       <li>
         Co-create and contribute ideas, with text, links and attachments with
@@ -28,7 +28,6 @@
     <h3>known issues</h3>
     <ul>
       <li>&nbsp;Data is not yet encrypted.</li>
-      <li>&nbsp;Delete does not do anything visually.</li>
       <li>&nbsp;Export is not turned on yet.</li>
       <li>&nbsp;Attachment viewing is broken.</li>
       <li>

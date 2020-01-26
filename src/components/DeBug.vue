@@ -2,7 +2,7 @@
   <div class="debug">
     <hr />
     <h2>Debug Options</h2>
-    <h4>LAST UPDATE 22nd Jan 2020.</h4>
+    <h4>LAST UPDATE 26th Jan 2020.</h4>
     <p>You need to know these buttons destroy stuff.</p>
     <button class="danger" @click="removeLocal()">Join another microcosm</button>
     <button @click="exportStorage()">Export my contributions</button>
@@ -36,9 +36,9 @@ export default {
       //location.reload()
       // Hardcoded in case URL has parameters the reload fails
       // Public site link
-      //location.assign('https://alpha.nodenogg.in/')
+      location.assign('https://alpha.nodenogg.in/')
       // local testing link
-      location.assign('http://localhost:8080/')
+      //location.assign('http://localhost:8080/')
     },
 
     deleteClient() {
