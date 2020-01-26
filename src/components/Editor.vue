@@ -42,7 +42,7 @@
       </div>
       <div>
         <button @click="closeEdit()">Finish</button>
-        <button class="danger">Delete</button>
+        <button @click="deleteFlag()">Delete</button>
       </div>
     </form>
   </div>
@@ -58,16 +58,10 @@ export default {
     setTimeout(this.setFocus, delay)
     input = this.$refs.notetext
 
+    //word count
     this.$refs.notetext.addEventListener('keyup', function() {
-      //keeping the console clean to make only the latest data visible
-      // console.clear()
-
-      // word count using \w metacharacter - replacing this with .* to match anything between word boundaries since it was not taking 'a' as a word.
-      // this is a masterstroke - to count words with any number of hyphens as one word
-      // [-?(\w+)?]+ looks for hyphen and a word (we make both optional with ?). + at the end makes it a repeated pattern
-      // \b is word boundary metacharacter
       var words = input.value.match(/\b[-?(\w+)?]+\b/gi)
-      // console.log(words);
+
       if (words) {
         wordCount.innerHTML = words.length
       } else {
@@ -86,6 +80,13 @@ export default {
       this.$store.dispatch('editNote', { e, t, aname })
       this.$store.dispatch('noteId', this.activeNote.id)
     },
+    // deleteFlag(e, t, aname) {
+    //   console.log('deleteFlag')
+    // t = this.activeNote.content_type
+    // aname = this.activeNote.attachment_name
+    // this.$store.dispatch('deleteFlag', { e, t, aname })
+    // this.$store.dispatch('noteId', this.activeNote.id)
+    //  },
     closeEdit() {
       this.$emit('closeEdit')
       this.$store.dispatch('editOff')

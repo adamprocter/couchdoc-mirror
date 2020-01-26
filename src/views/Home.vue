@@ -8,7 +8,7 @@
     <!--  @ is short for v-on: -->
     <!-- : is short for v-bind -->
     <div class="offline" v-if="clientset && offline">
-      <Editor v-if="editing" @closeEdit="closeEdit()" />
+      <Editor v-if="editing" @closeEdit="closeEdit()" @deleteFlag="deleteFlag()" />
       <ToolBar v-else-if="clientset" @editMode="editMode()" @togView="togView()" />
       <ShortCuts v-if="clientset" />
       <YourData @editMode="editMode()" @closeEdit="closeEdit()" />
@@ -16,7 +16,7 @@
     </div>
 
     <div class="online" v-else>
-      <Editor v-if="editing" @closeEdit="closeEdit()" />
+      <Editor v-if="editing" @closeEdit="closeEdit()" @deleteFlag="deleteFlag()" />
       <ToolBar v-else-if="clientset" @editMode="editMode()" @togView="togView()" />
       <ReaderView v-if="clientset" />
       <ShortCuts v-if="clientset" />
@@ -101,6 +101,10 @@ export default {
       this.clientset = !this.clientset
     },
     editMode() {
+      this.editing = !this.editing
+    },
+
+    deleteFlag() {
       this.editing = !this.editing
     },
 
