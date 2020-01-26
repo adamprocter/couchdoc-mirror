@@ -42,7 +42,7 @@
       </div>
       <div>
         <button @click="closeEdit()">Finish</button>
-        <button class="danger">Delete</button>
+        <button class="danger" @click="deleteFlag()">Delete</button>
       </div>
     </form>
   </div>
@@ -84,6 +84,13 @@ export default {
       t = this.activeNote.content_type
       aname = this.activeNote.attachment_name
       this.$store.dispatch('editNote', { e, t, aname })
+      this.$store.dispatch('noteId', this.activeNote.id)
+    },
+    deleteFlag() {
+      // t = this.activeNote.content_type
+      // aname = this.activeNote.attachment_name
+      this.$emit('closeEdit')
+      this.$store.dispatch('deleteFlag')
       this.$store.dispatch('noteId', this.activeNote.id)
     },
     closeEdit() {

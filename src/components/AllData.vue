@@ -4,7 +4,7 @@
     <ul class="data" v-for="(value, index) in allnotes" v-bind:key="index">
       <li v-for="(note, index) in value.doc.notes" v-bind:key="index">
         <!-- v-if hides device name -->
-        <p v-if="note.content_type != 'device'">{{ note.text }}</p>
+        <p v-if="note.content_type != 'device' && note.deleted == false">{{ note.text }}</p>
       </li>
     </ul>
   </div>
