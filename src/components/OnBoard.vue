@@ -131,11 +131,11 @@ export default {
       this.$store.dispatch('removeInstance', this.localinstance)
     },
     setFocus() {
-      console.log('setfocus')
+      // console.log('setfocus')
       setTimeout(this.readyFocus, delay)
     },
     readyFocus() {
-      console.log('readyfocus')
+      //  console.log('readyfocus')
       this.$refs.objectname.focus()
     }
   }

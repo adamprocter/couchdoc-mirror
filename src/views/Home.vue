@@ -120,7 +120,7 @@ export default {
       this.offline = true
     },
     onlineTriggered() {
-      console.log('back!')
+      // console.log('back!')
       this.offline = false
     }
   }
