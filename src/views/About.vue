@@ -14,7 +14,7 @@
       <em>(+ helpers &amp; supporters)</em>
     </p>
 
-    <h3>version 0.0.43d</h3>
+    <h3>version 0.0.44d</h3>
     <ul>
       <li>
         Co-create and contribute ideas, with text, links and attachments with
@@ -31,8 +31,8 @@
       <li>&nbsp;Export is not turned on yet.</li>
       <li>&nbsp;Attachment viewing is broken.</li>
       <li>
-        Some devices seem to have a bug when you first try to create or
-        join an microcosm, on second attempt it will work allowing device name.
+        Some devices seem to have a bug when you first try to create or join an
+        microcosm, on second attempt it will work allowing device name.
       </li>
       <li>
         When moving nodes on touch devices to confirm new location you must tap
@@ -52,9 +52,9 @@
       </li>
       <li>
         &nbsp;
-        <a
-          href="https://discursive.adamprocter.co.uk/categories/phd/"
-        >discursive (phd catergory link)</a>
+        <a href="https://discursive.adamprocter.co.uk/categories/phd/"
+          >discursive (phd catergory link)</a
+        >
         (blog)
       </li>
       <li>
@@ -72,12 +72,16 @@
       </li>
       <li>
         &nbsp;
-        <a href="https://gitlab.adamprocter.co.uk/adamprocter/couchdocs">gitlab</a>
+        <a href="https://gitlab.adamprocter.co.uk/adamprocter/couchdocs"
+          >gitlab</a
+        >
         (code)
       </li>
       <li>
         &nbsp;
-        <a href="https://github.com/adamprocter/couchdoc-mirror/issues">issues</a>
+        <a href="https://github.com/adamprocter/couchdoc-mirror/issues"
+          >issues</a
+        >
         (raise and review)
       </li>
     </ul>
