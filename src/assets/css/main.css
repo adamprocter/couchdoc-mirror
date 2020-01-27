@@ -134,12 +134,18 @@ body {
   padding: 1em;
   background-color: rgb(247, 247, 247);
 }
-.toolbar,
+
 .alldata,
 .shortcuts {
   border: 5px solid #cab6ff;
   padding: 0em 1em 1em 1em;
-  margin-bottom: 1em;
+  margin-bottom: 0.5em;
+}
+
+.toolbar {
+  border: 5px solid #cab6ff;
+  padding: 0em 1em 1em 1em;
+  margin-bottom: 0em;
 }
 
 svg {
@@ -441,40 +447,42 @@ li:before {
   .toolbar,
   .editor {
     grid-column: 1 /2;
-    grid-row: 1;
+    grid-row: 2;
     padding: 0em 1em 1em 1em;
     border: 10px solid #cab6ff;
   }
-
-  .reader,
-  .yourdata {
+  .yourdata,
+  .alldata {
     padding: 0em 1em 1em 1em;
     border: 10px solid #cab6ff;
-    grid-column: 2 / 3;
+    grid-column: 2 / 4;
+    grid-row: 2;
+  }
+
+  .reader {
+    padding: 0em 1em 1em 1em;
+    border: 10px solid #cab6ff;
+    grid-column: 2 / 4;
+    grid-row: 2;
+  }
+  .shortcuts {
+    padding: 0em 1em 1em 1em;
+    border: 10px solid #cab6ff;
+    grid-column: 1 / 4;
     grid-row: 1;
   }
 
   .spaceview {
-    grid-column: 1 / 4;
-    grid-row: 2;
-  }
-
-  .shortcuts {
     padding: 0em 1em 1em 1em;
     border: 10px solid #cab6ff;
-    grid-column: 3 / 4;
-    grid-row: 1;
+    grid-column: 1 / 4;
+    grid-row: 3;
   }
 
   .debug,
   .adminpanel {
     grid-column: 1 / 4;
-    grid-row: 3;
-  }
-
-  .alldata {
-    padding: 0em 1em 1em 1em;
-    border: 10px solid #cab6ff;
+    grid-row: 4;
   }
 }
 

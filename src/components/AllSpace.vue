@@ -72,7 +72,9 @@
               />
 
               <polygon
-                v-if="note.content_type == 'attachment' && note.deleted == false"
+                v-if="
+                  note.content_type == 'attachment' && note.deleted == false
+                "
                 points="14.782072520180588,6.1229349178414365 6.122934917841437,14.782072520180588 -6.122934917841436,14.782072520180588 -14.782072520180588,6.122934917841437 -14.782072520180588,-6.122934917841435 -6.122934917841445,-14.782072520180584 6.12293491784144,-14.782072520180586 14.782072520180584,-6.122934917841446"
                 fill="#f1f1f1"
                 stroke="#000"
@@ -107,11 +109,9 @@
                 </g>
               </g>
 
-              <text
-                v-if="note.deleted == false"
-                class="inlinetext"
-                dx="20px"
-              >{{ note.text | truncate(20)}}</text>
+              <text v-if="note.deleted == false" class="inlinetext" dx="20px">
+                {{ note.text | truncate(20) }}
+              </text>
             </g>
           </g>
         </g>
@@ -484,7 +484,7 @@ export default {
 
       function doubleClick(evt) {
         // console.log('inside doubleclick ' + firsttap)
-        scroll(0, 0)
+        scroll(0, 390)
         ref.$store.dispatch('shortcutsState', true)
         ref.$emit('closeEdit')
         if (evt.target.parentNode.classList.contains('draggable')) {

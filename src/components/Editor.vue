@@ -1,7 +1,7 @@
 <template>
   <div class="editor">
-    <form id="editForm">
-      <h2>Edit item</h2>
+    <form id="editForm" class="myScroll">
+      <h2>Edit</h2>
       <div v-if="activeNote.attachment_name == undefined">
         <label>Choose Type</label>
         <select v-model="activeNote.content_type" id="myList">
@@ -11,8 +11,13 @@
         </select>
       </div>
       <br />
-      <textarea @input="editNote" v-model="activeNote.text" class="form-control" ref="notetext"></textarea>
-      <p>{{activeNote.attachment_name}}</p>
+      <textarea
+        @input="editNote"
+        v-model="activeNote.text"
+        class="form-control"
+        ref="notetext"
+      ></textarea>
+      <p>{{ activeNote.attachment_name }}</p>
       <!-- <p>{{activeAttachment[0].url}}</p> -->
       <!-- <div v-if="activeNote.attachment_name != undefined">
         <div v-if="activeNote.attachment_name.endsWith('.jpeg')">
@@ -32,14 +37,21 @@
       </div>-->
 
       <input :value="activeNote.id" name="id" readonly hidden />
-      <input :value="activeNote.attachment_name" name="attachmentname" readonly hidden />
+      <input
+        :value="activeNote.attachment_name"
+        name="attachmentname"
+        readonly
+        hidden
+      />
       <p class="words">
         Word count:
         <span id="wordCount">0</span>
       </p>
       <h3>Reactions</h3>
       <div v-for="(emojis, index) in emojis" :key="index">
-        <p class="allemoji" v-if="activeNote.id == emojis.docid">{{ emojis.emojitext }}</p>
+        <p class="allemoji" v-if="activeNote.id == emojis.docid">
+          {{ emojis.emojitext }}
+        </p>
       </div>
       <div>
         <button @click="closeEdit()">Finish</button>
