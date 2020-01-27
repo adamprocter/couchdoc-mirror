@@ -43,6 +43,11 @@ export default {
 </script>
 
 <style lang="css" scoped>
+.data p {
+  white-space: pre-wrap;
+  line-height: 1em;
+}
+
 ul {
   /* FIXME : grid in a grid for these I think */
 }
@@ -53,7 +58,7 @@ li:last-child {
 }
 
 li {
-  margin-bottom: 1em;
+  margin-bottom: 0.5em;
   font-size: 18px;
   line-height: 1.4em;
 }

@@ -138,6 +138,11 @@ p {
   line-height: 1.5em;
 }
 
+.reader p {
+  white-space: pre-wrap;
+  line-height: 1em;
+}
+
 .allemoji {
   font-size: 2em;
   padding: 0px;
