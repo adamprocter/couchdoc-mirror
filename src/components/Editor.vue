@@ -11,6 +11,7 @@
         </select>
       </div>
       <br />
+      <p class="md">markdown supported</p>
       <textarea
         @input="editNote"
         v-model="activeNote.text"
@@ -43,6 +44,7 @@
         readonly
         hidden
       />
+
       <p class="words">
         Word count:
         <span id="wordCount">0</span>
@@ -132,6 +134,12 @@ ul {
 
 li:before {
   content: '';
+}
+
+.md {
+  margin-top: -1em;
+  font-size: 12px;
+  color: grey;
 }
 
 p.words {
