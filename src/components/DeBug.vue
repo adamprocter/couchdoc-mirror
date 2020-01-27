@@ -1,16 +1,18 @@
 <template>
   <div class="debug">
     <hr />
-    <h2>Debug Options</h2>
-    <h4>LAST UPDATE 26th Jan 2020.</h4>
-    <p>You need to know these buttons destroy stuff.</p>
-    <button class="danger" @click="removeLocal()">Join another microcosm</button>
-    <button @click="exportStorage()">Export my contributions</button>
-    <button
-      class="danger"
-      v-on:click="deleteClient"
-    >Delete my contributions (inc. attachments) permanently</button>
-    <button @click="handleConnection()">Online check</button>
+    <!-- <h2>Debug Options</h2> -->
+    <h4>LAST UPDATE 27th Jan 2020.</h4>
+    <p>You need to know what these buttons do before you press them.</p>
+    <button class="danger" @click="removeLocal()">
+      Join another microcosm
+    </button>
+    <!-- <button @click="exportStorage()">Export my contributions</button> -->
+    <button class="danger" v-on:click="deleteClient">
+      Delete my contributions (inc. attachments) permanently
+    </button>
+    <!-- <button @click="handleConnection()">Online check</button> -->
+    <p>That's why they are red.</p>
   </div>
 </template>
 
@@ -36,9 +38,9 @@ export default {
       //location.reload()
       // Hardcoded in case URL has parameters the reload fails
       // Public site link
-      //location.assign('https://alpha.nodenogg.in/')
+      location.assign('https://alpha.nodenogg.in/')
       // local testing link
-      location.assign('http://localhost:8080/')
+      //location.assign('http://localhost:8080/')
     },
 
     deleteClient() {
