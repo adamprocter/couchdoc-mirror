@@ -53,4 +53,9 @@ export default {
 h3 {
   margin-top: 1em;
 }
+
+.data p {
+  white-space: pre-wrap;
+  line-height: 1em;
+}
 </style>

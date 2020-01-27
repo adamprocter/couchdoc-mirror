@@ -134,6 +134,13 @@ body {
   padding: 1em;
   background-color: rgb(247, 247, 247);
 }
+.toolbar,
+.alldata,
+.shortcuts {
+  border: 5px solid #cab6ff;
+  padding: 0em 1em 1em 1em;
+  margin-bottom: 1em;
+}
 
 svg {
   -webkit-user-select: none;
@@ -447,8 +454,7 @@ li:before {
     grid-row: 1;
   }
 
-  .spaceview,
-  .alldata {
+  .spaceview {
     grid-column: 1 / 4;
     grid-row: 2;
   }
@@ -466,9 +472,10 @@ li:before {
     grid-row: 3;
   }
 
-  /* .alldata {
-    grid-column: 2 / 6;
-  } */
+  .alldata {
+    padding: 0em 1em 1em 1em;
+    border: 10px solid #cab6ff;
+  }
 }
 
 /* @media (prefers-color-scheme: dark) {

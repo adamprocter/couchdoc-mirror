@@ -10,28 +10,30 @@
     <div class="offline" v-if="clientset && offline">
       <Editor v-if="editing" @closeEdit="closeEdit()" />
       <ToolBar v-else-if="clientset" @editMode="editMode()" @togView="togView()" />
-      <ShortCuts v-if="clientset" />
       <YourData @editMode="editMode()" @closeEdit="closeEdit()" />
+      <ShortCuts v-if="clientset" />
       <DeBug @offlineTriggered="offlineTriggered()" />
     </div>
 
     <div class="online" v-else>
       <Editor v-if="editing" @closeEdit="closeEdit()" />
       <ToolBar v-else-if="clientset" @editMode="editMode()" @togView="togView()" />
-      <ReaderView v-if="clientset" />
-      <ShortCuts v-if="clientset" />
+      <ReaderView v-if="clientset && !spaceview" />
+
       <AllData
         v-if="clientset && spaceview"
         @editMode="editMode()"
         @closeEdit="closeEdit()"
         @togView="togView()"
       />
+
       <AllSpace
-        v-else-if="clientset"
+        v-else-if="clientset "
         @closeEdit="closeEdit()"
         @editMode="editMode()"
         @togView="togView()"
       />
+      <ShortCuts v-if="clientset" />
       <OnBoard v-else @clientAdded="clientAdded()" />
       <!-- <AdminPanel /> -->
 
