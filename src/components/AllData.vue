@@ -59,7 +59,7 @@ export default {
 }
 
 h2 {
-  margin-bottom: -2em;
+  margin-bottom: 2em;
 }
 
 .data >>> .dataeach p {
