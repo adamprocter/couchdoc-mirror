@@ -136,16 +136,20 @@ body {
 }
 
 .alldata,
-.shortcuts {
+.shortcuts,
+.reader,
+.spaceview {
   border: 5px solid #cab6ff;
   padding: 0em 1em 1em 1em;
   margin-bottom: 0.5em;
 }
 
-.toolbar {
+.toolbar,
+.editor,
+.yourdata {
   border: 5px solid #cab6ff;
   padding: 0em 1em 1em 1em;
-  margin-bottom: 0em;
+  margin-bottom: 0.5em;
 }
 
 svg {
